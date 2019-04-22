@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import blog.util.PropertiesLoader;
-import blog.util.RestClient;
 import blog.util.Signatures;
 
 import java.io.*;
 import java.net.*;
 import java.security.SignatureException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -54,7 +53,7 @@ public class RelKwdStat {
         HttpURLConnection connection = null;
         BufferedReader input = null;
         System.out.println(hmacSHA256 + "  " + timestamp );
-        List<blog.model.RelKwdStat.RelKwd> relKwdData = null;
+        List<blog.model.RelKwdStat> relKwdData = null;
         StringBuffer buffer = new StringBuffer();
         int code = 0;
         InputStream errormsg = null;
@@ -84,8 +83,9 @@ public class RelKwdStat {
             input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String test = input.toString();
             result = gson.fromJson(input, Map.class);
-            relKwdData = gson.fromJson(input, new TypeToken<List<blog.model.RelKwdStat.RelKwd>>() {}.getType());
-
+            ArrayList map = (ArrayList) result.get("keywordList");
+            relKwdData = gson.fromJson(input, new TypeToken<List<blog.model.RelKwdStat>>() {}.getType());
+            System.out.println(relKwdData);
 
         } catch (ProtocolException e) {
             e.printStackTrace();

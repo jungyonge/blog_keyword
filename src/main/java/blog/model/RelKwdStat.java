@@ -12,7 +12,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RelKwdStat {
 
-    private List<RelKwd> RelKwdList;
+    private List<RelKwd> keywordList;
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
