@@ -1,4 +1,4 @@
-package model;
+package blog.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

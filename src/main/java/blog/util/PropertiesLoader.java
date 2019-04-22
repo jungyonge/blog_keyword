@@ -1,4 +1,4 @@
-package util;
+package blog.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package util;
+package blog.util;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
