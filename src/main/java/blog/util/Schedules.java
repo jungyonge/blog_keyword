@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 확장 소재에서 사용하는 스케쥴에 관한 blog.util<p>
+ * 확장 소재에서 사용하는 스케쥴에 관한 Blog.util<p>
  * 이 클래스를 이용하면 스케쥴(schedule)을 쉽게 얻을 수 있다.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
