@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Blog {
+public class BlogModel {
 
     public String lastBuildData;
     public String total;

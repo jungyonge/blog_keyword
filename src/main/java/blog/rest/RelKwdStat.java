@@ -1,5 +1,6 @@
 package blog.rest;
 
+import blog.model.RelKwdStatModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class RelKwdStat {
             String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(kwd,charset),URLEncoder.encode(showDetail,charset));
 
             result = httpUrl(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query);
-
+            result.get("");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SignatureException e) {
@@ -53,7 +54,7 @@ public class RelKwdStat {
         HttpURLConnection connection = null;
         BufferedReader input = null;
         System.out.println(hmacSHA256 + "  " + timestamp );
-        List<blog.model.RelKwdStat> relKwdData = null;
+        List<RelKwdStatModel> relKwdData = null;
         StringBuffer buffer = new StringBuffer();
         int code = 0;
         InputStream errormsg = null;
@@ -81,10 +82,13 @@ public class RelKwdStat {
             errormsg = connection.getErrorStream();*/
 
             input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String test = input.toString();
+
             result = gson.fromJson(input, Map.class);
+            RelKwdStatModel relKwd = gson.fromJson(input, RelKwdStatModel.class);
+
+
             ArrayList map = (ArrayList) result.get("keywordList");
-            relKwdData = gson.fromJson(input, new TypeToken<List<blog.model.RelKwdStat>>() {}.getType());
+            relKwdData = gson.fromJson(input, new TypeToken<List<RelKwdStatModel>>() {}.getType());
             System.out.println(relKwdData);
 
         } catch (ProtocolException e) {

@@ -1,6 +1,6 @@
 package blog.rest;
 
-import blog.model.Blog;
+import blog.model.BlogModel;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 import java.util.*;
 
 @RestController
-public class blogparser {
+public class BlogStat {
 
     @GetMapping("/blog/{Keyword}")
     public Map<String, Object> blogparser(@PathVariable("Keyword") String keyword){
@@ -28,9 +28,9 @@ public class blogparser {
         Gson gson = new Gson();
         try {
             String text = URLEncoder.encode(keyword, "UTF-8");
-            String apiURL = "https://openapi.naver.com/v1/search/Blog?query="+ text; // json 결과
+            String apiURL = "https://openapi.naver.com/v1/search/blog?query="+ text; // json 결과
             //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
-            URL url = new URL("https://openapi.naver.com/v1/search/Blog?query="+ text);
+            URL url = new URL("https://openapi.naver.com/v1/search/blog?query="+ text);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-Naver-Client-Id", clientId);
@@ -43,15 +43,9 @@ public class blogparser {
                 br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             }
             String inputLine;
-            result = gson.fromJson(br, Map.class);
-            Blog bloginfo = gson.fromJson(br, Blog.class);
-            List<Blog> upbit_btcprice = gson.fromJson(br, new TypeToken<List<Blog>>(){}.getType());
-            ArrayList resultArr = (ArrayList) result.get("items");
-            for(int i = 0; i < resultArr.size(); i++){
-                LinkedTreeMap<String,String> map = (LinkedTreeMap<String, String>) resultArr.get(i);
-                String url1 = map.get("link");
-                System.out.println(map);
-            }
+            //result = gson.fromJson(br,Map.class);
+            BlogModel bloginfo = gson.fromJson(br, BlogModel.class);
+            String url2 = bloginfo.getItems().get(0).link;
             StringBuffer response = new StringBuffer();
             while ((inputLine = br.readLine()) != null) {
                 response.append(inputLine);
