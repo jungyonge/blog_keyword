@@ -19,17 +19,15 @@ import java.util.*;
 public class BlogStat {
 
     @GetMapping("/blog/{Keyword}")
-    public Map<String, Object> blogparser(@PathVariable("Keyword") String keyword){
+    public Map<String, Integer> blogparser(@PathVariable("Keyword") String keyword){
         String clientId = "C1YQC3o_0RJDmqnYEioo";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "mSkCZUBrym";//애플리케이션 클라이언트 시크릿값";
-        Map<String, Object> result = null;
+        Map<String, Integer> result = new HashMap<String, Integer>();
         java.net.HttpURLConnection connection = null;
 
         Gson gson = new Gson();
         try {
             String text = URLEncoder.encode(keyword, "UTF-8");
-            String apiURL = "https://openapi.naver.com/v1/search/blog?query="+ text; // json 결과
-            //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
             URL url = new URL("https://openapi.naver.com/v1/search/blog?query="+ text);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -41,17 +39,33 @@ public class BlogStat {
                 br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             } else {  // 에러 발생
                 br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                System.out.println(br);
             }
-            String inputLine;
-            //result = gson.fromJson(br,Map.class);
+            int naverCnt = 0;
+            int tstoryCnt = 0;
+            int elseCnt = 0;
+
             BlogModel bloginfo = gson.fromJson(br, BlogModel.class);
-            String url2 = bloginfo.getItems().get(0).link;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
+
+            if(bloginfo.getItems() != null){
+                for(int i = 0; i <bloginfo.getItems().size() ; i++) {
+                    String url2 = bloginfo.getItems().get(i).link;
+                    if (url2.contains("naver")) {
+                        naverCnt++;
+                    } else if (url2.contains("tstory")) {
+                        tstoryCnt++;
+                    } else {
+                        elseCnt++;
+                    }
+                }
+            }else{
+                naverCnt = 10;
             }
+
+            result.put("Naver",naverCnt);
+            result.put("Tstory",tstoryCnt);
+            result.put("Else",elseCnt);
             br.close();
-            System.out.println(response.toString());
         } catch (Exception e) {
             System.out.println(e);
         }

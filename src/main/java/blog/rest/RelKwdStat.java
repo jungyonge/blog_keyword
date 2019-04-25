@@ -12,18 +12,15 @@ import blog.util.Signatures;
 import java.io.*;
 import java.net.*;
 import java.security.SignatureException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @RestController
 public class RelKwdStat {
 
     @GetMapping("/RelKwdStat/{Keyword}")
-    public  Map<String, Object> getRelKwdStat(@PathVariable("Keyword") String keyword){
+    public  RelKwdStatModel getRelKwdStat(@PathVariable("Keyword") String keyword){
 
-        Map<String, Object> result = null;
+        RelKwdStatModel result = null;
 
         try {
             Properties properties = PropertiesLoader.fromResource("sample.properties");
@@ -40,7 +37,7 @@ public class RelKwdStat {
             String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(kwd,charset),URLEncoder.encode(showDetail,charset));
 
             result = httpUrl(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query);
-            result.get("");
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SignatureException e) {
@@ -49,16 +46,15 @@ public class RelKwdStat {
         return result;
     }
 
-    public Map<String, Object> httpUrl(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query) {
+    public RelKwdStatModel httpUrl(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query) {
+        BlogStat blogStat = new BlogStat();
         Gson gson = new Gson();
         HttpURLConnection connection = null;
         BufferedReader input = null;
         System.out.println(hmacSHA256 + "  " + timestamp );
         List<RelKwdStatModel> relKwdData = null;
-        StringBuffer buffer = new StringBuffer();
-        int code = 0;
-        InputStream errormsg = null;
-        Map<String, Object> result = null;
+        RelKwdStatModel relKwd = null;
+        RelKwdStatModel relKwd1 = null;
 
         try {
             //Private API Header 세팅
@@ -75,21 +71,27 @@ public class RelKwdStat {
             connection.setRequestProperty("Content-type", "application/json");
             connection.setDoOutput(true);
             connection.setDoInput(true);
-            /*OutputStream os = connection.getOutputStream();
-            os.write(body.getBytes());
-            os.flush();
-            code = connection.getResponseCode();
-            errormsg = connection.getErrorStream();*/
 
             input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            result = gson.fromJson(input, Map.class);
-            RelKwdStatModel relKwd = gson.fromJson(input, RelKwdStatModel.class);
+            //result = gson.fromJson(input, Map.class);
+            relKwd = gson.fromJson(input, RelKwdStatModel.class);
+            int size = relKwd.getKeywordList().size();
+            for(int i = 0; i < size; i++){
+                String key = relKwd.getKeywordList().get(i).getRelKeyword();
+                System.out.println(key);
+                Map<String,Integer> res = blogStat.blogparser(key);
+                if(res.get("Naver") <= 5) {
+                    relKwd.getKeywordList().get(i).setNaverCnt(res.get("Naver"));
+                    relKwd.getKeywordList().get(i).setTstoryCnt(res.get("Tstory"));
+                    relKwd.getKeywordList().get(i).setElseCnt(res.get("Else"));
+                    relKwd1 = RelKwdStatModel.builder()
+                            .keywordList(Collections.singletonList(relKwd.getKeywordList().get(i))).build();
+                }
+                Thread.sleep(300);
+            }
 
-
-            ArrayList map = (ArrayList) result.get("keywordList");
-            relKwdData = gson.fromJson(input, new TypeToken<List<RelKwdStatModel>>() {}.getType());
-            System.out.println(relKwdData);
+           System.out.println(relKwdData);
 
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -97,9 +99,11 @@ public class RelKwdStat {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        return result;
+        return relKwd1;
     }
 
 

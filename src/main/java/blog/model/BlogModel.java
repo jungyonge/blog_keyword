@@ -14,6 +14,7 @@ public class BlogModel {
     public String total;
     public List<Item> items;
 
+        @Data
         public class Item{
             public String title;
             public String link;
