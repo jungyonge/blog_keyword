@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Setalarm">
+
+    <resultMap id="result" type="Setalarm">
+        <result property="moday" column="moday"/>
+        <result property="trySum" column="trySum"/>
+        <result property="tryCnt" column="tryCnt"/>
+        <result property="sucSum" column="sucSum"/>
+        <result property="sucCnt" column="sucCnt"/>
+        <result property="failSum" column="failSum"/>
+        <result property="failCnt" column="failCnt"/>
+    </resultMap>
+
+    <select id="getOrderStatus" resultType="HashMap" parameterType="map">>
+        SELECT
+            date_format(A.deal_dt,'%Y-%m-%d') moday,SUM(A.amount) trySum ,COUNT(*) tryCnt
+            ,SUM(CASE WHEN A.T_F = 'TRUE' THEN amount else 0 END )  sucSum,COUNT(CASE WHEN A.T_F = 'TRUE' THEN AMOUNT END ) sucCNT
+            ,SUM(CASE WHEN A.T_F = 'FALSE' THEN amount else 0  END ) failSum,COUNT(CASE WHEN A.T_F  = 'FALSE' THEN AMOUNT END ) failCNT
+        FROM
+             (
+              SELECT
+                    deal_dt,amount,order_id,
+                    CASE
+                        WHEN order_id IS NULL THEN 'false'
+                          ELSE 'TRUE'
+                     END T_F
+              FROM market_order
+              where deal_dt > str_to_date(date_add(#{first}, interval -6 day), '%Y-%m-%d %H:%i:%s')
+              and  deal_dt <![CDATA[ <= ]]> str_to_date(date_add(#{first}, interval 1 day), '%Y-%m-%d %H:%i:%s')
+              ) A
+        GROUP BY moday
+        ORDER BY moday desc;
+    </select>
+
+    <select id="getKeywordForMake" resultType="HashMap" parameterType="map">
+        SELECT
+              *
+        FROM ${table}
+    </select>
+
+    <insert id="insertKeyword_Relate" useGeneratedKeys="true" keyProperty="id" parameterType="map">
+        INSERT INTO
+        keyword_relate (keyword)
+        VALUES (#{keyword});
+    </insert>
+</mapper>
