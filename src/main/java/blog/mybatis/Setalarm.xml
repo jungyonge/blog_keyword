@@ -15,10 +15,16 @@
         <result property="failCnt" column="failCnt"/>
     </resultMap>
 
-    <select id="getKeywordMaste" resultType="HashMap" >
+    <select id="getKeywordMaster" resultType="HashMap" >
         SELECT
               keyword
         FROM keyword_master
+    </select>
+
+    <select id="getKeywordRelate" resultType="HashMap" >
+        SELECT
+              keyword_rel
+        FROM keyword_relate
     </select>
 
 
@@ -40,5 +46,16 @@
         INSERT INTO
         keyword_relate (keyword_rel)
         VALUES (#{keyword});
+    </insert>
+
+    <insert id="insertKeywordStat" useGeneratedKeys="true" keyProperty="id" parameterType="map">
+        INSERT INTO
+            keyword_stat(relKeyword, monthlyPcQcCnt, monthlyMobileQcCnt, monthlyAvePcClkCnt,
+                        monthlyAveMobileClkCnt, monthlyAvePcCtr, monthlyAveMobileCtr, plAvgDepth,
+                        compIdx, totalPost, naverCnt, tstoryCnt, elseCnt)
+        VALUE
+              (#{relKeyword}, #{monthlyPcQcCnt}, #{monthlyMobileQcCnt}, #{monthlyAvePcClkCnt},
+              #{monthlyAveMobileClkCnt}, #{monthlyAvePcCtr}, #{monthlyAveMobileCtr}, #{plAvgDepth},
+              #{compIdx}, #{totalPost}, #{naverCnt}, #{tstoryCnt}, #{elseCnt} )
     </insert>
 </mapper>

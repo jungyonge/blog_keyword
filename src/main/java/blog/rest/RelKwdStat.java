@@ -4,7 +4,6 @@ import blog.model.RelKwdStatModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,6 +61,29 @@ public class RelKwdStat {
             String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
 
             result = httpUrl2(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @GetMapping("/getKeywordStat")
+    public  RelKwdStatModel getKeywordStat(){
+
+        RelKwdStatModel result = null;
+        try {
+            Properties properties = PropertiesLoader.fromResource("sample.properties");
+            String baseUrl = properties.getProperty("BASE_URL");
+            String apiKey = properties.getProperty("API_KEY");
+            String secretKey = properties.getProperty("SECRET_KEY");
+            long customerId = Long.parseLong(properties.getProperty("CUSTOMER_ID"));
+            String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+            String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
+
+            result = httpUrl3(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -131,7 +153,7 @@ public class RelKwdStat {
         List masterList = null;
         String charset = "UTF-8";
         String showDetail = "1";
-        masterList = setalarmDAO.getKeywordMaste();
+        masterList = setalarmDAO.getKeywordMaster();
 
         for(int i = 0 ; i < masterList.size(); i++){
             HashMap<String,Object> test = (HashMap<String, Object>) masterList.get(i);
@@ -171,10 +193,78 @@ public class RelKwdStat {
                 e.printStackTrace();
             }
         }
+        return relKwd1;
+    }
 
+    public RelKwdStatModel httpUrl3(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId) {
+        BlogStat blogStat = new BlogStat();
+        Gson gson = new Gson();
+        HttpURLConnection connection = null;
+        BufferedReader input = null;
+        System.out.println(hmacSHA256 + "  " + timestamp );
+        List<RelKwdStatModel> relKwdData = null;
+        RelKwdStatModel relKwd = null;
+        RelKwdStatModel relKwd1 = null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        String charset = "UTF-8";
+        String showDetail = "1";
+        List keywordList = null;
+        keywordList = setalarmDAO.getKeywordRelate();
+        for(int i = 0 ; i < keywordList.size(); i++){
+            HashMap<String,Object> test = (HashMap<String, Object>) keywordList.get(i);
+            String kwd = String.valueOf(test.get("keyword_rel"));
+
+            try {
+                //Private API Header 세팅
+                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(kwd,charset),URLEncoder.encode(showDetail,charset));
+                URL url = new URL(requestURL + "?" + query);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                connection.setRequestProperty("X-Timestamp", timestamp);
+                connection.setRequestProperty("X-API-KEY", apikey);
+                connection.setRequestProperty("X-Customer", String.valueOf(customerId));
+                connection.setRequestProperty("X-Signature", hmacSHA256);
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
+                input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                relKwd = gson.fromJson(input, RelKwdStatModel.class);
+                int size = relKwd.getKeywordList().size();
+                for(int i3 = 0; i3 < size; i3++) {
+                    String key = relKwd.getKeywordList().get(i3).getRelKeyword();
+                    System.out.println(key);
+                    Map<String, Integer> res = blogStat.blogparser(key);
+                    map.put("relKeyword",relKwd.getKeywordList().get(i3).getRelKeyword());
+                    map.put("monthlyPcQcCnt",relKwd.getKeywordList().get(i3).getMonthlyPcQcCnt());
+                    map.put("monthlyMobileQcCnt",relKwd.getKeywordList().get(i3).getMonthlyMobileQcCnt());
+                    map.put("monthlyAvePcClkCnt",relKwd.getKeywordList().get(i3).getMonthlyAvePcClkCnt());
+                    map.put("monthlyAveMobileClkCnt",relKwd.getKeywordList().get(i3).getMonthlyAveMobileClkCnt());
+                    map.put("monthlyAvePcCtr",relKwd.getKeywordList().get(i3).getMonthlyAvePcCtr());
+                    map.put("monthlyAveMobileCtr",relKwd.getKeywordList().get(i3).getMonthlyAveMobileCtr());
+                    map.put("plAvgDepth",relKwd.getKeywordList().get(i3).getPlAvgDepth());
+                    map.put("compIdx",relKwd.getKeywordList().get(i3).getCompIdx());
+                    map.put("totalPost",res.get("totalPost"));
+                    map.put("naverCnt",res.get("Naver"));
+                    map.put("tstoryCnt",res.get("Tstory"));
+                    map.put("elseCnt",res.get("Else"));
+                    setalarmDAO.insertKeywordStat(map);
+                    Thread.sleep(300);
+                }
+
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         return relKwd1;
     }
 
-
-    }
+}

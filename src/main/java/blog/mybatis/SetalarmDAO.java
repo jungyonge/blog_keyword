@@ -13,17 +13,30 @@ public class SetalarmDAO {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public List<Setalarm> getKeywordMaste(){
+    public List<Setalarm> getKeywordMaster(){
         List<Setalarm> list = null;
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            list = session.selectList("Setalarm.getKeywordMaste");
+            list = session.selectList("Setalarm.getKeywordMaster");
         } finally {
             session.close();
         }
         return list;
     }
+
+    public List<Setalarm> getKeywordRelate(){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            list = session.selectList("Setalarm.getKeywordRelate");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+
 
 
     public List<Setalarm> getKeywordMasterForMake(Map map){
@@ -67,6 +80,17 @@ public class SetalarmDAO {
 
         try {
             session.insert("Setalarm.insertKeyword_Relate", map);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertKeywordStat(Map map){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertKeywordStat", map);
         } finally {
             session.commit();
             session.close();

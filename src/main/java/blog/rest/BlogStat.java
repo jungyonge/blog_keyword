@@ -65,6 +65,7 @@ public class BlogStat {
             result.put("Naver",naverCnt);
             result.put("Tstory",tstoryCnt);
             result.put("Else",elseCnt);
+            result.put("totalPost", Integer.valueOf(bloginfo.getTotal()));
             br.close();
         } catch (Exception e) {
             System.out.println(e);

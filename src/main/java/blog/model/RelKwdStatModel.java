@@ -22,6 +22,7 @@ public class RelKwdStatModel {
             private String monthlyAveMobileCtr;
             private String plAvgDepth;
             private String compIdx;
+            private int totalPost;
             private int naverCnt;
             private int tstoryCnt;
             private int elseCnt;
