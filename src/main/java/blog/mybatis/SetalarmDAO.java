@@ -13,25 +13,38 @@ public class SetalarmDAO {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public List<Setalarm> getOrderStatusWeek(Map map){
+    public List<Setalarm> getKeywordMaste(){
         List<Setalarm> list = null;
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            list = session.selectList("Setalarm.getOrderStatusWeek",map);
+            list = session.selectList("Setalarm.getKeywordMaste");
         } finally {
             session.close();
         }
-        System.out.println("getOrderStatusWeek(" + map + ")--> "+list);
         return list;
     }
 
-    public List<Setalarm> getKeywordForMake(Map map){
+
+    public List<Setalarm> getKeywordMasterForMake(Map map){
         List<Setalarm> list = null;
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            list = session.selectList("Setalarm.getKeywordForMake",map);
+            list = session.selectList("Setalarm.getKeywordMasterForMake",map);
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+
+
+    public List<Setalarm> getKeywordRelateForMake(Map map){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            list = session.selectList("Setalarm.getKeywordRelateForMake",map);
         } finally {
             session.close();
         }

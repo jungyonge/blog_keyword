@@ -15,36 +15,30 @@
         <result property="failCnt" column="failCnt"/>
     </resultMap>
 
-    <select id="getOrderStatus" resultType="HashMap" parameterType="map">>
+    <select id="getKeywordMaste" resultType="HashMap" >
         SELECT
-            date_format(A.deal_dt,'%Y-%m-%d') moday,SUM(A.amount) trySum ,COUNT(*) tryCnt
-            ,SUM(CASE WHEN A.T_F = 'TRUE' THEN amount else 0 END )  sucSum,COUNT(CASE WHEN A.T_F = 'TRUE' THEN AMOUNT END ) sucCNT
-            ,SUM(CASE WHEN A.T_F = 'FALSE' THEN amount else 0  END ) failSum,COUNT(CASE WHEN A.T_F  = 'FALSE' THEN AMOUNT END ) failCNT
-        FROM
-             (
-              SELECT
-                    deal_dt,amount,order_id,
-                    CASE
-                        WHEN order_id IS NULL THEN 'false'
-                          ELSE 'TRUE'
-                     END T_F
-              FROM market_order
-              where deal_dt > str_to_date(date_add(#{first}, interval -6 day), '%Y-%m-%d %H:%i:%s')
-              and  deal_dt <![CDATA[ <= ]]> str_to_date(date_add(#{first}, interval 1 day), '%Y-%m-%d %H:%i:%s')
-              ) A
-        GROUP BY moday
-        ORDER BY moday desc;
+              keyword
+        FROM keyword_master
     </select>
 
-    <select id="getKeywordForMake" resultType="HashMap" parameterType="map">
+
+    <select id="getKeywordMasterForMake" resultType="HashMap" parameterType="map">
         SELECT
-              *
+              st1
         FROM ${table}
+        WHERE st1 !='';
+    </select>
+
+    <select id="getKeywordRelateForMake" resultType="HashMap" parameterType="map">
+        SELECT
+               st2
+        FROM ${table}
+        WHERE st2 !='';
     </select>
 
     <insert id="insertKeyword_Relate" useGeneratedKeys="true" keyProperty="id" parameterType="map">
         INSERT INTO
-        keyword_relate (keyword)
+        keyword_relate (keyword_rel)
         VALUES (#{keyword});
     </insert>
 </mapper>
