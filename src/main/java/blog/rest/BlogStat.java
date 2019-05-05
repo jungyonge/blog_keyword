@@ -18,10 +18,12 @@ import java.util.*;
 @RestController
 public class BlogStat {
 
+    String clientId = "C1YQC3o_0RJDmqnYEioo";//애플리케이션 클라이언트 아이디값";
+    String clientSecret = "mSkCZUBrym";//애플리케이션 클라이언트 시크릿값";
+
     @GetMapping("/blog/{Keyword}")
     public Map<String, Integer> blogparser(@PathVariable("Keyword") String keyword){
-        String clientId = "C1YQC3o_0RJDmqnYEioo";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "mSkCZUBrym";//애플리케이션 클라이언트 시크릿값";
+
         Map<String, Integer> result = new HashMap<String, Integer>();
         java.net.HttpURLConnection connection = null;
 
@@ -59,7 +61,7 @@ public class BlogStat {
                     }
                 }
             }else{
-                naverCnt = 10;
+                naverCnt = 100;
             }
 
             result.put("Naver",naverCnt);

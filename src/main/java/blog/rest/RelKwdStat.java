@@ -60,6 +60,7 @@ public class RelKwdStat {
             String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
             String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
 
+
             result = httpUrl2(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId);
 
         } catch (IOException e) {
@@ -74,22 +75,36 @@ public class RelKwdStat {
     public  RelKwdStatModel getKeywordStat(){
 
         RelKwdStatModel result = null;
-        try {
-            Properties properties = PropertiesLoader.fromResource("sample.properties");
-            String baseUrl = properties.getProperty("BASE_URL");
-            String apiKey = properties.getProperty("API_KEY");
-            String secretKey = properties.getProperty("SECRET_KEY");
-            long customerId = Long.parseLong(properties.getProperty("CUSTOMER_ID"));
-            String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
-            String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
 
-            result = httpUrl3(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId);
+        List keywordList = null;
+        keywordList = setalarmDAO.getKeywordRelate();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
+        for(int i = 0 ; i < keywordList.size(); i++){
+            HashMap<String,Object> test = (HashMap<String, Object>) keywordList.get(i);
+
+            try {
+                Properties properties = PropertiesLoader.fromResource("sample.properties");
+                String baseUrl = properties.getProperty("BASE_URL");
+                String apiKey = properties.getProperty("API_KEY");
+                String secretKey = properties.getProperty("SECRET_KEY");
+                long customerId = Long.parseLong(properties.getProperty("CUSTOMER_ID"));
+                String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
+                String charset = "UTF-8";
+                String showDetail = "1";
+                String kwd = String.valueOf(test.get("keyword_rel"));
+                System.out.println(kwd);
+                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(kwd,charset),URLEncoder.encode(showDetail,charset));
+
+                result = httpUrl3(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SignatureException e) {
+                e.printStackTrace();
+            }
         }
+
         return result;
     }
 
@@ -196,7 +211,7 @@ public class RelKwdStat {
         return relKwd1;
     }
 
-    public RelKwdStatModel httpUrl3(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId) {
+    public RelKwdStatModel httpUrl3(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query) {
         BlogStat blogStat = new BlogStat();
         Gson gson = new Gson();
         HttpURLConnection connection = null;
@@ -206,17 +221,9 @@ public class RelKwdStat {
         RelKwdStatModel relKwd = null;
         RelKwdStatModel relKwd1 = null;
         Map<String, Object> map = new HashMap<String, Object>();
-        String charset = "UTF-8";
-        String showDetail = "1";
-        List keywordList = null;
-        keywordList = setalarmDAO.getKeywordRelate();
-        for(int i = 0 ; i < keywordList.size(); i++){
-            HashMap<String,Object> test = (HashMap<String, Object>) keywordList.get(i);
-            String kwd = String.valueOf(test.get("keyword_rel"));
 
             try {
                 //Private API Header 세팅
-                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(kwd,charset),URLEncoder.encode(showDetail,charset));
                 URL url = new URL(requestURL + "?" + query);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Accept-Charset", "UTF-8");
@@ -232,26 +239,26 @@ public class RelKwdStat {
                 input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 relKwd = gson.fromJson(input, RelKwdStatModel.class);
                 int size = relKwd.getKeywordList().size();
-                for(int i3 = 0; i3 < size; i3++) {
-                    String key = relKwd.getKeywordList().get(i3).getRelKeyword();
+                //for(int 0 = 0; 0 < size; 0++) {
+                    String key = relKwd.getKeywordList().get(0).getRelKeyword();
                     System.out.println(key);
                     Map<String, Integer> res = blogStat.blogparser(key);
-                    map.put("relKeyword",relKwd.getKeywordList().get(i3).getRelKeyword());
-                    map.put("monthlyPcQcCnt",relKwd.getKeywordList().get(i3).getMonthlyPcQcCnt());
-                    map.put("monthlyMobileQcCnt",relKwd.getKeywordList().get(i3).getMonthlyMobileQcCnt());
-                    map.put("monthlyAvePcClkCnt",relKwd.getKeywordList().get(i3).getMonthlyAvePcClkCnt());
-                    map.put("monthlyAveMobileClkCnt",relKwd.getKeywordList().get(i3).getMonthlyAveMobileClkCnt());
-                    map.put("monthlyAvePcCtr",relKwd.getKeywordList().get(i3).getMonthlyAvePcCtr());
-                    map.put("monthlyAveMobileCtr",relKwd.getKeywordList().get(i3).getMonthlyAveMobileCtr());
-                    map.put("plAvgDepth",relKwd.getKeywordList().get(i3).getPlAvgDepth());
-                    map.put("compIdx",relKwd.getKeywordList().get(i3).getCompIdx());
+                    map.put("relKeyword",relKwd.getKeywordList().get(0).getRelKeyword());
+                    map.put("monthlyPcQcCnt",relKwd.getKeywordList().get(0).getMonthlyPcQcCnt());
+                    map.put("monthlyMobileQcCnt",relKwd.getKeywordList().get(0).getMonthlyMobileQcCnt());
+                    map.put("monthlyAvePcClkCnt",relKwd.getKeywordList().get(0).getMonthlyAvePcClkCnt());
+                    map.put("monthlyAveMobileClkCnt",relKwd.getKeywordList().get(0).getMonthlyAveMobileClkCnt());
+                    map.put("monthlyAvePcCtr",relKwd.getKeywordList().get(0).getMonthlyAvePcCtr());
+                    map.put("monthlyAveMobileCtr",relKwd.getKeywordList().get(0).getMonthlyAveMobileCtr());
+                    map.put("plAvgDepth",relKwd.getKeywordList().get(0).getPlAvgDepth());
+                    map.put("compIdx",relKwd.getKeywordList().get(0).getCompIdx());
                     map.put("totalPost",res.get("totalPost"));
                     map.put("naverCnt",res.get("Naver"));
                     map.put("tstoryCnt",res.get("Tstory"));
                     map.put("elseCnt",res.get("Else"));
                     setalarmDAO.insertKeywordStat(map);
-                    Thread.sleep(300);
-                }
+                    Thread.sleep(150);
+                //}
 
             } catch (ProtocolException e) {
                 e.printStackTrace();
@@ -262,7 +269,7 @@ public class RelKwdStat {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
 
         return relKwd1;
     }

@@ -34,7 +34,9 @@ public class MakeKeyword {
                 String test5 = test3+test4;
                 map.put("keyword",test5);
                 setalarmDAO.insertKeyword_Relate(map);
+                System.out.println(test5);
             }
         }
+        System.out.println("끝");
     }
 }

@@ -18,13 +18,13 @@
     <select id="getKeywordMaster" resultType="HashMap" >
         SELECT
               keyword
-        FROM keyword_master
+        FROM keyword_master;
     </select>
 
     <select id="getKeywordRelate" resultType="HashMap" >
         SELECT
               keyword_rel
-        FROM keyword_relate
+        FROM keyword_relate;
     </select>
 
 
