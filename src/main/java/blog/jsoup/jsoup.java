@@ -21,8 +21,10 @@ public class jsoup {
     SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
 @GetMapping("/blogPostStat/{Keyword}")
-    public void blogPostStat(@PathVariable("Keyword") String keyword){
+    public Map<String, Integer> blogPostStat(@PathVariable("Keyword") String keyword){
         Document document = null;
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
         int blogTotalPost = 0;
         int naverCnt = 0;
         int tstoryCnt = 0;
@@ -42,7 +44,7 @@ public class jsoup {
                     String blogURL = String.valueOf(element.childNode(0));
                     if (blogURL.contains("naver")) {
                         naverCnt++;
-                    } else if (blogURL.contains("tstory")) {
+                    } else if (blogURL.contains("tistory")) {
                         tstoryCnt++;
                     } else {
                         elseCnt++;
@@ -52,8 +54,11 @@ public class jsoup {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(blogTotalPost);
-        System.out.println(naverCnt +"  "+ tstoryCnt +"  "+ elseCnt);
+        result.put("Naver",naverCnt);
+        result.put("Tstory",tstoryCnt);
+        result.put("Else",elseCnt);
+        result.put("totalPost", blogTotalPost);
+        return result;
     }
 
     @GetMapping("/blogRelateKwd/{Keyword}")

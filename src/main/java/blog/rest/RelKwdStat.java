@@ -46,7 +46,6 @@ public class RelKwdStat {
         return result;
     }
 
-
     @GetMapping("/getrelkeywordByTable")
     public  RelKwdStatModel getRelateKeywordByTable(){
 

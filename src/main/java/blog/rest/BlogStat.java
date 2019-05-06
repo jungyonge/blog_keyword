@@ -54,7 +54,7 @@ public class BlogStat {
                     String url2 = bloginfo.getItems().get(i).link;
                     if (url2.contains("naver")) {
                         naverCnt++;
-                    } else if (url2.contains("tstory")) {
+                    } else if (url2.contains("tistory")) {
                         tstoryCnt++;
                     } else {
                         elseCnt++;
