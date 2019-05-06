@@ -141,7 +141,6 @@ public class RelKwdStat {
                     map.put("keyword",key);
                     setalarmDAO.insertKeyword_Relate(map);
                     System.out.println(key);
-                    //Thread.sleep(300);
                 }
 
         } catch (ProtocolException e) {

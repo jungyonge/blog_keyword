@@ -64,11 +64,11 @@ public class SetalarmDAO {
         return list;
     }
 
-    public void insertKeyword_Master(String Keyword){
+    public void insertKeyword_Master(Map map){
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            session.insert("Setalarm.insertKeyword_Master", Keyword);
+            session.insert("Setalarm.insertKeyword_Master", map);
         } finally {
             session.commit();
             session.close();

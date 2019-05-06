@@ -42,6 +42,12 @@
         WHERE st2 !='';
     </select>
 
+    <insert id="insertKeyword_Master" useGeneratedKeys="true" keyProperty="id" parameterType="map">
+        INSERT INTO
+        keyword_master (keyword)
+        VALUES (#{keyword});
+    </insert>
+
     <insert id="insertKeyword_Relate" useGeneratedKeys="true" keyProperty="id" parameterType="map">
         INSERT INTO
         keyword_relate (keyword_rel)
