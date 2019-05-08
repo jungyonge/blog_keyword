@@ -2,6 +2,7 @@ package blog.jsoup;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import blog.mybatis.MyBatisConnectionFactory;
@@ -19,77 +20,138 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class jsoup {
     SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+    //Elements elements2 = document2.select("div.main_pack div.section_head h2"); // 블로그 몇번째 있는지 search
 
-@GetMapping("/blogPostStat/{Keyword}")
+    @GetMapping("/blogPostStat/{Keyword}")
     public Map<String, Integer> blogPostStat(@PathVariable("Keyword") String keyword){
-        Document document = null;
+        long start = System.currentTimeMillis();
+        Document naverBlogDocument = null;
+        Document naverMainDocument = null;
         Map<String, Integer> result = new HashMap<String, Integer>();
 
+        int whereBlog = 0;
         int blogTotalPost = 0;
         int naverCnt = 0;
         int tstoryCnt = 0;
         int elseCnt = 0;
+
         String naverBlogURL = "https://search.naver.com/search.naver?where=post&sm=tab_jum&query=" + keyword;
+        String naverMainURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
         try {
 
-            document = Jsoup.connect(naverBlogURL).get();
-            Elements elements1 = document.select("a.url"); // 블로그 url
-            Elements elements2 = document.select("span.title_num");// 블로그 개수
-            if(elements1.size() != 0 && elements2.size() != 0){
+            long start3 = System.currentTimeMillis();
+
+            naverBlogDocument = Jsoup.connect(naverBlogURL).get();
+            naverMainDocument = Jsoup.connect(naverMainURL).get();
+/*            Elements elements1 = naverBlogDocument.select("body.tabsch.tabsch_blog div#wrap div#container div#content.pack_group " +
+                    "div#main_pack.main_pack div.blog.section._blogBase._prs_blg ul#elThumbnailResultArea dl dd.txt_block span.inline a.url"); // 블로그 url
+            Elements elements2 = naverBlogDocument.select("body.tabsch.tabsch_blog div#wrap div#container div#content.pack_group " +
+                    "div#main_pack.main_pack div.blog.section._blogBase._prs_blg div.section_head span.title_num");// 블로그 개수
+            Elements elements3 = naverMainDocument.select("div#wrap div#container div#content.pack_group div#main_pack.main_pack div.section_head h2"); // 블로그 몇번째 있는지 search*/
+            Elements elements1 = naverBlogDocument.select("ul#elThumbnailResultArea a.url"); // 블로그 url
+            Elements elements2 = naverBlogDocument.select("div#main_pack.main_pack span.title_num");// 블로그 개수
+            Elements elements3 = naverMainDocument.select("div#main_pack.main_pack div.section_head h2"); // 블로그 몇번째 있는지 search
+            long end3 = System.currentTimeMillis();
+            long used3 = end3 - start3;
+            System.out.println("element파싱 속도 : " + used3 + " 밀리초");
+            int element1Size = elements1.size();
+            int element2Size = elements2.size();
+            int element3Size = elements3.size();
+
+            if(element3Size != 0){
+                long start2 = System.currentTimeMillis();
+                for(int b = 0 ; b < element3Size ; b++){
+                    String find = String.valueOf(elements3.get(b).childNode(0));
+                    if(find.equals("블로그")){
+                        whereBlog = b + 1;
+                        break;
+                    }
+                }
+                long end2 = System.currentTimeMillis();
+                long used2 = end2 - start2;
+                System.out.println("whereblog 속도 : " + used2 + " 밀리초");
+            }
+
+
+            if(element1Size != 0 && element2Size != 0){
+                long start1 = System.currentTimeMillis();
                 String str = String.valueOf(elements2.get(0).childNode(0));
                 blogTotalPost = Integer.parseInt(str.substring(6).replaceAll("[^0-9]", ""));;
-                System.out.println(blogTotalPost);
-                for(int i=0;i<elements1.size()-1;i++){
+                for(int i = 0 ; i < element1Size ;i++){
                     Element element = elements1.get(i);
                     String blogURL = String.valueOf(element.childNode(0));
-                    if (blogURL.contains("naver")) {
+                    if (blogURL.indexOf("naver") > -1 || blogURL.indexOf("blog.me") > -1)  {
                         naverCnt++;
-                    } else if (blogURL.contains("tistory")) {
+                    } else if (blogURL.indexOf("tistory") > -1) {
                         tstoryCnt++;
                     } else {
                         elseCnt++;
                     }
                 }
+                long end1 = System.currentTimeMillis();
+                long used1 = end1 - start1;
+                System.out.println("url 속도 : " + used1 + " 밀리초");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result.put("Naver",naverCnt);
-        result.put("Tstory",tstoryCnt);
-        result.put("Else",elseCnt);
+        result.put("Naver", naverCnt);
+        result.put("Tstory", tstoryCnt);
+        result.put("Else", elseCnt);
         result.put("totalPost", blogTotalPost);
+        result.put("whereBlog", whereBlog);
+
+        long end = System.currentTimeMillis();
+        long used = end - start;
+        System.out.println("blogPostStat: " + used + " 밀리초");
         return result;
     }
 
-    @GetMapping("/blogRelateKwd/{Keyword}")
-    public void blogRelateKwd(@PathVariable("Keyword") String keyword){
+    @GetMapping("/blogRelateKwd")
+    public void blogRelateKwd(){
         Document naverDocument = null;
         Document daumDocument = null;
-        String naverBlogURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
-        String daumBlogURL = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=" + keyword;
+        Map<String, Object> map = new HashMap<String, Object>();
 
-        try {
-            naverDocument = Jsoup.connect(naverBlogURL).get();
-            daumDocument = Jsoup.connect(daumBlogURL).get();
-            Elements naverElements = naverDocument.select("ul._related_keyword_ul li a"); // 블로그 url
-            Elements daumElements = daumDocument.select("div#netizen_lists_top.list_keyword.type2 span.wsn a.keyword");
-            if(naverElements.size() != 0 && naverElements.size() != 0){
-                for(int i = 0 ; i < naverElements.size(); i++){
-                    String str = String.valueOf(naverElements.get(i).childNode(0));
-                    //System.out.println(str);
-                }
-            }
+        List masterList = null;
+        masterList = setalarmDAO.getKeywordMaster();
+        int size = masterList.size();
+        for(int i = 0 ; i < size ; i++) {
+            HashMap<String, Object> test = (HashMap<String, Object>) masterList.get(i);
+            String kwd = String.valueOf(test.get("keyword"));
 
-            if(daumElements.size() != 0 && daumElements.size() != 0){
-                for(int i = 0 ; i < daumElements.size(); i++){
-                    String str1 = String.valueOf(daumElements.get(i).childNode(0));
-                    System.out.println(str1);
+            String naverBlogURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + kwd;
+            String daumBlogURL = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=" + kwd;
+            map.put("keyword",kwd);
+            setalarmDAO.insertKeyword_Relate(map);
+
+            try {
+                naverDocument = Jsoup.connect(naverBlogURL).get();
+                daumDocument = Jsoup.connect(daumBlogURL).get();
+                Elements naverElements = naverDocument.select("ul._related_keyword_ul li a"); // 블로그 url
+                Elements daumElements = daumDocument.select("div#netizen_lists_top.list_keyword.type2 span.wsn a.keyword");
+                int naverSize = naverElements.size();
+                int daumSize = daumElements.size();
+                if (naverSize != 0) {
+                    for (int a = 0; a < naverSize; a++) {
+                        String keyword = String.valueOf(naverElements.get(a).childNode(0));
+                        map.put("keyword",keyword);
+                        setalarmDAO.insertKeyword_Relate(map);
+                        //System.out.println(str);
+                    }
                 }
+                if (daumSize != 0) {
+                    for (int j = 0; j < daumSize; j++) {
+                        String str1 = String.valueOf(daumElements.get(j).childNode(0));
+                        System.out.println(str1);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
+        setalarmDAO.deleteKeyword_Relete();
+        setalarmDAO.updateUsed_Master();
     }
 
     @GetMapping("/naverTrand")
@@ -102,27 +164,27 @@ public class jsoup {
 
         try {
             for(int j = 0 ; j < 24 ; j++){
-                String naverTrandURL = "https://datalab.naver.com/keyword/realtimeList.naver?datetime=2019-05-01T" +timeArr[j]+ "%3A00%3A00";
+                String naverTrandURL = "https://datalab.naver.com/keyword/realtimeList.naver?datetime=2019-05-07T" +timeArr[j]+ "%3A00%3A00";
                 document = Jsoup.connect(naverTrandURL).get();
                 Elements elements = document.select("div.keyword_rank span.title"); // 급상승 검색어
-                for(int i = 0 ; i < elements.size()-1; i++){
+                int size = elements.size();
+                for(int i = 0 ; i < size; i++){
                     Element element = elements.get(i);
                     String title = String.valueOf(element.childNode(0));
                     String title2 = title.replaceAll(" ", "");
-                    relKwdStat.getRelateKeyword(title2);
+                    //relKwdStat.getRelateKeyword(title2);
                     map.put("keyword",title);
                     setalarmDAO.insertKeyword_Master(map);
                     System.out.println(title);
-                    Thread.sleep(200);
+                    //Thread.sleep(200);
                     cnt++;
                 }
             }
             System.out.println(cnt);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+        setalarmDAO.deleteKeyword_Master();
 
     }
 

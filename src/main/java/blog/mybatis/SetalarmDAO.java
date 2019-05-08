@@ -97,6 +97,48 @@ public class SetalarmDAO {
         }
     }
 
+    public void deleteKeyword_Master(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.deleteKeyword_Master");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void deleteKeyword_Relete(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.deleteKeyword_Relete");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+    public void updateUsed_Master(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.updateUsed_Master");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+    public void updateUsed_Relete(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.updateUsed_Relete");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
 
 }
 
