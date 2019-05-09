@@ -1,6 +1,5 @@
 package blog.rest;
 
-import blog.model.RelKwdStatModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,8 @@ import java.util.Map;
 
 @RestController
 public class MakeKeyword {
+    private SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
-    SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-
-    RelKwdStat relKwdStat = new RelKwdStat();
     @GetMapping("/keyword/{table}")
     public void getKeywordForMake(@PathVariable("table") String table){
         Map<String, Object> map = new HashMap<String, Object>();
@@ -26,15 +23,15 @@ public class MakeKeyword {
         masterList = setalarmDAO.getKeywordMasterForMake(map);
         relateList = setalarmDAO.getKeywordRelateForMake(map);
         for(int i = 0 ; i < masterList.size(); i++){
-            HashMap<String,Object> test = (HashMap<String, Object>) masterList.get(i);
-            String test3 = String.valueOf(test.get("st1"));
+            HashMap<String,Object> masterMap = (HashMap<String, Object>) masterList.get(i);
+            String masterKeyword = String.valueOf(masterMap.get("st1"));
             for(int j = 0; j < relateList.size(); j++){
-                HashMap<String,Object> test2 = (HashMap<String, Object>) relateList.get(j);
-                String test4 = String.valueOf(test2.get("st2"));
-                String test5 = test3+test4;
-                map.put("keyword",test5);
+                HashMap<String,Object> relateMap = (HashMap<String, Object>) relateList.get(j);
+                String relateKeyword = String.valueOf(relateMap.get("st2"));
+                String finalKeywrd = masterKeyword + relateKeyword;
+                map.put("keyword",finalKeywrd);
                 setalarmDAO.insertKeyword_Relate(map);
-                System.out.println(test5);
+                System.out.println(finalKeywrd);
             }
         }
         System.out.println("끝");

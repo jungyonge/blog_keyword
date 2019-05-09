@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 @Data
-public class RelKwdStatModel {
+public class RelateKeywordStatModel {
 
         public List<Keyword> keywordList;
 

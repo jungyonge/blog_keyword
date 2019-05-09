@@ -5,16 +5,6 @@
 
 <mapper namespace="Setalarm">
 
-    <resultMap id="result" type="Setalarm">
-        <result property="moday" column="moday"/>
-        <result property="trySum" column="trySum"/>
-        <result property="tryCnt" column="tryCnt"/>
-        <result property="sucSum" column="sucSum"/>
-        <result property="sucCnt" column="sucCnt"/>
-        <result property="failSum" column="failSum"/>
-        <result property="failCnt" column="failCnt"/>
-    </resultMap>
-
     <select id="getKeywordMaster" resultType="HashMap" >
         SELECT
               keyword
