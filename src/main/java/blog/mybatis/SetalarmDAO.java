@@ -3,6 +3,7 @@ package blog.mybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,17 @@ public class SetalarmDAO {
         return list;
     }
 
+    public List<Setalarm> getMakeKeywordRelate(){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
 
+        try {
+            list = session.selectList("Setalarm.getMakeKeywordRelate");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
 
     public List<Setalarm> getKeywordMasterForMake(Map map){
         List<Setalarm> list = null;
@@ -85,6 +96,16 @@ public class SetalarmDAO {
             session.close();
         }
     }
+    public void insertMakeKeyword_Relate(Map map){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertMakeKeyword_Relate", map);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
 
     public void insertKeywordStat(Map map){
         SqlSession session = sqlSessionFactory.openSession();
@@ -118,21 +139,20 @@ public class SetalarmDAO {
             session.close();
         }
     }
-    public void updateUsed_Master(){
+    public void updateUsed_Master(Map map){
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            session.insert("Setalarm.updateUsed_Master");
+            session.insert("Setalarm.updateUsed_Master",map);
         } finally {
             session.commit();
             session.close();
         }
     }
-    public void updateUsed_Relete(){
+    public void updateUsed_Relate(Map map){
         SqlSession session = sqlSessionFactory.openSession();
-
         try {
-            session.insert("Setalarm.updateUsed_Relete");
+            session.insert("Setalarm.updateUsed_Relate",map);
         } finally {
             session.commit();
             session.close();

@@ -18,8 +18,9 @@ import java.util.*;
 @RestController
 public class BlogStat {
 
-    String clientId = "C1YQC3o_0RJDmqnYEioo";//애플리케이션 클라이언트 아이디값";
-    String clientSecret = "mSkCZUBrym";//애플리케이션 클라이언트 시크릿값";
+    private String clientId = "C1YQC3o_0RJDmqnYEioo";//애플리케이션 클라이언트 아이디값";
+    private String clientSecret = "mSkCZUBrym";//애플리케이션 클라이언트 시크릿값";
+    private Gson gson = new Gson();
 
     @GetMapping("/blog/{Keyword}")
     public Map<String, Integer> blogparser(@PathVariable("Keyword") String keyword){
@@ -27,7 +28,6 @@ public class BlogStat {
         Map<String, Integer> result = new HashMap<String, Integer>();
         java.net.HttpURLConnection connection = null;
 
-        Gson gson = new Gson();
         try {
             String text = URLEncoder.encode(keyword, "UTF-8");
             URL url = new URL("https://openapi.naver.com/v1/search/blog?query="+ text);
@@ -44,7 +44,7 @@ public class BlogStat {
                 System.out.println(br);
             }
             int naverCnt = 0;
-            int tstoryCnt = 0;
+            int tistoryCnt = 0;
             int elseCnt = 0;
 
             BlogModel bloginfo = gson.fromJson(br, BlogModel.class);
@@ -55,7 +55,7 @@ public class BlogStat {
                     if (url2.contains("naver")) {
                         naverCnt++;
                     } else if (url2.contains("tistory")) {
-                        tstoryCnt++;
+                        tistoryCnt++;
                     } else {
                         elseCnt++;
                     }
@@ -63,9 +63,8 @@ public class BlogStat {
             }else{
                 naverCnt = 100;
             }
-
             result.put("Naver",naverCnt);
-            result.put("Tstory",tstoryCnt);
+            result.put("Tistory",tistoryCnt);
             result.put("Else",elseCnt);
             result.put("totalPost", Integer.valueOf(bloginfo.getTotal()));
             br.close();

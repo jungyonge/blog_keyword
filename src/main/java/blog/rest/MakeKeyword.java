@@ -28,12 +28,14 @@ public class MakeKeyword {
             for(int j = 0; j < relateList.size(); j++){
                 HashMap<String,Object> relateMap = (HashMap<String, Object>) relateList.get(j);
                 String relateKeyword = String.valueOf(relateMap.get("st2"));
-                String finalKeywrd = masterKeyword + relateKeyword;
+                String finalKeywrd = masterKeyword + " " + relateKeyword;
                 map.put("keyword",finalKeywrd);
-                setalarmDAO.insertKeyword_Relate(map);
+                map.put("make", "make");
+                setalarmDAO.insertMakeKeyword_Relate(map);
                 System.out.println(finalKeywrd);
             }
         }
+        setalarmDAO.deleteKeyword_Relete();
         System.out.println("끝");
     }
 }

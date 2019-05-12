@@ -19,6 +19,13 @@
         WHERE used = '사용안함';
     </select>
 
+    <select id="getMakeKeywordRelate" resultType="HashMap" >
+        SELECT
+              keyword_rel
+        FROM keyword_relate
+        WHERE used = '사용안함' AND make ='make';
+    </select>
+
 
     <select id="getKeywordMasterForMake" resultType="HashMap" parameterType="map">
         SELECT
@@ -46,15 +53,21 @@
         VALUES (#{keyword});
     </insert>
 
+    <insert id="insertMakeKeyword_Relate" useGeneratedKeys="true" keyProperty="id" parameterType="map">
+        INSERT INTO
+        keyword_relate (keyword_rel, make)
+        VALUES (#{keyword} ,#{make});
+    </insert>
+
     <insert id="insertKeywordStat" useGeneratedKeys="true" keyProperty="id" parameterType="map">
         INSERT INTO
             keyword_stat(relKeyword, monthlyPcQcCnt, monthlyMobileQcCnt, monthlyAvePcClkCnt,
                         monthlyAveMobileClkCnt, monthlyAvePcCtr, monthlyAveMobileCtr, plAvgDepth,
-                        compIdx, totalPost, naverCnt, tstoryCnt, elseCnt, whereBlog)
+                        compIdx, totalPost, naverCnt, tistoryCnt, elseCnt, whereBlog, whereWeb, whereMobileBlog, whereMobileWeb ,make)
         VALUE
               (#{relKeyword}, #{monthlyPcQcCnt}, #{monthlyMobileQcCnt}, #{monthlyAvePcClkCnt},
               #{monthlyAveMobileClkCnt}, #{monthlyAvePcCtr}, #{monthlyAveMobileCtr}, #{plAvgDepth},
-              #{compIdx}, #{totalPost}, #{naverCnt}, #{tstoryCnt}, #{elseCnt}, #{whereBlog} )
+              #{compIdx}, #{totalPost}, #{naverCnt}, #{tistoryCnt}, #{elseCnt}, #{whereBlog}, #{whereWeb}, #{whereMobileBlog}, #{whereMobileWeb} ,#{make})
     </insert>
 
     <delete id="deleteKeyword_Master">
@@ -70,13 +83,13 @@
     <update id="updateUsed_Master">
       UPDATE keyword_master
         SET used = '사용함'
-          WHERE 1 = 1;
+          WHERE keyword = #{keyword};
     </update>
 
-    <update id="updateUsed_Relate">
-      UPDATE keyword_master
+    <update id="updateUsed_Relate" parameterType="map">
+      UPDATE keyword_relate
         SET used = '사용함'
-          WHERE 1 = 1;
+          WHERE keyword_rel = #{keyword_rel};
     </update>
 
 
