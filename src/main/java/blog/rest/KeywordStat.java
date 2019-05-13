@@ -74,11 +74,11 @@ public class KeywordStat {
     }
 
     //저장된 키워드 stat 구하기기
-   @GetMapping("/getKeywordStat")
-    public void getKeywordStat(){
+    @GetMapping("/getKeywordStat1")
+    public void getKeywordStat1(){
         List keywordList = null;
-       Map<String, Object> map = new HashMap<String, Object>();
-        keywordList = setalarmDAO.getKeywordRelate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        keywordList = setalarmDAO.getKeywordRelate1();
         String make = "Notmake";
         int size = keywordList.size();
         for(int i = 0 ; i < size; i++){
@@ -91,7 +91,80 @@ public class KeywordStat {
                 setalarmDAO.updateUsed_Relate(map);
                 String keywordNoEmpty = keyword.replaceAll(" ", "");
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
-                getKeywordStatHttpConnection(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
+                getKeywordStatHttpConnection1(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
+
+            } catch (IOException | SignatureException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    //저장된 키워드 stat 구하기기
+    @GetMapping("/getKeywordStat2")
+    public void getKeywordStat2(){
+        List keywordList = null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        keywordList = setalarmDAO.getKeywordRelate2();
+        String make = "Notmake";
+        int size = keywordList.size();
+        for(int i = 0 ; i < size; i++){
+            HashMap<String,Object> keywordMap = (HashMap<String, Object>) keywordList.get(i);
+            try {
+                String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
+                String keyword = String.valueOf(keywordMap.get("keyword_rel"));
+                map.put("keyword_rel", keyword);
+                setalarmDAO.updateUsed_Relate(map);
+                String keywordNoEmpty = keyword.replaceAll(" ", "");
+                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
+                getKeywordStatHttpConnection2(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
+
+            } catch (IOException | SignatureException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @GetMapping("/getKeywordStat3")
+    public void getKeywordStat3(){
+        List keywordList = null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        keywordList = setalarmDAO.getKeywordRelate3();
+        String make = "Notmake";
+        int size = keywordList.size();
+        for(int i = 0 ; i < size; i++){
+            HashMap<String,Object> keywordMap = (HashMap<String, Object>) keywordList.get(i);
+            try {
+                String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
+                String keyword = String.valueOf(keywordMap.get("keyword_rel"));
+                map.put("keyword_rel", keyword);
+                setalarmDAO.updateUsed_Relate(map);
+                String keywordNoEmpty = keyword.replaceAll(" ", "");
+                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
+                getKeywordStatHttpConnection3(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
+
+            } catch (IOException | SignatureException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @GetMapping("/getKeywordStat4")
+    public void getKeywordStat4(){
+        List keywordList = null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        keywordList = setalarmDAO.getKeywordRelate4();
+        String make = "Notmake";
+        int size = keywordList.size();
+        for(int i = 0 ; i < size; i++){
+            HashMap<String,Object> keywordMap = (HashMap<String, Object>) keywordList.get(i);
+            try {
+                String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                String hmacSHA256 = Signatures.of(timestamp,"GET","/keywordstool",secretKey);
+                String keyword = String.valueOf(keywordMap.get("keyword_rel"));
+                map.put("keyword_rel", keyword);
+                setalarmDAO.updateUsed_Relate(map);
+                String keywordNoEmpty = keyword.replaceAll(" ", "");
+                String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
+                getKeywordStatHttpConnection4(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
             } catch (IOException | SignatureException e) {
                 e.printStackTrace();
@@ -117,7 +190,7 @@ public class KeywordStat {
                 setalarmDAO.updateUsed_Relate(map);
                 String keywordNoEmpty = keyword.replaceAll(" ", "");
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
-                getKeywordStatHttpConnection(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
+                getKeywordStatHttpConnection1(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
             } catch (IOException | SignatureException e) {
                 e.printStackTrace();
@@ -161,7 +234,7 @@ public class KeywordStat {
         }
     }
 
-    public void getKeywordStatHttpConnection(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
+    public void getKeywordStatHttpConnection1(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
         jsoup jsoup = new jsoup();
         HttpURLConnection connection = null;
         BufferedReader input = null;
@@ -170,7 +243,7 @@ public class KeywordStat {
 
             try {
                 //Private API Header 세팅
-                Map<String, Integer> blogPostStatMap = jsoup.blogPostStat(keyword);
+                Map<String, Integer> blogPostStatMap = jsoup.blogPostStat1(keyword);
 
                 URL url = new URL(requestURL + "?" + query);
                 connection = (HttpURLConnection) url.openConnection();
@@ -220,6 +293,192 @@ public class KeywordStat {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        System.out.println(keyword);
+    }
+
+    public void getKeywordStatHttpConnection2(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
+        jsoup jsoup = new jsoup();
+        HttpURLConnection connection = null;
+        BufferedReader input = null;
+        RelateKeywordStatModel relateKeywordStatModel = null;
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        try {
+            //Private API Header 세팅
+            Map<String, Integer> blogPostStatMap = jsoup.blogPostStat2(keyword);
+
+            URL url = new URL(requestURL + "?" + query);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            connection.setRequestProperty("X-Timestamp", timestamp);
+            connection.setRequestProperty("X-API-KEY", apikey);
+            connection.setRequestProperty("X-Customer", String.valueOf(customerId));
+            connection.setRequestProperty("X-Signature", hmacSHA256);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            int responseCode = connection.getResponseCode();
+            if(responseCode == 200){
+                input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                relateKeywordStatModel = gson.fromJson(input, RelateKeywordStatModel.class);
+
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("monthlyPcQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyPcQcCnt());
+                resultMap.put("monthlyMobileQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyMobileQcCnt());
+                resultMap.put("monthlyAvePcClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcClkCnt());
+                resultMap.put("monthlyAveMobileClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileClkCnt());
+                resultMap.put("monthlyAvePcCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcCtr());
+                resultMap.put("monthlyAveMobileCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileCtr());
+                resultMap.put("plAvgDepth", relateKeywordStatModel.getKeywordList().get(0).getPlAvgDepth());
+                resultMap.put("compIdx", relateKeywordStatModel.getKeywordList().get(0).getCompIdx());
+                resultMap.put("totalPost",blogPostStatMap.get("totalPost"));
+                resultMap.put("naverCnt",blogPostStatMap.get("Naver"));
+                resultMap.put("tistoryCnt",blogPostStatMap.get("Tistory"));
+                resultMap.put("elseCnt",blogPostStatMap.get("Else"));
+                resultMap.put("whereBlog", blogPostStatMap.get("whereBlog"));
+                resultMap.put("whereWeb", blogPostStatMap.get("whereWeb"));
+                resultMap.put("whereMobileBlog",  blogPostStatMap.get("whereMobileBlog"));
+                resultMap.put("whereMobileWeb", blogPostStatMap.get("whereMobileWeb"));
+                resultMap.put("make", make);
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+            else{
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("make", "error");
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+
+        } catch (SSLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(keyword);
+    }
+
+    public void getKeywordStatHttpConnection3(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
+        jsoup jsoup = new jsoup();
+        HttpURLConnection connection = null;
+        BufferedReader input = null;
+        RelateKeywordStatModel relateKeywordStatModel = null;
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        try {
+            //Private API Header 세팅
+            Map<String, Integer> blogPostStatMap = jsoup.blogPostStat3(keyword);
+
+            URL url = new URL(requestURL + "?" + query);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            connection.setRequestProperty("X-Timestamp", timestamp);
+            connection.setRequestProperty("X-API-KEY", apikey);
+            connection.setRequestProperty("X-Customer", String.valueOf(customerId));
+            connection.setRequestProperty("X-Signature", hmacSHA256);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            int responseCode = connection.getResponseCode();
+            if(responseCode == 200){
+                input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                relateKeywordStatModel = gson.fromJson(input, RelateKeywordStatModel.class);
+
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("monthlyPcQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyPcQcCnt());
+                resultMap.put("monthlyMobileQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyMobileQcCnt());
+                resultMap.put("monthlyAvePcClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcClkCnt());
+                resultMap.put("monthlyAveMobileClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileClkCnt());
+                resultMap.put("monthlyAvePcCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcCtr());
+                resultMap.put("monthlyAveMobileCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileCtr());
+                resultMap.put("plAvgDepth", relateKeywordStatModel.getKeywordList().get(0).getPlAvgDepth());
+                resultMap.put("compIdx", relateKeywordStatModel.getKeywordList().get(0).getCompIdx());
+                resultMap.put("totalPost",blogPostStatMap.get("totalPost"));
+                resultMap.put("naverCnt",blogPostStatMap.get("Naver"));
+                resultMap.put("tistoryCnt",blogPostStatMap.get("Tistory"));
+                resultMap.put("elseCnt",blogPostStatMap.get("Else"));
+                resultMap.put("whereBlog", blogPostStatMap.get("whereBlog"));
+                resultMap.put("whereWeb", blogPostStatMap.get("whereWeb"));
+                resultMap.put("whereMobileBlog",  blogPostStatMap.get("whereMobileBlog"));
+                resultMap.put("whereMobileWeb", blogPostStatMap.get("whereMobileWeb"));
+                resultMap.put("make", make);
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+            else{
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("make", "error");
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+
+        } catch (SSLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(keyword);
+    }
+
+    public void getKeywordStatHttpConnection4(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
+        jsoup jsoup = new jsoup();
+        HttpURLConnection connection = null;
+        BufferedReader input = null;
+        RelateKeywordStatModel relateKeywordStatModel = null;
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        try {
+            //Private API Header 세팅
+            Map<String, Integer> blogPostStatMap = jsoup.blogPostStat4(keyword);
+
+            URL url = new URL(requestURL + "?" + query);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            connection.setRequestProperty("X-Timestamp", timestamp);
+            connection.setRequestProperty("X-API-KEY", apikey);
+            connection.setRequestProperty("X-Customer", String.valueOf(customerId));
+            connection.setRequestProperty("X-Signature", hmacSHA256);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            int responseCode = connection.getResponseCode();
+            if(responseCode == 200){
+                input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                relateKeywordStatModel = gson.fromJson(input, RelateKeywordStatModel.class);
+
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("monthlyPcQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyPcQcCnt());
+                resultMap.put("monthlyMobileQcCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyMobileQcCnt());
+                resultMap.put("monthlyAvePcClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcClkCnt());
+                resultMap.put("monthlyAveMobileClkCnt", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileClkCnt());
+                resultMap.put("monthlyAvePcCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAvePcCtr());
+                resultMap.put("monthlyAveMobileCtr", relateKeywordStatModel.getKeywordList().get(0).getMonthlyAveMobileCtr());
+                resultMap.put("plAvgDepth", relateKeywordStatModel.getKeywordList().get(0).getPlAvgDepth());
+                resultMap.put("compIdx", relateKeywordStatModel.getKeywordList().get(0).getCompIdx());
+                resultMap.put("totalPost",blogPostStatMap.get("totalPost"));
+                resultMap.put("naverCnt",blogPostStatMap.get("Naver"));
+                resultMap.put("tistoryCnt",blogPostStatMap.get("Tistory"));
+                resultMap.put("elseCnt",blogPostStatMap.get("Else"));
+                resultMap.put("whereBlog", blogPostStatMap.get("whereBlog"));
+                resultMap.put("whereWeb", blogPostStatMap.get("whereWeb"));
+                resultMap.put("whereMobileBlog",  blogPostStatMap.get("whereMobileBlog"));
+                resultMap.put("whereMobileWeb", blogPostStatMap.get("whereMobileWeb"));
+                resultMap.put("make", make);
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+            else{
+                resultMap.put("relKeyword",keyword);
+                resultMap.put("make", "error");
+                setalarmDAO.insertKeywordStat(resultMap);
+            }
+
+        } catch (SSLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println(keyword);
     }
 

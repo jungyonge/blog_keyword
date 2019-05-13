@@ -20,7 +20,268 @@ public class jsoup {
     private SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
     @GetMapping("/blogPostStat/{Keyword}")
-    public Map<String, Integer> blogPostStat(@PathVariable("Keyword") String keyword){
+    public Map<String, Integer> blogPostStat1(@PathVariable("Keyword") String keyword){
+        Document naverBlogDocument = null;
+        Document naverPCDocument = null;
+        Document naverMobileDocument = null;
+        boolean ban = false;
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
+        int whereBlog = 0;
+        int whereWeb = 0;
+        int whereMobileBlog = 0;
+        int whereMobileWeb = 0;
+        int blogTotalPost = 0;
+        int naverCnt = 0;
+        int tistoryCnt = 0;
+        int elseCnt = 0;
+
+        String naverBlogURL = "https://search.naver.com/search.naver?where=post&sm=tab_jum&query=" + keyword;
+        String naverPCURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
+        String naverMobileURL = "https://m.search.naver.com/search.naver?query=" + keyword;
+        try {
+
+            naverBlogDocument = Jsoup.connect(naverBlogURL).get();
+            naverPCDocument = Jsoup.connect(naverPCURL).get();
+            naverMobileDocument = Jsoup.connect(naverMobileURL).get();
+
+            Elements elements1 = naverBlogDocument.select("ul#elThumbnailResultArea a.url");// 블로그 url
+            Elements elements2 = naverBlogDocument.select("div#main_pack.main_pack span.title_num");// 블로그 포스팅 개수
+            Elements elements3 = naverPCDocument.select("div#main_pack.main_pack div.section_head h2"); // pc 검색시 블로그 몇번째 있는지 search
+            Elements elements4 = naverMobileDocument.select("div#ct a.api_more"); // 모바일 검색시 블로그 몇번째 있는지 search
+            int element1Size = elements1.size();
+            int element2Size = elements2.size();
+            int element3Size = elements3.size();
+            int element4Size = elements4.size();
+
+            if(element3Size != 0){
+                for(int b = 0 ; b < element3Size ; b++){
+                    String find = String.valueOf(elements3.get(b).childNode(0));
+                    if(find.equals("블로그")){
+                        whereBlog = b + 1;
+                    }
+                    if(find.equals("웹사이트")){
+                        whereWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element4Size != 0){
+                for(int b = 0 ; b < element4Size ; b++){
+                    String find = String.valueOf(elements4.get(b).childNode(0));
+                    if(find.equals("VIEW 더보기")){
+                        whereMobileBlog = b + 1;
+                    }
+                    if(find.equals(" 더보기")){
+                        whereMobileWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element1Size != 0 && element2Size != 0){
+                String str = String.valueOf(elements2.get(0).childNode(0));
+                blogTotalPost = Integer.parseInt(str.substring(6).replaceAll("[^0-9]", ""));;
+                for(int i = 0 ; i < element1Size ;i++){
+                    Element element = elements1.get(i);
+                    String blogURL = String.valueOf(element.childNode(0));
+                    if (blogURL.indexOf("naver") > -1 || blogURL.indexOf("blog.me") > -1)  {
+                        naverCnt++;
+                    } else if (blogURL.indexOf("tistory") > -1) {
+                        tistoryCnt++;
+                    } else {
+                        elseCnt++;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result.put("Naver", naverCnt);
+        result.put("Tistory", tistoryCnt);
+        result.put("Else", elseCnt);
+        result.put("totalPost", blogTotalPost);
+        result.put("whereBlog", whereBlog);
+        result.put("whereWeb",whereWeb);
+        result.put("whereMobileBlog", whereMobileBlog);
+        result.put("whereMobileWeb",whereMobileWeb);
+        return result;
+    }
+
+    public Map<String, Integer> blogPostStat2(@PathVariable("Keyword") String keyword){
+        Document naverBlogDocument = null;
+        Document naverPCDocument = null;
+        Document naverMobileDocument = null;
+        boolean ban = false;
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
+        int whereBlog = 0;
+        int whereWeb = 0;
+        int whereMobileBlog = 0;
+        int whereMobileWeb = 0;
+        int blogTotalPost = 0;
+        int naverCnt = 0;
+        int tistoryCnt = 0;
+        int elseCnt = 0;
+
+        String naverBlogURL = "https://search.naver.com/search.naver?where=post&sm=tab_jum&query=" + keyword;
+        String naverPCURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
+        String naverMobileURL = "https://m.search.naver.com/search.naver?query=" + keyword;
+        try {
+
+            naverBlogDocument = Jsoup.connect(naverBlogURL).get();
+            naverPCDocument = Jsoup.connect(naverPCURL).get();
+            naverMobileDocument = Jsoup.connect(naverMobileURL).get();
+
+            Elements elements1 = naverBlogDocument.select("ul#elThumbnailResultArea a.url");// 블로그 url
+            Elements elements2 = naverBlogDocument.select("div#main_pack.main_pack span.title_num");// 블로그 포스팅 개수
+            Elements elements3 = naverPCDocument.select("div#main_pack.main_pack div.section_head h2"); // pc 검색시 블로그 몇번째 있는지 search
+            Elements elements4 = naverMobileDocument.select("div#ct a.api_more"); // 모바일 검색시 블로그 몇번째 있는지 search
+            int element1Size = elements1.size();
+            int element2Size = elements2.size();
+            int element3Size = elements3.size();
+            int element4Size = elements4.size();
+
+            if(element3Size != 0){
+                for(int b = 0 ; b < element3Size ; b++){
+                    String find = String.valueOf(elements3.get(b).childNode(0));
+                    if(find.equals("블로그")){
+                        whereBlog = b + 1;
+                    }
+                    if(find.equals("웹사이트")){
+                        whereWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element4Size != 0){
+                for(int b = 0 ; b < element4Size ; b++){
+                    String find = String.valueOf(elements4.get(b).childNode(0));
+                    if(find.equals("VIEW 더보기")){
+                        whereMobileBlog = b + 1;
+                    }
+                    if(find.equals(" 더보기")){
+                        whereMobileWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element1Size != 0 && element2Size != 0){
+                String str = String.valueOf(elements2.get(0).childNode(0));
+                blogTotalPost = Integer.parseInt(str.substring(6).replaceAll("[^0-9]", ""));;
+                for(int i = 0 ; i < element1Size ;i++){
+                    Element element = elements1.get(i);
+                    String blogURL = String.valueOf(element.childNode(0));
+                    if (blogURL.indexOf("naver") > -1 || blogURL.indexOf("blog.me") > -1)  {
+                        naverCnt++;
+                    } else if (blogURL.indexOf("tistory") > -1) {
+                        tistoryCnt++;
+                    } else {
+                        elseCnt++;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result.put("Naver", naverCnt);
+        result.put("Tistory", tistoryCnt);
+        result.put("Else", elseCnt);
+        result.put("totalPost", blogTotalPost);
+        result.put("whereBlog", whereBlog);
+        result.put("whereWeb",whereWeb);
+        result.put("whereMobileBlog", whereMobileBlog);
+        result.put("whereMobileWeb",whereMobileWeb);
+        return result;
+    }
+
+    public Map<String, Integer> blogPostStat3(@PathVariable("Keyword") String keyword){
+        Document naverBlogDocument = null;
+        Document naverPCDocument = null;
+        Document naverMobileDocument = null;
+        boolean ban = false;
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
+        int whereBlog = 0;
+        int whereWeb = 0;
+        int whereMobileBlog = 0;
+        int whereMobileWeb = 0;
+        int blogTotalPost = 0;
+        int naverCnt = 0;
+        int tistoryCnt = 0;
+        int elseCnt = 0;
+
+        String naverBlogURL = "https://search.naver.com/search.naver?where=post&sm=tab_jum&query=" + keyword;
+        String naverPCURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
+        String naverMobileURL = "https://m.search.naver.com/search.naver?query=" + keyword;
+        try {
+
+            naverBlogDocument = Jsoup.connect(naverBlogURL).get();
+            naverPCDocument = Jsoup.connect(naverPCURL).get();
+            naverMobileDocument = Jsoup.connect(naverMobileURL).get();
+
+            Elements elements1 = naverBlogDocument.select("ul#elThumbnailResultArea a.url");// 블로그 url
+            Elements elements2 = naverBlogDocument.select("div#main_pack.main_pack span.title_num");// 블로그 포스팅 개수
+            Elements elements3 = naverPCDocument.select("div#main_pack.main_pack div.section_head h2"); // pc 검색시 블로그 몇번째 있는지 search
+            Elements elements4 = naverMobileDocument.select("div#ct a.api_more"); // 모바일 검색시 블로그 몇번째 있는지 search
+            int element1Size = elements1.size();
+            int element2Size = elements2.size();
+            int element3Size = elements3.size();
+            int element4Size = elements4.size();
+
+            if(element3Size != 0){
+                for(int b = 0 ; b < element3Size ; b++){
+                    String find = String.valueOf(elements3.get(b).childNode(0));
+                    if(find.equals("블로그")){
+                        whereBlog = b + 1;
+                    }
+                    if(find.equals("웹사이트")){
+                        whereWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element4Size != 0){
+                for(int b = 0 ; b < element4Size ; b++){
+                    String find = String.valueOf(elements4.get(b).childNode(0));
+                    if(find.equals("VIEW 더보기")){
+                        whereMobileBlog = b + 1;
+                    }
+                    if(find.equals(" 더보기")){
+                        whereMobileWeb = b + 1;
+                    }
+                }
+            }
+
+            if(element1Size != 0 && element2Size != 0){
+                String str = String.valueOf(elements2.get(0).childNode(0));
+                blogTotalPost = Integer.parseInt(str.substring(6).replaceAll("[^0-9]", ""));;
+                for(int i = 0 ; i < element1Size ;i++){
+                    Element element = elements1.get(i);
+                    String blogURL = String.valueOf(element.childNode(0));
+                    if (blogURL.indexOf("naver") > -1 || blogURL.indexOf("blog.me") > -1)  {
+                        naverCnt++;
+                    } else if (blogURL.indexOf("tistory") > -1) {
+                        tistoryCnt++;
+                    } else {
+                        elseCnt++;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result.put("Naver", naverCnt);
+        result.put("Tistory", tistoryCnt);
+        result.put("Else", elseCnt);
+        result.put("totalPost", blogTotalPost);
+        result.put("whereBlog", whereBlog);
+        result.put("whereWeb",whereWeb);
+        result.put("whereMobileBlog", whereMobileBlog);
+        result.put("whereMobileWeb",whereMobileWeb);
+        return result;
+    }
+
+    public Map<String, Integer> blogPostStat4(@PathVariable("Keyword") String keyword){
         Document naverBlogDocument = null;
         Document naverPCDocument = null;
         Document naverMobileDocument = null;

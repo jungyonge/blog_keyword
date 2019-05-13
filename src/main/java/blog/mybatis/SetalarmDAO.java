@@ -26,12 +26,46 @@ public class SetalarmDAO {
         return list;
     }
 
-    public List<Setalarm> getKeywordRelate(){
+    public List<Setalarm> getKeywordRelate1(){
         List<Setalarm> list = null;
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            list = session.selectList("Setalarm.getKeywordRelate");
+            list = session.selectList("Setalarm.getKeywordRelate1");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+
+    public List<Setalarm> getKeywordRelate2(){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            list = session.selectList("Setalarm.getKeywordRelate2");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+    public List<Setalarm> getKeywordRelate3(){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            list = session.selectList("Setalarm.getKeywordRelate3");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+    public List<Setalarm> getKeywordRelate4(){
+        List<Setalarm> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            list = session.selectList("Setalarm.getKeywordRelate4");
         } finally {
             session.close();
         }

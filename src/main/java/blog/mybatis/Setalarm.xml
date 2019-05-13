@@ -12,11 +12,33 @@
         WHERE used = '사용안함';
     </select>
 
-    <select id="getKeywordRelate" resultType="HashMap" >
+    <select id="getKeywordRelate1" resultType="HashMap" >
         SELECT
-              keyword_rel
+        keyword_rel
         FROM keyword_relate
-        WHERE used = '사용안함';
+        WHERE used = '사용안함' and id <![CDATA[ <= ]]> 77881;
+    </select>
+
+    <select id="getKeywordRelate2" resultType="HashMap" >
+        SELECT
+          keyword_rel
+        FROM keyword_relate
+        WHERE used = '사용안함' and id between 77882 and 165000;
+    </select>
+
+    <select id="getKeywordRelate3" resultType="HashMap" >
+        SELECT
+          keyword_rel
+        FROM keyword_relate
+        WHERE used = '사용안함' and id between 165001 and 260000;
+    </select>
+
+
+    <select id="getKeywordRelate4" resultType="HashMap" >
+        SELECT
+          keyword_rel
+        FROM keyword_relate
+        WHERE used = '사용안함' and id between 260001 and 360000;
     </select>
 
     <select id="getMakeKeywordRelate" resultType="HashMap" >
