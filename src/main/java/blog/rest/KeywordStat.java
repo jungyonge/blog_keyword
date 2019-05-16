@@ -5,6 +5,7 @@ import blog.model.RelateKeywordStatModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,6 +77,7 @@ public class KeywordStat {
     //저장된 키워드 stat 구하기기
     @GetMapping("/getKeywordStat1")
     public void getKeywordStat1(){
+        System.out.println("1번 시작");
         List keywordList = null;
         Map<String, Object> map = new HashMap<String, Object>();
         keywordList = setalarmDAO.getKeywordRelate1();
@@ -93,7 +95,7 @@ public class KeywordStat {
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
                 getKeywordStatHttpConnection1(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
-            } catch (IOException | SignatureException e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
@@ -101,6 +103,7 @@ public class KeywordStat {
     //저장된 키워드 stat 구하기기
     @GetMapping("/getKeywordStat2")
     public void getKeywordStat2(){
+        System.out.println("2번 시작");
         List keywordList = null;
         Map<String, Object> map = new HashMap<String, Object>();
         keywordList = setalarmDAO.getKeywordRelate2();
@@ -118,13 +121,15 @@ public class KeywordStat {
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
                 getKeywordStatHttpConnection2(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
-            } catch (IOException | SignatureException e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
     }
+
     @GetMapping("/getKeywordStat3")
     public void getKeywordStat3(){
+        System.out.println("3번 시작");
         List keywordList = null;
         Map<String, Object> map = new HashMap<String, Object>();
         keywordList = setalarmDAO.getKeywordRelate3();
@@ -142,13 +147,15 @@ public class KeywordStat {
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
                 getKeywordStatHttpConnection3(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
-            } catch (IOException | SignatureException e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
     }
+
     @GetMapping("/getKeywordStat4")
     public void getKeywordStat4(){
+        System.out.println("4번 시작");
         List keywordList = null;
         Map<String, Object> map = new HashMap<String, Object>();
         keywordList = setalarmDAO.getKeywordRelate4();
@@ -166,7 +173,7 @@ public class KeywordStat {
                 String query = String.format("hintKeywords=%s&showDetail=%s", URLEncoder.encode(keywordNoEmpty,charset),URLEncoder.encode(showDetail,charset));
                 getKeywordStatHttpConnection4(hmacSHA256,timestamp,baseUrl+"/keywordstool",apiKey,customerId,query,keyword,make);
 
-            } catch (IOException | SignatureException e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
@@ -288,12 +295,10 @@ public class KeywordStat {
                     setalarmDAO.insertKeywordStat(resultMap);
                 }
 
-            } catch (SSLException e){
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
-        System.out.println(keyword);
+        System.out.println("1번 : " + keyword);
     }
 
     public void getKeywordStatHttpConnection2(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
@@ -350,12 +355,10 @@ public class KeywordStat {
                 setalarmDAO.insertKeywordStat(resultMap);
             }
 
-        } catch (SSLException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(keyword);
+        System.out.println("2번 : " + keyword);
     }
 
     public void getKeywordStatHttpConnection3(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
@@ -412,12 +415,10 @@ public class KeywordStat {
                 setalarmDAO.insertKeywordStat(resultMap);
             }
 
-        } catch (SSLException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(keyword);
+        System.out.println("3번 : " + keyword);
     }
 
     public void getKeywordStatHttpConnection4(String hmacSHA256, String timestamp, String requestURL, String apikey, long customerId, String query, String keyword, String make) {
@@ -474,12 +475,52 @@ public class KeywordStat {
                 setalarmDAO.insertKeywordStat(resultMap);
             }
 
-        } catch (SSLException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(keyword);
+        System.out.println("4번 : " + keyword);
     }
 
+
+
+    @GetMapping("/testing/{type}")
+    public List test(@PathVariable("type") String type) {
+        HttpURLConnection connection = null;
+        BufferedReader input = null;
+        RelateKeywordStatModel relateKeywordStatModel = null;
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List row = null;
+        try {
+            //Private API Header 세팅
+
+            URL url = new URL("http://openapi.foodsafetykorea.go.kr/api/2520cc2dbe504a248f84/"+ type + "/json/1/1000");
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+
+            int responseCode = connection.getResponseCode();
+            if(responseCode == 200){
+                input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                resultMap = gson.fromJson(input, Map.class);
+                System.out.println(resultMap);
+                LinkedTreeMap testList = (LinkedTreeMap) resultMap.get(type);
+                String totalCnt = String.valueOf(testList.get("total_count"));
+                row = (ArrayList) testList.get("row");
+
+                System.out.println(testList);
+            }
+            else{
+
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println(resultMap);
+        return row;
+    }
 }
