@@ -82,6 +82,7 @@
         VALUES (#{keyword} ,#{make});
     </insert>
 
+
     <insert id="insertKeywordStat" useGeneratedKeys="true" keyProperty="id" parameterType="map">
         INSERT INTO
             keyword_stat(relKeyword, monthlyPcQcCnt, monthlyMobileQcCnt, monthlyAvePcClkCnt,

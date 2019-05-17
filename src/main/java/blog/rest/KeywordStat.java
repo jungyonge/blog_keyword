@@ -483,7 +483,8 @@ public class KeywordStat {
 
 
     @GetMapping("/testing/{type}/{param}")
-    public Map<String, Object> test(@PathVariable("type") String type , @PathVariable("param") String param) {
+    public void test(@PathVariable("type") String type , @PathVariable("param") String param) {
+        System.out.println("test Start");
         HttpURLConnection connection = null;
         BufferedReader input = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -491,6 +492,8 @@ public class KeywordStat {
         int totalCnt = 0;
         Map<String, Object> resultMap1 = new HashMap<String, Object>();
         Map<String, Object> resultMap2 = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+
         try {
             //Private API Header 세팅
 
@@ -529,18 +532,20 @@ public class KeywordStat {
                     row = (ArrayList) testList.get("row");
                     int rowSize = row.size();
                     for(int j = 0 ; j < rowSize ; j ++){
-                        int cnt1 = first + j + 1;
+                        int cnt1 = first + j ;
                         resultMap2 = (Map<String, Object>) row.get(j);
-                        resultMap1.put(cnt1 + "번", resultMap2.get(param));
-                        //System.out.println(resultMap2.get(param));
+                        map.put("keyword",resultMap2.get(param));
+                        setalarmDAO.insertKeyword_Master(map);
                         System.out.println(cnt1);
                     }
                 }
+                setalarmDAO.deleteKeyword_Master();
                 System.out.println("토탈 : " +  totalCnt + " 횟수 : " + i);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return resultMap1;
+        System.out.println("끝");
+        //return resultMap1;
     }
 }
