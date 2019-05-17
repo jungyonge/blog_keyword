@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import blog.util.PropertiesLoader;
 import blog.util.Signatures;
 
-import javax.net.ssl.SSLException;
 import java.io.*;
 import java.net.*;
 import java.security.SignatureException;
@@ -483,17 +482,19 @@ public class KeywordStat {
 
 
 
-    @GetMapping("/testing/{type}")
-    public List test(@PathVariable("type") String type) {
+    @GetMapping("/testing/{type}/{param}")
+    public Map<String, Object> test(@PathVariable("type") String type , @PathVariable("param") String param) {
         HttpURLConnection connection = null;
         BufferedReader input = null;
-        RelateKeywordStatModel relateKeywordStatModel = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List row = null;
+        int totalCnt = 0;
+        Map<String, Object> resultMap1 = new HashMap<String, Object>();
+        Map<String, Object> resultMap2 = new HashMap<String, Object>();
         try {
             //Private API Header 세팅
 
-            URL url = new URL("http://openapi.foodsafetykorea.go.kr/api/2520cc2dbe504a248f84/"+ type + "/json/1/1000");
+            URL url = new URL("http://openapi.foodsafetykorea.go.kr/api/2520cc2dbe504a248f84/"+ type + "/json/1/5");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Accept-Charset", "UTF-8");
             connection.setRequestMethod("GET");
@@ -501,26 +502,45 @@ public class KeywordStat {
             connection.setRequestProperty("Content-type", "application/json");
             connection.setDoOutput(true);
             connection.setDoInput(true);
-
             int responseCode = connection.getResponseCode();
             if(responseCode == 200){
                 input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 resultMap = gson.fromJson(input, Map.class);
-                System.out.println(resultMap);
                 LinkedTreeMap testList = (LinkedTreeMap) resultMap.get(type);
-                String totalCnt = String.valueOf(testList.get("total_count"));
-                row = (ArrayList) testList.get("row");
-
-                System.out.println(testList);
+                totalCnt = Integer.valueOf(testList.get("total_count").toString());
             }
-            else{
-
+            int cnt = totalCnt / 1000;
+            for(int i = 0 ; i < cnt +1 ; i++){
+                int first =  (i * 1000) + 1;
+                int second =  ((i + 1) *1000) ;
+                URL url1 = new URL("http://openapi.foodsafetykorea.go.kr/api/2520cc2dbe504a248f84/"+ type + "/json/"+ first +"/"+ second);
+                connection = (HttpURLConnection) url1.openConnection();
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
+                int responseCode1 = connection.getResponseCode();
+                if(responseCode1 == 200){
+                    input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    resultMap = gson.fromJson(input, Map.class);
+                    LinkedTreeMap testList = (LinkedTreeMap) resultMap.get(type);
+                    row = (ArrayList) testList.get("row");
+                    int rowSize = row.size();
+                    for(int j = 0 ; j < rowSize ; j ++){
+                        int cnt1 = first + j + 1;
+                        resultMap2 = (Map<String, Object>) row.get(j);
+                        resultMap1.put(cnt1 + "번", resultMap2.get(param));
+                        //System.out.println(resultMap2.get(param));
+                        System.out.println(cnt1);
+                    }
+                }
+                System.out.println("토탈 : " +  totalCnt + " 횟수 : " + i);
             }
-
         } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(resultMap);
-        return row;
+        return resultMap1;
     }
 }
