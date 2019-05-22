@@ -482,14 +482,16 @@ public class KeywordStat {
 
 
 
-    @GetMapping("/testing/{type}/{param}")
-    public void test(@PathVariable("type") String type , @PathVariable("param") String param) {
+    @GetMapping("/testing/{type}/{param}/{where}")
+    public void test(@PathVariable("type") String type , @PathVariable("param") String param , @PathVariable("where") int where) {
         System.out.println("test Start");
+        System.out.println("진행중인 것 " + type + "/" + param);
         HttpURLConnection connection = null;
         BufferedReader input = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List row = null;
         int totalCnt = 0;
+        int rowSize = 0;
         Map<String, Object> resultMap1 = new HashMap<String, Object>();
         Map<String, Object> resultMap2 = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -513,7 +515,7 @@ public class KeywordStat {
                 totalCnt = Integer.valueOf(testList.get("total_count").toString());
             }
             int cnt = totalCnt / 1000;
-            for(int i = 0 ; i < cnt +1 ; i++){
+            for(int i = where ; i < cnt +1 ; i++){
                 int first =  (i * 1000) + 1;
                 int second =  ((i + 1) *1000) ;
                 URL url1 = new URL("http://openapi.foodsafetykorea.go.kr/api/2520cc2dbe504a248f84/"+ type + "/json/"+ first +"/"+ second);
@@ -530,22 +532,37 @@ public class KeywordStat {
                     resultMap = gson.fromJson(input, Map.class);
                     LinkedTreeMap testList = (LinkedTreeMap) resultMap.get(type);
                     row = (ArrayList) testList.get("row");
-                    int rowSize = row.size();
-                    for(int j = 0 ; j < rowSize ; j ++){
-                        int cnt1 = first + j ;
-                        resultMap2 = (Map<String, Object>) row.get(j);
-                        map.put("keyword",resultMap2.get(param));
-                        setalarmDAO.insertKeyword_Master(map);
-                        System.out.println(cnt1);
+                    rowSize = row.size();
+                    if( rowSize != 0 ){
+                        for(int j = 0 ; j < rowSize ; j ++){
+                            int cnt1 = first + j ;
+                            resultMap2 = (Map<String, Object>) row.get(j);
+                            map.put("keyword",resultMap2.get(param));
+                            setalarmDAO.insertKeyword_Master(map);
+                            //System.out.println("진행중인 것 " + type + "/" + param + " : " + cnt1);
+                        }
                     }
+                    else {
+                        System.out.println("진행중인 것 " + type + "/" + param );
+                        System.out.println("실패 : " + i);
+                    }
+
                 }
                 setalarmDAO.deleteKeyword_Master();
-                System.out.println("토탈 : " +  totalCnt + " 횟수 : " + i);
+                System.out.println("토탈 : " +  totalCnt + " 횟수 : " + i + "rowSize : " + rowSize);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("끝");
+        System.out.println("끝낫 것 " + type + "/" + param + " : " + "끝");
         //return resultMap1;
+/*        진행중인 것 I0300/PRDLST_NM/110 : 112000
+        토탈 : 1653806 횟수 : 111
+        진행중인 것 I0320/PDT_NM/102 : 104000
+        토탈 : 911850 횟수 : 103
+        진행중인 것 I0310/PRDLST_NM/53 : 55000
+        토탈 : 161819 횟수 : 54
+        토탈 : 1653806 횟수 : 556rowSize : 1000
+토탈 : 911850 횟수 : 560rowSize : 1000*/
     }
 }
