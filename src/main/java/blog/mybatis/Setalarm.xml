@@ -20,27 +20,6 @@
 
     </select>
 
-    <select id="getKeywordRelate2" resultType="HashMap" >
-        SELECT
-          keyword_rel
-        FROM keyword_relate
-        WHERE used = '사용안함' and id between 400000 and 485000;
-    </select>
-
-    <select id="getKeywordRelate3" resultType="HashMap" >
-        SELECT
-          keyword_rel
-        FROM keyword_relate
-        WHERE used = '사용안함' and id between 485000 and 570000;
-    </select>
-
-
-    <select id="getKeywordRelate4" resultType="HashMap" >
-        SELECT
-          keyword_rel
-        FROM keyword_relate
-        WHERE used = '사용안함' and id between 570000 and 800000;
-    </select>
 
     <select id="getMakeKeywordRelate" resultType="HashMap" >
         SELECT
