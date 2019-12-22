@@ -26,7 +26,7 @@ public class BlogStat {
     public Map<String, Integer> blogparser(@PathVariable("Keyword") String keyword){
 
         Map<String, Integer> result = new HashMap<String, Integer>();
-        java.net.HttpURLConnection connection = null;
+        HttpURLConnection connection = null;
 
         try {
             String text = URLEncoder.encode(keyword, "UTF-8");

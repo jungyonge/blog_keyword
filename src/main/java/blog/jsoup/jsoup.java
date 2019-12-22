@@ -38,7 +38,8 @@ public class jsoup {
 
         String naverBlogURL = "https://search.naver.com/search.naver?where=post&sm=tab_jum&query=" + keyword;
         String naverPCURL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + keyword;
-        String naverMobileURL = "https://m.search.naver.com/search.naver?query=" + keyword;
+//        String naverMobileURL = "https://m.search.naver.com/search.naver?query=" + keyword;
+        String naverMobileURL = "https://livescore.co.kr/sports/score_board/basket/view.php?date=2019-12-16";
         try {
 
             naverBlogDocument = Jsoup.connect(naverBlogURL).get();
