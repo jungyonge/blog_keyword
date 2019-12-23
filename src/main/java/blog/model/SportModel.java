@@ -5,13 +5,14 @@ import lombok.Data;
 @Data
 public class SportModel {
     String league;
+    String date;
     String time;
 
-    String homeTeam;
-    String awayTeam;
+    String aTeam;
+    String bTeam;
 
-    Integer homeTotalPoint;
-    Integer awayTotalPoint;
+    Integer aTeamTotalPoint;
+    Integer bTeamTotalPoint;
 
     Double handiCap;
     Double pointLine;
@@ -19,8 +20,8 @@ public class SportModel {
     String handiCapResult;
     String pointLineResult;
 
-    Integer homeFirstQuarterPoint;
-    Integer awayFirstQuarterPoint;
+    Integer aTeamFirstQuarterPoint;
+    Integer bTeamFirstQuarterPoint;
 
     Double firstQuarterHandiCap;
     Double firstQuarterPointLine;
