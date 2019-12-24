@@ -20,40 +20,55 @@ public class SportModel {
     String handiCapResult;
     String pointLineResult;
 
-    Integer aTeamFirstQuarterPoint;
-    Integer bTeamFirstQuarterPoint;
+//    Integer aTeamFirstQPoint;
+//    Integer aTeamSecondQPoint;
+//    Integer aTeamThirdQPoint;
+//    Integer aTeamFourthQPoint;
+//    Integer aTeamExtendQPoint;
+//
+//    Integer bTeamFirstQPoint;
+//    Integer bTeamSecondQPoint;
+//    Integer bTeamThirdQPoint;
+//    Integer bTeamFourthQPoint;
+//    Integer bTeamExtendQPoint;
 
-    Double firstQuarterHandiCap;
-    Double firstQuarterPointLine;
+    Integer FirstQPoint;
+    Integer SecondQPoint;
+    Integer ThirdQPoint;
+    Integer FourthQPoint;
+    Integer ExtendQPoint;
 
-    String firstQuarterHandiCapResult;
-    String firstQuarterPointLineResult;
+    Double firstQHandiCap;
+    Double firstQPointLine;
 
-    Integer firstQuarterPoint;
-    Integer secondQuarterPoint;
-    Integer thirdQuarterPoint;
-    Integer fourthQuarterPoint;
-    Integer extendQuarterPoint;
+    String firstQHandiCapResult;
+    String firstQPointLineResult;
 
-    Boolean firstQuarterfirstPoint;
-    Boolean firstQuarterfirstFreeTwo;
-    Boolean firstQuarterfirstTwoPoint;
-    Boolean firstQuarterfirstThreePoint;
+    Integer firstQTotalPoint;
+    Integer secondQTotalPoint;
+    Integer thirdQTotalPoint;
+    Integer fourthQTotalPoint;
+    Integer extendQTotalPoint;
 
-    Boolean secondQuarterfirstPoint;
-    Boolean secondQuarterfirstFreeTwo;
-    Boolean secondQuarterfirstTwoPoint;
-    Boolean secondQuarterfirstThreePoint;
+    Boolean firstQFirstPoint;
+    Boolean firstQFirstFreeTwo;
+    Boolean firstQFirstTwoPoint;
+    Boolean firstQFirstThreePoint;
 
-    Boolean thirdQuarterfirstPoint;
-    Boolean thirdQuarterfirstFreeTwo;
-    Boolean thirdQuarterfirstTwoPoint;
-    Boolean thirdQuarterfirstThreePoint;
+    Boolean secondQFirstPoint;
+    Boolean secondQFirstFreeTwo;
+    Boolean secondQFirstTwoPoint;
+    Boolean secondQFirstThreePoint;
 
-    Boolean fourthQuarterfirstPoint;
-    Boolean fourthQuarterfirstFreeTwo;
-    Boolean fourthQuarterfirstTwoPoint;
-    Boolean fourthQuarterfirstThreePoint;
+    Boolean thirdQFirstPoint;
+    Boolean thirdQFirstFreeTwo;
+    Boolean thirdQFirstTwoPoint;
+    Boolean thirdQFirstThreePoint;
+
+    Boolean fourthQFirstPoint;
+    Boolean fourthQFirstFreeTwo;
+    Boolean fourthQFirstTwoPoint;
+    Boolean fourthQFirstThreePoint;
 
 
 
