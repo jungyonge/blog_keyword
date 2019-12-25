@@ -4,51 +4,33 @@ import lombok.Data;
 
 @Data
 public class SportModel {
+    String gameId;
     String league;
+    String ground;
+
     String date;
+    String dayOfWeek;
     String time;
 
     String aTeam;
-    String bTeam;
-
     Integer aTeamTotalPoint;
     Integer bTeamTotalPoint;
+    String bTeam;
 
     Double handiCap;
-    Double pointLine;
-
     String handiCapResult;
+
+    Double pointLine;
     String pointLineResult;
 
-//    Integer aTeamFirstQPoint;
-//    Integer aTeamSecondQPoint;
-//    Integer aTeamThirdQPoint;
-//    Integer aTeamFourthQPoint;
-//    Integer aTeamExtendQPoint;
-//
-//    Integer bTeamFirstQPoint;
-//    Integer bTeamSecondQPoint;
-//    Integer bTeamThirdQPoint;
-//    Integer bTeamFourthQPoint;
-//    Integer bTeamExtendQPoint;
-
-    Integer FirstQPoint;
-    Integer SecondQPoint;
-    Integer ThirdQPoint;
-    Integer FourthQPoint;
-    Integer ExtendQPoint;
+    Integer aTeamFirstQPoint;
+    Integer bTeamFirstQPoint;
 
     Double firstQHandiCap;
-    Double firstQPointLine;
-
     String firstQHandiCapResult;
-    String firstQPointLineResult;
 
-    Integer firstQTotalPoint;
-    Integer secondQTotalPoint;
-    Integer thirdQTotalPoint;
-    Integer fourthQTotalPoint;
-    Integer extendQTotalPoint;
+    Double firstQPointLine;
+    String firstQPointLineResult;
 
     Boolean firstQFirstPoint;
     Boolean firstQFirstFreeTwo;
@@ -70,7 +52,28 @@ public class SportModel {
     Boolean fourthQFirstTwoPoint;
     Boolean fourthQFirstThreePoint;
 
+    Integer FirstQPoint;
+    Integer SecondQPoint;
+    Integer ThirdQPoint;
+    Integer FourthQPoint;
+    Integer ExtendQPoint;
 
+    Integer firstQTotalPoint;
+    Integer secondQTotalPoint;
+    Integer thirdQTotalPoint;
+    Integer fourthQTotalPoint;
+    Integer extendQTotalPoint;
 
+//    Integer aTeamFirstQPoint;
+//    Integer aTeamSecondQPoint;
+//    Integer aTeamThirdQPoint;
+//    Integer aTeamFourthQPoint;
+//    Integer aTeamExtendQPoint;
+//
+//    Integer bTeamFirstQPoint;
+//    Integer bTeamSecondQPoint;
+//    Integer bTeamThirdQPoint;
+//    Integer bTeamFourthQPoint;
+//    Integer bTeamExtendQPoint;
 
 }

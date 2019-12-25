@@ -1,5 +1,7 @@
 package blog.mybatis;
 
+import blog.model.BlogModel;
+import blog.model.SportModel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -102,6 +104,17 @@ public class SetalarmDAO {
 
         try {
             session.insert("Setalarm.insertMakeKeyword_Relate", map);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketStat(SportModel sportModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketStat", sportModel);
         } finally {
             session.commit();
             session.close();

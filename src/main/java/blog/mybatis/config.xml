@@ -14,7 +14,7 @@
             <!--  connecting to Local MySql -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/keyword?serverTimezone=UTC"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/sport?serverTimezone=UTC"/>
                 <property name="username" value="root"/>
                 <property name="password" value="ghzkrp153"/>
                 </dataSource>
