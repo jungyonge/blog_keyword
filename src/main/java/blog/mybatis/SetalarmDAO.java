@@ -1,11 +1,9 @@
 package blog.mybatis;
 
-import blog.model.BlogModel;
-import blog.model.SportModel;
+import blog.model.BasketballModel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,11 +108,11 @@ public class SetalarmDAO {
         }
     }
 
-    public void insertBasketStat(SportModel sportModel){
+    public void insertBasketStat(BasketballModel basketballModel){
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
-            session.insert("Setalarm.insertBasketStat", sportModel);
+            session.insert("Setalarm.insertBasketStat", basketballModel);
         } finally {
             session.commit();
             session.close();

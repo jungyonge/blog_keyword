@@ -3,7 +3,7 @@ package blog.model;
 import lombok.Data;
 
 @Data
-public class SportModel {
+public class BasketballModel {
     String gameId;
     String league;
     String ground;

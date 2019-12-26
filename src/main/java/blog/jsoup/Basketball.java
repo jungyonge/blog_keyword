@@ -9,9 +9,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 
-import blog.model.SportModel;
+import blog.model.BasketballModel;
 import blog.mybatis.MyBatisConnectionFactory;
-import blog.mybatis.Setalarm;
 import blog.mybatis.SetalarmDAO;
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
@@ -22,7 +21,7 @@ import org.jsoup.select.Elements;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class sports {
+public class Basketball {
 
     private SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
@@ -59,8 +58,8 @@ public class sports {
 
     public void getCategoryList() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
-        SportModel aTeamStat = new SportModel();
-        SportModel bTeamStat = new SportModel();
+        BasketballModel aTeamStat = new BasketballModel();
+        BasketballModel bTeamStat = new BasketballModel();
 
         String rootHtml = "";
         String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
@@ -394,7 +393,7 @@ public class sports {
         }
     }
 
-    public void setBteamStat(SportModel aTeamStat ,SportModel bTeamStat){
+    public void setBteamStat(BasketballModel aTeamStat , BasketballModel bTeamStat){
         bTeamStat.setLeague(aTeamStat.getLeague());
 
 
@@ -575,9 +574,9 @@ public class sports {
 
     }
     public static void main(String[] args) {
-        sports sports = new sports();
+        Basketball basketball = new Basketball();
         try {
-            sports.getCategoryList();
+            basketball.getCategoryList();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
