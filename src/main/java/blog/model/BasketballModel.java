@@ -28,29 +28,30 @@ public class BasketballModel {
 
     Double firstQHandiCap;
     String firstQHandiCapResult;
+    String firstQHandiCapResult2;
 
     Double firstQPointLine;
     String firstQPointLineResult;
 
-    Boolean firstQFirstPoint;
-    Boolean firstQFirstFreeTwo;
-    Boolean firstQFirstTwoPoint;
-    Boolean firstQFirstThreePoint;
+    String firstQFirstPoint;
+    String firstQFirstFreeTwo;
+    String firstQFirstTwoPoint;
+    String firstQFirstThreePoint;
 
-    Boolean secondQFirstPoint;
-    Boolean secondQFirstFreeTwo;
-    Boolean secondQFirstTwoPoint;
-    Boolean secondQFirstThreePoint;
+    String secondQFirstPoint;
+    String secondQFirstFreeTwo;
+    String secondQFirstTwoPoint;
+    String secondQFirstThreePoint;
 
-    Boolean thirdQFirstPoint;
-    Boolean thirdQFirstFreeTwo;
-    Boolean thirdQFirstTwoPoint;
-    Boolean thirdQFirstThreePoint;
+    String thirdQFirstPoint;
+    String thirdQFirstFreeTwo;
+    String thirdQFirstTwoPoint;
+    String thirdQFirstThreePoint;
 
-    Boolean fourthQFirstPoint;
-    Boolean fourthQFirstFreeTwo;
-    Boolean fourthQFirstTwoPoint;
-    Boolean fourthQFirstThreePoint;
+    String fourthQFirstPoint;
+    String fourthQFirstFreeTwo;
+    String fourthQFirstTwoPoint;
+    String fourthQFirstThreePoint;
 
     Integer FirstQPoint;
     Integer SecondQPoint;

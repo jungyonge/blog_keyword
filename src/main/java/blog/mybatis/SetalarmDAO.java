@@ -1,6 +1,8 @@
 package blog.mybatis;
 
 import blog.model.BasketballModel;
+import blog.model.HockeyModel;
+import blog.model.VolleyballModel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -113,6 +115,28 @@ public class SetalarmDAO {
 
         try {
             session.insert("Setalarm.insertBasketStat", basketballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertVolleyStat(VolleyballModel volleyballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertVolleyStat", volleyballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeyStat(HockeyModel hockeyModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyStat", hockeyModel);
         } finally {
             session.commit();
             session.close();

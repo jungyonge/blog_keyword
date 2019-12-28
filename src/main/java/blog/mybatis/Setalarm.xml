@@ -146,4 +146,90 @@ INSERT INTO sport.basketball_data (GAME_ID, LEAGUE,GROUND, MATCH_DATE, DAY_OF_WE
             )
     </insert>
 
+    <insert id="insertVolleyStat"  parameterType="blog.model.VolleyballModel">
+        INSERT INTO sport.volleyball_data (GAME_ID, LEAGUE, GROUND, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM, A_TEAM_SET_POINT, A_TEAM_TOTAL_POINT, B_TEAM_TOTAL_POINT, B_TEAM_SET_POINT, B_TEAM, HANDI_CAP, HANDI_CAP_RESULT, SET_HANDI_CAP, SET_HANDI_CAP_RESULT,POINT_LINE, POINT_LINE_RESULT, A_TEAM_FIRSTQ_POINT, B_TEAM_FIRSTQ_POINT, FIRSTQ_HANDI_CAP, FIRSTQ_HANDI_CAP_RESULT, FIRSTQ_POINT_LINE, FIRSTQ_POINT_LINE_RESULT, FIRST_POINT, FIRST_BLOCK, FIRST_SERVE, FIRST_5POINT, FIRST_7POINT, FIRST_10POINT, FIRSTQ_POINT, SECONDQ_POINT, THIRDQ_POINT, FOURTHQ_POINT, FIFTHDQ_POINT, FIRSTQ_TOTAL_POINT, SECONDQ_TOTAL_POINT, THIRDQ_TOTAL_POINT, FOURTHQ_TOTAL_POINT, FIFTHDQ_TOTAL_POINT)
+
+        VALUES(
+
+          #{gameId},
+          #{league},
+          #{ground},
+          #{date},
+          #{dayOfWeek},
+          #{time},
+          #{aTeam},
+          #{aTeamSetScore},
+          #{aTeamTotalPoint},
+          #{bTeamTotalPoint},
+          #{bTeamSetScore},
+          #{bTeam},
+          #{handiCap},
+          #{handiCapResult},
+          #{setHandiCap},
+          #{setHandiCapResult},
+          #{pointLine},
+          #{pointLineResult},
+          #{aTeamFirstQPoint},
+          #{bTeamFirstQPoint},
+          #{firstQHandiCap},
+          #{firstQHandiCapResult},
+          #{firstQPointLine},
+          #{firstQPointLineResult},
+          #{firstPoint},
+          #{firstBlock},
+          #{firstServe},
+          #{first5Point},
+          #{first7Point},
+          #{first10Point},
+          #{firstQPoint},
+          #{secondQPoint},
+          #{thirdQPoint},
+          #{fourthQPoint},
+          #{fifthQPoint},
+          #{firstQTotalPoint},
+          #{secondQTotalPoint},
+          #{thirdQTotalPoint},
+          #{fourthQTotalPoint},
+          #{fifthQTotalPoint}
+     )
+    </insert>
+
+    <insert id="insertHockeyStat" parameterType="blog.model.HockeyModel">
+        INSERT INTO sport.hockey_data (GAME_ID, LEAGUE, GROUND, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM, A_TEAM_TOTAL_POINT, B_TEAM_TOTAL_POINT, B_TEAM, HANDI_CAP, HANDI_CAP_RESULT, POINT_LINE, POINT_LINE_RESULT, A_TEAM_FIRSTQ_POINT, B_TEAM_FIRSTQ_POINT, FIRSTQ_HANDI_CAP, FIRSTQ_HANDI_CAP_RESULT, FIRSTQ_POINT_LINE, FIRSTQ_POINT_LINE_RESULT, FIRST_POINT, FIRSTQ_POINT, SECONDQ_POINT, THIRDQ_POINT, EXTENDQ_POINT, SHOTOUTQ_POINT, FIRSTQ_TOTAL_POINT, SECONDQ_TOTAL_POINT, THIRDQ_TOTAL_POINT, EXTENDQ_TOTAL_POINT, SHOTOUTQ_TOTAL_POINT)
+VALUES (
+           #{gameId},
+           #{league},
+           #{ground},
+           #{date},
+           #{dayOfWeek},
+           #{time},
+           #{aTeam},
+           #{aTeamTotalPoint},
+           #{bTeamTotalPoint},
+           #{bTeam},
+           #{handiCap},
+           #{handiCapResult},
+           #{pointLine},
+           #{pointLineResult},
+           #{aTeamFirstQPoint},
+           #{bTeamFirstQPoint},
+           #{firstQHandiCap},
+           #{firstQHandiCapResult},
+           #{firstQPointLine},
+           #{firstQPointLineResult},
+           #{firstPoint},
+           #{firstQPoint},
+           #{secondQPoint},
+           #{thirdQPoint},
+           #{extendQPoint},
+           #{shotoutQPoint},
+           #{firstQTotalPoint},
+           #{secondQTotalPoint},
+           #{thirdQTotalPoint},
+           #{extendQTotalPoint},
+           #{shotoutQTotalPoint}
+       )
+
+    </insert>
+
 </mapper>

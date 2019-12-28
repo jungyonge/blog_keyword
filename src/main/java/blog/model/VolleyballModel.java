@@ -14,6 +14,8 @@ public class VolleyballModel {
 
     String aTeam;
     Integer aTeamSetScore;
+    Integer aTeamTotalPoint;
+    Integer bTeamTotalPoint;
     Integer bTeamSetScore;
     String bTeam;
 
@@ -22,7 +24,6 @@ public class VolleyballModel {
 
     Double setHandiCap;
     String setHandiCapResult;
-
 
     Double pointLine;
     String pointLineResult;
@@ -36,13 +37,13 @@ public class VolleyballModel {
     Double firstQPointLine;
     String firstQPointLineResult;
 
-    Boolean firstPoint;
-    Boolean firstBlock;
-    Boolean firstServe;
+    String firstPoint;
+    String firstBlock;
+    String firstServe;
 
-    Boolean first5Point;
-    Boolean first7Point;
-    Boolean first10Point;
+    String first5Point;
+    String first7Point;
+    String first10Point;
 
     Integer firstQPoint;
     Integer secondQPoint;
@@ -61,6 +62,7 @@ public class VolleyballModel {
         int total = firstQPoint +  secondQPoint + thirdQPoint +  fourthQPoint +   fifthQPoint;
         return total;
     }
+
 //    Integer aTeamFirstQPoint;
 //    Integer aTeamSecondQPoint;
 //    Integer aTeamThirdQPoint;

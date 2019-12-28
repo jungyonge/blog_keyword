@@ -292,90 +292,90 @@ public class Basketball {
                     for (Element element1 : element.select("tbody > tr > td.f.ico_linescore > p")) {
                         if (i == 0) {
                             if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setFirstQFirstPoint(true);
+                                aTeamStat.setFirstQFirstPoint("승리");
                             } else {
-                                aTeamStat.setFirstQFirstPoint(false);
+                                aTeamStat.setFirstQFirstPoint("패배");
                             }
                             if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setFirstQFirstFreeTwo(true);
+                                aTeamStat.setFirstQFirstFreeTwo("승리");
                             } else {
-                                aTeamStat.setFirstQFirstFreeTwo(false);
+                                aTeamStat.setFirstQFirstFreeTwo("패배");
                             }
                             if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setFirstQFirstTwoPoint(true);
+                                aTeamStat.setFirstQFirstTwoPoint("승리");
                             } else {
-                                aTeamStat.setFirstQFirstTwoPoint(false);
+                                aTeamStat.setFirstQFirstTwoPoint("패배");
                             }
                             if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setFirstQFirstThreePoint(true);
+                                aTeamStat.setFirstQFirstThreePoint("승리");
                             } else {
-                                aTeamStat.setFirstQFirstThreePoint(false);
+                                aTeamStat.setFirstQFirstThreePoint("패배");
                             }
                         }
                         if (i == 1) {
                             if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setSecondQFirstPoint(true);
+                                aTeamStat.setSecondQFirstPoint("승리");
                             } else {
-                                aTeamStat.setSecondQFirstPoint(false);
+                                aTeamStat.setSecondQFirstPoint("패배");
                             }
                             if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setSecondQFirstFreeTwo(true);
+                                aTeamStat.setSecondQFirstFreeTwo("승리");
                             } else {
-                                aTeamStat.setSecondQFirstFreeTwo(false);
+                                aTeamStat.setSecondQFirstFreeTwo("패배");
                             }
                             if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setSecondQFirstTwoPoint(true);
+                                aTeamStat.setSecondQFirstTwoPoint("승리");
                             } else {
-                                aTeamStat.setSecondQFirstTwoPoint(false);
+                                aTeamStat.setSecondQFirstTwoPoint("패배");
                             }
                             if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setSecondQFirstThreePoint(true);
+                                aTeamStat.setSecondQFirstThreePoint("승리");
                             } else {
-                                aTeamStat.setSecondQFirstThreePoint(false);
+                                aTeamStat.setSecondQFirstThreePoint("패배");
                             }
                         }
                         if (i == 2) {
                             if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setThirdQFirstPoint(true);
+                                aTeamStat.setThirdQFirstPoint("승리");
                             } else {
-                                aTeamStat.setThirdQFirstPoint(false);
+                                aTeamStat.setThirdQFirstPoint("패배");
                             }
                             if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setThirdQFirstFreeTwo(true);
+                                aTeamStat.setThirdQFirstFreeTwo("승리");
                             } else {
-                                aTeamStat.setThirdQFirstFreeTwo(false);
+                                aTeamStat.setThirdQFirstFreeTwo("패배");
                             }
                             if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setThirdQFirstTwoPoint(true);
+                                aTeamStat.setThirdQFirstTwoPoint("승리");
                             } else {
-                                aTeamStat.setThirdQFirstTwoPoint(false);
+                                aTeamStat.setThirdQFirstTwoPoint("패배");
                             }
                             if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setThirdQFirstThreePoint(true);
+                                aTeamStat.setThirdQFirstThreePoint("승리");
                             } else {
-                                aTeamStat.setThirdQFirstThreePoint(false);
+                                aTeamStat.setThirdQFirstThreePoint("패배");
                             }
                         }
                         if (i == 3) {
                             if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setFourthQFirstPoint(true);
+                                aTeamStat.setFourthQFirstPoint("승리");
                             } else {
-                                aTeamStat.setFourthQFirstPoint(false);
+                                aTeamStat.setFourthQFirstPoint("패배");
                             }
                             if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setFourthQFirstFreeTwo(true);
+                                aTeamStat.setFourthQFirstFreeTwo("승리");
                             } else {
-                                aTeamStat.setFourthQFirstFreeTwo(false);
+                                aTeamStat.setFourthQFirstFreeTwo("패배");
                             }
                             if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setFourthQFirstTwoPoint(true);
+                                aTeamStat.setFourthQFirstTwoPoint("승리");
                             } else {
-                                aTeamStat.setFourthQFirstTwoPoint(false);
+                                aTeamStat.setFourthQFirstTwoPoint("패배");
                             }
                             if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setFourthQFirstThreePoint(true);
+                                aTeamStat.setFourthQFirstThreePoint("승리");
                             } else {
-                                aTeamStat.setFourthQFirstThreePoint(false);
+                                aTeamStat.setFourthQFirstThreePoint("패배");
                             }
                         }
                         i++;
@@ -443,103 +443,103 @@ public class Basketball {
         bTeamStat.setATeam(aTeamStat.getBTeam());
 
         //첫2득
-        if(aTeamStat.getFirstQFirstTwoPoint()){
-            bTeamStat.setFirstQFirstTwoPoint(false);
+        if(aTeamStat.getFirstQFirstTwoPoint().equals("승리")){
+            bTeamStat.setFirstQFirstTwoPoint("패배");
         } else {
-            bTeamStat.setFirstQFirstTwoPoint(true);
+            bTeamStat.setFirstQFirstTwoPoint("승리");
         }
 
-        if(aTeamStat.getSecondQFirstTwoPoint()){
-            bTeamStat.setSecondQFirstTwoPoint(false);
+        if(aTeamStat.getSecondQFirstTwoPoint().equals("승리")){
+            bTeamStat.setSecondQFirstTwoPoint("패배");
         } else {
-            bTeamStat.setSecondQFirstTwoPoint(true);
+            bTeamStat.setSecondQFirstTwoPoint("승리");
         }
 
-        if(aTeamStat.getThirdQFirstTwoPoint()){
-            bTeamStat.setThirdQFirstTwoPoint(false);
+        if(aTeamStat.getThirdQFirstTwoPoint().equals("승리")){
+            bTeamStat.setThirdQFirstTwoPoint("패배");
         } else {
-            bTeamStat.setThirdQFirstTwoPoint(true);
+            bTeamStat.setThirdQFirstTwoPoint("승리");
         }
 
-        if(aTeamStat.getFourthQFirstTwoPoint()){
-            bTeamStat.setFourthQFirstTwoPoint(false);
+        if(aTeamStat.getFourthQFirstTwoPoint().equals("승리")){
+            bTeamStat.setFourthQFirstTwoPoint("패배");
         } else {
-            bTeamStat.setFourthQFirstTwoPoint(true);
+            bTeamStat.setFourthQFirstTwoPoint("승리");
         }
 
         //첫득점
-        if(aTeamStat.getFirstQFirstPoint()){
-            bTeamStat.setFirstQFirstPoint(false);
+        if(aTeamStat.getFirstQFirstPoint().equals("승리")){
+            bTeamStat.setFirstQFirstPoint("패배");
         } else {
-            bTeamStat.setFirstQFirstPoint(true);
+            bTeamStat.setFirstQFirstPoint("승리");
         }
 
-        if(aTeamStat.getSecondQFirstPoint()){
-            bTeamStat.setSecondQFirstPoint(false);
+        if(aTeamStat.getSecondQFirstPoint().equals("승리")){
+            bTeamStat.setSecondQFirstPoint("패배");
         } else {
-            bTeamStat.setSecondQFirstPoint(true);
+            bTeamStat.setSecondQFirstPoint("승리");
         }
 
-        if(aTeamStat.getThirdQFirstPoint()){
-            bTeamStat.setThirdQFirstPoint(false);
+        if(aTeamStat.getThirdQFirstPoint().equals("승리")){
+            bTeamStat.setThirdQFirstPoint("패배");
         } else {
-            bTeamStat.setThirdQFirstPoint(true);
+            bTeamStat.setThirdQFirstPoint("승리");
         }
 
-        if(aTeamStat.getFourthQFirstPoint()){
-            bTeamStat.setFourthQFirstPoint(false);
+        if(aTeamStat.getFourthQFirstPoint().equals("승리")){
+            bTeamStat.setFourthQFirstPoint("패배");
         } else {
-            bTeamStat.setFourthQFirstPoint(true);
+            bTeamStat.setFourthQFirstPoint("승리");
         }
 
         //첫3점
-        if(aTeamStat.getFirstQFirstThreePoint()){
-            bTeamStat.setFirstQFirstThreePoint(false);
+        if(aTeamStat.getFirstQFirstThreePoint().equals("승리")){
+            bTeamStat.setFirstQFirstThreePoint("패배");
         } else {
-            bTeamStat.setFirstQFirstThreePoint(true);
+            bTeamStat.setFirstQFirstThreePoint("승리");
         }
 
-        if(aTeamStat.getSecondQFirstThreePoint()){
-            bTeamStat.setSecondQFirstThreePoint(false);
+        if(aTeamStat.getSecondQFirstThreePoint().equals("승리")){
+            bTeamStat.setSecondQFirstThreePoint("패배");
         } else {
-            bTeamStat.setSecondQFirstThreePoint(true);
+            bTeamStat.setSecondQFirstThreePoint("승리");
         }
 
-        if(aTeamStat.getThirdQFirstThreePoint()){
-            bTeamStat.setThirdQFirstThreePoint(false);
+        if(aTeamStat.getThirdQFirstThreePoint().equals("승리")){
+            bTeamStat.setThirdQFirstThreePoint("패배");
         } else {
-            bTeamStat.setThirdQFirstThreePoint(true);
+            bTeamStat.setThirdQFirstThreePoint("승리");
         }
 
-        if(aTeamStat.getFourthQFirstThreePoint()){
-            bTeamStat.setFourthQFirstThreePoint(false);
+        if(aTeamStat.getFourthQFirstThreePoint().equals("승리")){
+            bTeamStat.setFourthQFirstThreePoint("패배");
         } else {
-            bTeamStat.setFourthQFirstThreePoint(true);
+            bTeamStat.setFourthQFirstThreePoint("승리");
         }
 
         //자유투
-        if(aTeamStat.getFirstQFirstFreeTwo()){
-            bTeamStat.setFirstQFirstFreeTwo(false);
+        if(aTeamStat.getFirstQFirstFreeTwo().equals("승리")){
+            bTeamStat.setFirstQFirstFreeTwo("패배");
         } else {
-            bTeamStat.setFirstQFirstFreeTwo(true);
+            bTeamStat.setFirstQFirstFreeTwo("승리");
         }
 
-        if(aTeamStat.getSecondQFirstFreeTwo()){
-            bTeamStat.setSecondQFirstFreeTwo(false);
+        if(aTeamStat.getSecondQFirstFreeTwo().equals("승리")){
+            bTeamStat.setSecondQFirstFreeTwo("패배");
         } else {
-            bTeamStat.setSecondQFirstFreeTwo(true);
+            bTeamStat.setSecondQFirstFreeTwo("승리");
         }
 
-        if(aTeamStat.getThirdQFirstFreeTwo()){
-            bTeamStat.setThirdQFirstFreeTwo(false);
+        if(aTeamStat.getThirdQFirstFreeTwo().equals("승리")){
+            bTeamStat.setThirdQFirstFreeTwo("패배");
         } else {
-            bTeamStat.setThirdQFirstFreeTwo(true);
+            bTeamStat.setThirdQFirstFreeTwo("승리");
         }
 
-        if(aTeamStat.getFourthQFirstFreeTwo()){
-            bTeamStat.setFourthQFirstFreeTwo(false);
+        if(aTeamStat.getFourthQFirstFreeTwo().equals("승리")){
+            bTeamStat.setFourthQFirstFreeTwo("패배");
         } else {
-            bTeamStat.setFourthQFirstFreeTwo(true);
+            bTeamStat.setFourthQFirstFreeTwo("승리");
         }
 
     }
