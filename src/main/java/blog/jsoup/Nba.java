@@ -1,14 +1,5 @@
 package blog.jsoup;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-
 import blog.model.BasketballModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
@@ -18,10 +9,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
 
-public class Basketball {
+public class Nba {
 
     private SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
@@ -79,7 +78,7 @@ public class Basketball {
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
 
             //nba 10-22
-            if(df.format(cal.getTime()).equals("2019-10-04")){
+            if(df.format(cal.getTime()).equals("2019-10-22")){
                 System.out.println("시즌끝");
                 break;
             }
@@ -93,8 +92,8 @@ public class Basketball {
                 int i = 0;
 
                 String league = element.select("thead tr th.reague").text();
-
-                if (league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")) {
+//                 ||league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")
+                if (league.equals("NBA")) {
 
                     if (league.contains("CBA")) {
                         league = league.replaceAll("중국: ", "");
@@ -583,9 +582,9 @@ public class Basketball {
 
     }
     public static void main(String[] args) {
-        Basketball basketball = new Basketball();
+        Nba nba = new Nba();
         try {
-            basketball.getCategoryList();
+            nba.getCategoryList();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
