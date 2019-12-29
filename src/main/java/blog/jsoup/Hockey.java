@@ -332,9 +332,9 @@ public class Hockey {
                     for (Element element1 : element.select("tbody > tr > td.f.ico_linescore")) {
                         if (i == 0) {
                             if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setFirstPoint("승리");
-                            } else {
                                 aTeamStat.setFirstPoint("패배");
+                            } else {
+                                aTeamStat.setFirstPoint("승리");
                             }
                         }
                         i++;

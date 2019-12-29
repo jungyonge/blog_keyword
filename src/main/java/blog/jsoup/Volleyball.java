@@ -350,19 +350,19 @@ public class Volleyball {
                     for (Element element1 : element.select("tbody > tr > td.f.ico_linescore")) {
                         if (i == 0) {
                             if (element1.select("span.ico_f_point").text().equals("첫득점")) {
-                                aTeamStat.setFirstPoint("승리");
-                            } else {
                                 aTeamStat.setFirstPoint("패배");
+                            } else {
+                                aTeamStat.setFirstPoint("승리");
                             }
                             if (element1.select("span.ico_f_block").text().equals("블로킹")) {
-                                aTeamStat.setFirstBlock("승리");
-                            } else {
                                 aTeamStat.setFirstBlock("패배");
+                            } else {
+                                aTeamStat.setFirstBlock("승리");
                             }
                             if (element1.select("span.ico_f_serve").text().equals("서브득")) {
-                                aTeamStat.setFirstServe("승리");
-                            } else {
                                 aTeamStat.setFirstServe("패배");
+                            } else {
+                                aTeamStat.setFirstServe("승리");
                             }
                         }
                         i++;
@@ -373,27 +373,27 @@ public class Volleyball {
 //                        String[] arrayFirstPointList = ele.select("td.f.navy").text().split(" ");
                         String arrayFirst = ele.text();
                         if(cnt == 0 && arrayFirst.equals("●")){
-                            aTeamStat.setFirst5Point("승리");
-                            bTeamStat.setFirst5Point("패배");
-                        } else {
                             aTeamStat.setFirst5Point("패배");
                             bTeamStat.setFirst5Point("승리");
+                        } else {
+                            aTeamStat.setFirst5Point("승리");
+                            bTeamStat.setFirst5Point("패배");
                         }
                         if(cnt == 1 && arrayFirst.equals("●")){
-                            aTeamStat.setFirst7Point("승리");
-                            bTeamStat.setFirst7Point("패배");
-
-                        } else {
                             aTeamStat.setFirst7Point("패배");
                             bTeamStat.setFirst7Point("승리");
 
+                        } else {
+                            aTeamStat.setFirst7Point("승리");
+                            bTeamStat.setFirst7Point("패배");
+
                         }
                         if(cnt == 2 && arrayFirst.equals("●")){
-                            aTeamStat.setFirst10Point("승리");
-                            bTeamStat.setFirst10Point("패배");
-                        } else {
                             aTeamStat.setFirst10Point("패배");
                             bTeamStat.setFirst10Point("승리");
+                        } else {
+                            aTeamStat.setFirst10Point("승리");
+                            bTeamStat.setFirst10Point("패배");
                         }
                         cnt++;
                     }

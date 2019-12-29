@@ -1,6 +1,11 @@
 package blog.jsoup;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -282,6 +287,75 @@ public class jsoup {
         setalarmDAO.deleteKeyword_Master();
 
     }
+
+
+//    // URLConnection 연결로 데이터 호출
+//    public String requestURLToString(String url, String date) throws Exception {
+//
+//        Map<String, Object> paramMap = new LinkedHashMap<>();
+//        paramMap.put("url","/gateway/nfl/nfl_schedule_gateway.php");
+//        paramMap.put("date",date);
+//
+//        StringBuilder postData = new StringBuilder();
+//        for(Map.Entry<String,Object> param : paramMap.entrySet()) {
+//            if(postData.length() != 0) postData.append('&');
+//            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+//            postData.append('=');
+//            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+//        }
+//        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+//
+//
+//
+//        URL obj = new URL(url);
+//        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//        con.setDoOutput(true);
+//        con.setRequestMethod("POST");
+//        con.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+//        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+//        con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+//        con.setRequestProperty("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7");
+//        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+//        con.setRequestProperty("Host","sports.named.com");
+//        con.setRequestProperty("Origin","http://sports.named.com");
+//        con.setRequestProperty("Referer","http://sports.named.com/football?v=1");
+//        con.getOutputStream().write(postDataBytes);
+//
+//        con.setConnectTimeout(2000);
+//
+//        StringBuffer sInputData = new StringBuffer(1024);
+//        String sInputLine = "";
+//        BufferedReader in;
+//
+//        in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+//
+//
+//        while ((sInputLine = in.readLine()) != null) {
+//            System.out.println(sInputLine);
+//            sInputData.append(sInputLine).append("\n");
+//        }
+//        in.close();
+//
+//        System.out.println(decode(sInputData.toString()));
+//        return sInputData.toString();
+//
+//    }
+//
+//    public static String decode(String unicode)throws Exception {
+//        StringBuffer str = new StringBuffer();
+//
+//        char ch = 0;
+//        for( int i= unicode.indexOf("\\u"); i > -1; i = unicode.indexOf("\\u") ){
+//            ch = (char)Integer.parseInt( unicode.substring( i + 2, i + 6 ) ,16);
+//            str.append( unicode.substring(0, i) );
+//            str.append( String.valueOf(ch) );
+//            unicode = unicode.substring(i + 6);
+//        }
+//        str.append( unicode );
+//
+//        return str.toString();
+//    }
+
 
 }
 

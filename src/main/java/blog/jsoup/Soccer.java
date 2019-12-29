@@ -1,15 +1,8 @@
 package blog.jsoup;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-
 import blog.model.BasketballModel;
+import blog.model.HockeyModel;
+import blog.model.SoccerModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import org.json.JSONArray;
@@ -18,10 +11,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class Basketball {
+public class Soccer {
 
     private SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
@@ -54,18 +58,16 @@ public class Basketball {
         return sInputData.toString();
 
     }
-
-
-    public void getCategoryList() throws IOException, ParseException, InterruptedException {
+    public void getCategoryList() throws Exception {
         JSONArray jsonArray = new JSONArray();
-        BasketballModel aTeamStat = new BasketballModel();
-        BasketballModel bTeamStat = new BasketballModel();
+        SoccerModel aTeamStat = new SoccerModel();
+        SoccerModel bTeamStat = new SoccerModel();
 
         String rootHtml = "";
-        String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
+        String url = "http://livescore.co.kr/sports/score_board/football/view.php?date=";
 
 
-        for (int date = 1; date < 100; date++) {
+        for (int date = 1; date < 120; date++) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -85,11 +87,7 @@ public class Basketball {
                 int i = 0;
 
                 String league = element.select("thead tr th.reague").text();
-                if (league.equals("NBA") || league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")) {
-
-                    if (league.contains("CBA")) {
-                        league = league.replaceAll("중국: ", "");
-                    }
+                if (league.equals("NFL") ) {
 
                     String gameId = element.select("div.score_tbl_individual").attr("id");
                     aTeamStat.setGameId(gameId);
@@ -99,9 +97,6 @@ public class Basketball {
                     aTeamStat.setLeague(league);
                     String[] arrayHandi = element.select("tbody > tr > td.line").text().split(" ");
 
-                    if (arrayHandi.length == 1) {
-                        System.out.println("stop");
-                    }
                     if (arrayHandi.length > 1) {
                         aTeamStat.setPointLine(Double.valueOf(arrayHandi[0]));
                         aTeamStat.setHandiCap(Double.valueOf(arrayHandi[1]));
@@ -112,10 +107,6 @@ public class Basketball {
 
 
                     String[] arrayTotalScore = element.select("tbody > tr > td.score").text().split(" ");
-
-                    if (arrayTotalScore.length == 1) {
-                        System.out.println("stop");
-                    }
 
                     if (arrayTotalScore.length > 1) {
                         aTeamStat.setBTeamTotalPoint(Integer.valueOf(arrayTotalScore[0]));
@@ -156,9 +147,6 @@ public class Basketball {
 
 
                     String[] arrayFirstScore = element.select("tbody > tr > td.s").text().split(" ");
-                    if (arrayFirstScore.length == 1) {
-                        System.out.println("stop");
-                    }
 
                     if (arrayFirstScore.length > 8) {
                         bTeamStat.setFirstQPoint(Integer.valueOf(arrayFirstScore[0]));
@@ -255,145 +243,37 @@ public class Basketball {
                     }
 
 
-                    String[] arrayQScore = element.select("tbody > tr > td.s").text().split(" ");
                     String[] arrayQTotalScore = element.select("tfoot > tr > td.s").text().split(" ");
 
-                    if (arrayQTotalScore.length == 1) {
-                        System.out.println("stop");
-                    }
+                        aTeamStat.setFirstQTotalPoint(aTeamStat.getFirstQPoint() + bTeamStat.getFirstQPoint());
+                        aTeamStat.setSecondQTotalPoint(aTeamStat.getSecondQPoint() + bTeamStat.getSecondQPoint());
+                        aTeamStat.setThirdQTotalPoint(aTeamStat.getThirdQPoint() + bTeamStat.getThirdQPoint());
+                        aTeamStat.setFourthQTotalPoint(aTeamStat.getFourthQPoint() + bTeamStat.getFourthQPoint());
+                        aTeamStat.setExtendQTotalPoint(aTeamStat.getExtendQPoint() + bTeamStat.getExtendQPoint());
 
-                    if (arrayQTotalScore.length > 1) {
-                        aTeamStat.setFirstQTotalPoint(Integer.valueOf(arrayQTotalScore[0]));
-                        aTeamStat.setSecondQTotalPoint(Integer.valueOf(arrayQTotalScore[1]));
-                        aTeamStat.setThirdQTotalPoint(Integer.valueOf(arrayQTotalScore[2]));
-                        aTeamStat.setFourthQTotalPoint(Integer.valueOf(arrayQTotalScore[3]));
-                        if (arrayQTotalScore.length > 4) {
-                            aTeamStat.setExtendQTotalPoint(Integer.valueOf(arrayQTotalScore[4]));
-                        } else {
-                            aTeamStat.setExtendQTotalPoint(0);
-                        }
-                    } else {
-                        aTeamStat.setFirstQTotalPoint(0);
-                        aTeamStat.setSecondQTotalPoint(0);
-                        aTeamStat.setThirdQTotalPoint(0);
-                        aTeamStat.setFourthQTotalPoint(0);
-                        aTeamStat.setExtendQTotalPoint(0);
-
-                    }
 
                     aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
                     aTeamStat.setDate(df.format(cal.getTime()));
                     bTeamStat.setDate(df.format(cal.getTime()));
                     aTeamStat.setGround("홈");
                     bTeamStat.setGround("원정");
-                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.awayteam strong").text());
                     aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
 
-                    for (Element element1 : element.select("tbody > tr > td.f.ico_linescore > p")) {
-                        if (i == 0) {
-                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setFirstQFirstPoint("패배");
-                            } else {
-                                aTeamStat.setFirstQFirstPoint("승리");
-                            }
-                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setFirstQFirstFreeTwo("패배");
-                            } else {
-                                aTeamStat.setFirstQFirstFreeTwo("승리");
-                            }
-                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setFirstQFirstTwoPoint("패배");
-                            } else {
-                                aTeamStat.setFirstQFirstTwoPoint("승리");
-                            }
-                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setFirstQFirstThreePoint("패배");
-                            } else {
-                                aTeamStat.setFirstQFirstThreePoint("승리");
-                            }
-                        }
-                        if (i == 1) {
-                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setSecondQFirstPoint("패배");
-                            } else {
-                                aTeamStat.setSecondQFirstPoint("승리");
-                            }
-                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setSecondQFirstFreeTwo("패배");
-                            } else {
-                                aTeamStat.setSecondQFirstFreeTwo("승리");
-                            }
-                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setSecondQFirstTwoPoint("패배");
-                            } else {
-                                aTeamStat.setSecondQFirstTwoPoint("승리");
-                            }
-                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setSecondQFirstThreePoint("패배");
-                            } else {
-                                aTeamStat.setSecondQFirstThreePoint("승리");
-                            }
-                        }
-                        if (i == 2) {
-                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setThirdQFirstPoint("패배");
-                            } else {
-                                aTeamStat.setThirdQFirstPoint("승리");
-                            }
-                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setThirdQFirstFreeTwo("패배");
-                            } else {
-                                aTeamStat.setThirdQFirstFreeTwo("승리");
-                            }
-                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setThirdQFirstTwoPoint("패배");
-                            } else {
-                                aTeamStat.setThirdQFirstTwoPoint("승리");
-                            }
-                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setThirdQFirstThreePoint("패배");
-                            } else {
-                                aTeamStat.setThirdQFirstThreePoint("승리");
-                            }
-                        }
-                        if (i == 3) {
-                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
-                                aTeamStat.setFourthQFirstPoint("패배");
-                            } else {
-                                aTeamStat.setFourthQFirstPoint("승리");
-                            }
-                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
-                                aTeamStat.setFourthQFirstFreeTwo("패배");
-                            } else {
-                                aTeamStat.setFourthQFirstFreeTwo("승리");
-                            }
-                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
-                                aTeamStat.setFourthQFirstTwoPoint("패배");
-                            } else {
-                                aTeamStat.setFourthQFirstTwoPoint("승리");
-                            }
-                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
-                                aTeamStat.setFourthQFirstThreePoint("패배");
-                            } else {
-                                aTeamStat.setFourthQFirstThreePoint("승리");
-                            }
-                        }
-                        i++;
-                    }
                     setBteamStat(aTeamStat, bTeamStat);
 
 
                     System.out.println(aTeamStat);
                     System.out.println(bTeamStat);
-                    setalarmDAO.insertBasketStat(aTeamStat);
-                    setalarmDAO.insertBasketStat(bTeamStat);
+                    setalarmDAO.insertSoccerStat(aTeamStat);
+                    setalarmDAO.insertSoccerStat(bTeamStat);
                 }
 
             }
         }
     }
 
-    public void setBteamStat(BasketballModel aTeamStat , BasketballModel bTeamStat){
+    public void setBteamStat(SoccerModel aTeamStat , SoccerModel bTeamStat){
         bTeamStat.setLeague(aTeamStat.getLeague());
 
 
@@ -442,105 +322,6 @@ public class Basketball {
         bTeamStat.setBTeam(aTeamStat.getATeam());
         bTeamStat.setATeam(aTeamStat.getBTeam());
 
-        //첫2득
-        if(aTeamStat.getFirstQFirstTwoPoint().equals("승리")){
-            bTeamStat.setFirstQFirstTwoPoint("패배");
-        } else {
-            bTeamStat.setFirstQFirstTwoPoint("승리");
-        }
-
-        if(aTeamStat.getSecondQFirstTwoPoint().equals("승리")){
-            bTeamStat.setSecondQFirstTwoPoint("패배");
-        } else {
-            bTeamStat.setSecondQFirstTwoPoint("승리");
-        }
-
-        if(aTeamStat.getThirdQFirstTwoPoint().equals("승리")){
-            bTeamStat.setThirdQFirstTwoPoint("패배");
-        } else {
-            bTeamStat.setThirdQFirstTwoPoint("승리");
-        }
-
-        if(aTeamStat.getFourthQFirstTwoPoint().equals("승리")){
-            bTeamStat.setFourthQFirstTwoPoint("패배");
-        } else {
-            bTeamStat.setFourthQFirstTwoPoint("승리");
-        }
-
-        //첫득점
-        if(aTeamStat.getFirstQFirstPoint().equals("승리")){
-            bTeamStat.setFirstQFirstPoint("패배");
-        } else {
-            bTeamStat.setFirstQFirstPoint("승리");
-        }
-
-        if(aTeamStat.getSecondQFirstPoint().equals("승리")){
-            bTeamStat.setSecondQFirstPoint("패배");
-        } else {
-            bTeamStat.setSecondQFirstPoint("승리");
-        }
-
-        if(aTeamStat.getThirdQFirstPoint().equals("승리")){
-            bTeamStat.setThirdQFirstPoint("패배");
-        } else {
-            bTeamStat.setThirdQFirstPoint("승리");
-        }
-
-        if(aTeamStat.getFourthQFirstPoint().equals("승리")){
-            bTeamStat.setFourthQFirstPoint("패배");
-        } else {
-            bTeamStat.setFourthQFirstPoint("승리");
-        }
-
-        //첫3점
-        if(aTeamStat.getFirstQFirstThreePoint().equals("승리")){
-            bTeamStat.setFirstQFirstThreePoint("패배");
-        } else {
-            bTeamStat.setFirstQFirstThreePoint("승리");
-        }
-
-        if(aTeamStat.getSecondQFirstThreePoint().equals("승리")){
-            bTeamStat.setSecondQFirstThreePoint("패배");
-        } else {
-            bTeamStat.setSecondQFirstThreePoint("승리");
-        }
-
-        if(aTeamStat.getThirdQFirstThreePoint().equals("승리")){
-            bTeamStat.setThirdQFirstThreePoint("패배");
-        } else {
-            bTeamStat.setThirdQFirstThreePoint("승리");
-        }
-
-        if(aTeamStat.getFourthQFirstThreePoint().equals("승리")){
-            bTeamStat.setFourthQFirstThreePoint("패배");
-        } else {
-            bTeamStat.setFourthQFirstThreePoint("승리");
-        }
-
-        //자유투
-        if(aTeamStat.getFirstQFirstFreeTwo().equals("승리")){
-            bTeamStat.setFirstQFirstFreeTwo("패배");
-        } else {
-            bTeamStat.setFirstQFirstFreeTwo("승리");
-        }
-
-        if(aTeamStat.getSecondQFirstFreeTwo().equals("승리")){
-            bTeamStat.setSecondQFirstFreeTwo("패배");
-        } else {
-            bTeamStat.setSecondQFirstFreeTwo("승리");
-        }
-
-        if(aTeamStat.getThirdQFirstFreeTwo().equals("승리")){
-            bTeamStat.setThirdQFirstFreeTwo("패배");
-        } else {
-            bTeamStat.setThirdQFirstFreeTwo("승리");
-        }
-
-        if(aTeamStat.getFourthQFirstFreeTwo().equals("승리")){
-            bTeamStat.setFourthQFirstFreeTwo("패배");
-        } else {
-            bTeamStat.setFourthQFirstFreeTwo("승리");
-        }
 
     }
 
@@ -573,10 +354,10 @@ public class Basketball {
         return dayOfWeek;
 
     }
-    public static void main(String[] args) {
-        Basketball basketball = new Basketball();
+    public static void main(String[] args) throws Exception {
+        Soccer soccer = new Soccer();
         try {
-            basketball.getCategoryList();
+            soccer.getCategoryList();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -586,5 +367,4 @@ public class Basketball {
         }
         ;
     }
-
 }
