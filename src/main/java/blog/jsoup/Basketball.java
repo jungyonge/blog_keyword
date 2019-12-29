@@ -77,6 +77,13 @@ public class Basketball {
 
             System.out.println(url + df.format(cal.getTime()));
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
+
+            if(df.format(cal.getTime()).equals("2019-10-20")){
+                System.out.println("시즌끝");
+                break;
+            }
+
+//            rootHtml = requestURLToString(url + "2019-12-12");
             Thread.sleep(500);
 
             Document rootDoc = Jsoup.parse(rootHtml);

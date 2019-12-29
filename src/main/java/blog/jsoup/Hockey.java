@@ -78,6 +78,11 @@ public class Hockey {
             String dayOfWeek = getDayoOfWeek(dayNum);
 
             System.out.println(url + df.format(cal.getTime()));
+
+            if(df.format(cal.getTime()).equals("2019-10-02")){
+                System.out.println("시즌끝");
+                break;
+            }
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
             Thread.sleep(500);
 
