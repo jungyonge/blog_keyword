@@ -78,13 +78,14 @@ public class Basketball {
             System.out.println(url + df.format(cal.getTime()));
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
 
-            if(df.format(cal.getTime()).equals("2019-10-20")){
+            //nba 10-22
+            if(df.format(cal.getTime()).equals("2019-10-22")){
                 System.out.println("시즌끝");
                 break;
             }
 
 //            rootHtml = requestURLToString(url + "2019-12-12");
-            Thread.sleep(500);
+//            Thread.sleep(500);
 
             Document rootDoc = Jsoup.parse(rootHtml);
             Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
@@ -92,7 +93,8 @@ public class Basketball {
                 int i = 0;
 
                 String league = element.select("thead tr th.reague").text();
-                if (league.equals("NBA") || league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")) {
+//                 ||league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")
+                if (league.equals("NBA")) {
 
                     if (league.contains("CBA")) {
                         league = league.replaceAll("중국: ", "");

@@ -81,7 +81,7 @@ public class Volleyball {
                 break;
             }
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
-            Thread.sleep(500);
+//            Thread.sleep(500);
 
             Document rootDoc = Jsoup.parse(rootHtml);
             Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
