@@ -24,34 +24,40 @@ public class BasketballModel {
     String pointLineResult;
 
     Integer aTeamFirstQPoint;
-    Integer aTeamSecondQPoint;
-    Integer aTeamThirdQPoint;
-    Integer aTeamFourthQPoint;
-    Integer aTeamExtendQPoint;
-
     Integer bTeamFirstQPoint;
-    Integer bTeamSecondQPoint;
-    Integer bTeamThirdQPoint;
-    Integer bTeamFourthQPoint;
-    Integer bTeamExtendQPoint;
-
     Double firstQHandiCap;
     String firstQHandiCapResult;
-    Double secondQHandiCap;
-    String secondQHandiCapResult;
-    Double thirdQHandiCap;
-    String thirdQHandiCapResult;
-    Double fourthQHandiCap;
-    String fourthQHandiCapResult;
-
     Double firstQPointLine;
     String firstQPointLineResult;
-    Double secondQPointLine;
+
+    Integer aTeamSecondQPoint;
+    Integer bTeamSecondQPoint;
+    String secondQHandiCapResult;
     String secondQPointLineResult;
-    Double thirdQPointLine;
+
+    Integer aTeamThirdQPoint;
+    Integer bTeamThirdQPoint;
+    String thirdQHandiCapResult;
     String thirdQPointLineResult;
-    Double fourthQPointLine;
+
+    Integer aTeamFourthQPoint;
+    Integer bTeamFourthQPoint;
+    String fourthQHandiCapResult;
     String fourthQPointLineResult;
+
+
+    Integer aTeamExtendQPoint;
+    Integer bTeamExtendQPoint;
+
+
+    Double secondQHandiCap;
+    Double thirdQHandiCap;
+    Double fourthQHandiCap;
+
+
+    Double secondQPointLine;
+    Double thirdQPointLine;
+    Double fourthQPointLine;
 
     String firstQFirstPoint;
     String firstQFirstFreeTwo;

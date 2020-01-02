@@ -295,11 +295,16 @@ public class Basketball {
                     int pointInt = (int) point;
                     double pointLine = point - pointInt;
 
-                    if (pointLine == 0.5) {
-                        aTeamStat.setFirstQPointLine(aTeamStat.getPointLine() / 4);
+                    if ((pointLine <= 0.333 && pointLine >= 0.001)) {
+                        aTeamStat.setFirstQPointLine(Double.valueOf(Math.floor(aTeamStat.getPointLine() / 4)));
+                    } else if((pointLine <= 0.999 && pointLine >= 0.666)) {
+                        aTeamStat.setFirstQPointLine(Double.valueOf(Math.ceil(aTeamStat.getPointLine() / 4)));
+                    } else if((pointLine <= 0.665 && pointLine >= 0.334)) {
+                        aTeamStat.setFirstQPointLine(pointInt + 0.5);
                     } else {
                         aTeamStat.setFirstQPointLine(Double.valueOf(Math.round(aTeamStat.getPointLine() / 4)));
                     }
+
 
                     if(aTeamStat.getFirstQPointLine() == 0){
                         aTeamStat.setFirstQPointLineResult("적특");
@@ -496,8 +501,9 @@ public class Basketball {
 
                     System.out.println(aTeamStat);
                     System.out.println(bTeamStat);
-                    setalarmDAO.insertBasketStat(aTeamStat);
-                    setalarmDAO.insertBasketStat(bTeamStat);
+                    System.out.println("!!!");
+//                    setalarmDAO.insertBasketStat(aTeamStat);
+//                    setalarmDAO.insertBasketStat(bTeamStat);
                 }
 
             }
