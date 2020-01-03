@@ -1,9 +1,6 @@
 package blog.util;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,6 +128,8 @@ public class JxlsExcelView extends AbstractExcelView {
             response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\";");
 
             OutputStream out = response.getOutputStream();
+            FileOutputStream fos = new FileOutputStream("/Users/imc053/Desktop/xmlFile/test.xlsx");
+            workbook.write(fos);
             workbook.write(out);
             out.flush();
         }
