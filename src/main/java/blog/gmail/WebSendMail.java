@@ -98,8 +98,17 @@ public class WebSendMail
 
         // Part two is attachment
         messageBodyPart = new MimeBodyPart();
+
         File file = new File("/Users/imc053/Desktop/xmlFile/위메프 상품수집 수 201912010.xlsx");
         FileDataSource fds = new FileDataSource(file);
+        messageBodyPart.setDataHandler(new DataHandler(fds));
+        messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
+        multipart.addBodyPart(messageBodyPart);
+
+        messageBodyPart = new MimeBodyPart();
+
+        file = new File("/Users/imc053/Desktop/xmlFile/test.xlsx");
+        fds = new FileDataSource(file);
         messageBodyPart.setDataHandler(new DataHandler(fds));
         messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
         multipart.addBodyPart(messageBodyPart);
