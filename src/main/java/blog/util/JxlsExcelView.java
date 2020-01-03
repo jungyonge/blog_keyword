@@ -2,12 +2,9 @@ package blog.util;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +20,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 public class JxlsExcelView extends AbstractExcelView {
 
+    private static final String[] fileList = { "basketball","volleyball","hockey","soccer"};
 
     private static final Logger logger = LoggerFactory.getLogger(JxlsExcelView.class);
     private static final String FILE_EXT1 = ".xls";
@@ -36,6 +34,10 @@ public class JxlsExcelView extends AbstractExcelView {
                                       HttpServletResponse response) throws Exception {
 
         List resultList = (List)model.get("list");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+
 
         //logger.debug("resultList ========> " + resultList);
         logger.debug("resultList size ========> " + resultList.size());
@@ -128,6 +130,7 @@ public class JxlsExcelView extends AbstractExcelView {
             response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\";");
 
             OutputStream out = response.getOutputStream();
+            String fileName1 = fileList[0] +"_"+ df1.format(cal.getTime()) + ".xlsx";
             FileOutputStream fos = new FileOutputStream("/Users/imc053/Desktop/xmlFile/test.xlsx");
             workbook.write(fos);
             workbook.write(out);

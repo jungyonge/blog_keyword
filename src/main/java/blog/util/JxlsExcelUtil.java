@@ -29,7 +29,7 @@ public class JxlsExcelUtil {
     public static <T> View exportJxlsExcel(ModelMap model, List<T> list, T tModel) {
         return exportJxlsExcel(model, list, tModel, null);
     }
-
+//exportJxlsExcel
     public static <T> View exportJxlsExcel(ModelMap model, List<T> list, T tModel, Map<String, Object> headerInfos) {
         model.addAttribute("list", list);
         model.addAttribute("params", model);
