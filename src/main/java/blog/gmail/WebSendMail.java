@@ -1,6 +1,7 @@
 package blog.gmail;
 
 import blog.jsoup.Volleyball;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class WebSendMail
 
 
     public void sendSSLMessage(String recipients[], String subject,
-                               String message, String from) throws MessagingException {
+                               String message, String from) throws MessagingException, UnsupportedEncodingException {
         boolean debug = true;
 
         Properties props = new Properties();
@@ -99,7 +101,7 @@ public class WebSendMail
         File file = new File("/Users/imc053/Desktop/xmlFile/위메프 상품수집 수 201912010.xlsx");
         FileDataSource fds = new FileDataSource(file);
         messageBodyPart.setDataHandler(new DataHandler(fds));
-        messageBodyPart.setFileName(fds.getName());
+        messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
         multipart.addBodyPart(messageBodyPart);
 
         // Put parts in message
@@ -113,11 +115,13 @@ public class WebSendMail
 
     public static void main(String[] args) {
         WebSendMail webSendMail = new WebSendMail();
-        String[] recipients = {"qjro1204@naver.com","jungyong_e@naver.com"};
+        String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
         try {
             webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
         }
          catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
