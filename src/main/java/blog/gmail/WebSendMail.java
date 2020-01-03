@@ -23,11 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class WebSendMail
 {
@@ -39,11 +38,17 @@ public class WebSendMail
     private static final String emailFromAddress = "jungyongee@gmail.com";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final String[] sendTo = { "jungyongee@gmail.com"};
+    private static final String[] fileList = { "basketball","volleyball","hockey","soccer"};
 
 
     public void sendSSLMessage(String recipients[], String subject,
                                String message, String from) throws MessagingException, UnsupportedEncodingException {
         boolean debug = true;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        DateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
+
 
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_HOST_NAME);
@@ -76,42 +81,29 @@ public class WebSendMail
         msg.setRecipients(Message.RecipientType.TO, addressTo);
 
         // Setting the Subject and Content Type
-        msg.setSubject(subject);
-
-//  /-텍스트만 전송하는 경우 아래의 2라인만 추가하면 된다.
-//                * 그러나 텍스트와 첨부파일을 함께 전송하는 경우에는 아래의 2라인을 제거하고
-//  * 대신에 그 아래의 모든 문장을 추가해야 한다.
-//                *-/
-
-        //msg.setContent(message, "text/plain;charset=KSC5601");
-        //Transport.send(msg);
-
-//  /- 텍스트와 첨부파일을 함께 전송하는 경우에는 위의 2라인을 제거하고 아래의 모든 라인을 추가한다.*-
-//                 Create the message part
+        msg.setSubject(df.format(cal.getTime()) + " 스포츠 데이터 입니다.");
 
         BodyPart messageBodyPart = new MimeBodyPart();
 
         // Fill the message
-        messageBodyPart.setText("테스트용 메일의 내용입니다.");
+        messageBodyPart.setText(df.format(cal.getTime()) + " 스포츠 데이터 입니다.");
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
 
         // Part two is attachment
-        messageBodyPart = new MimeBodyPart();
 
-        File file = new File("/Users/imc053/Desktop/xmlFile/위메프 상품수집 수 201912010.xlsx");
-        FileDataSource fds = new FileDataSource(file);
-        messageBodyPart.setDataHandler(new DataHandler(fds));
-        messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
-        multipart.addBodyPart(messageBodyPart);
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+        for(int i = 0 ; i < fileList.length ; i++){
+            messageBodyPart = new MimeBodyPart();
 
-        messageBodyPart = new MimeBodyPart();
+            String fileName = fileList[i] +"_"+ df1.format(cal.getTime()) + ".xlsx";
+            File file = new File("/Users/imc053/Desktop/xmlFile/"+fileName);
+            FileDataSource fds = new FileDataSource(file);
+            messageBodyPart.setDataHandler(new DataHandler(fds));
+            messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
+            multipart.addBodyPart(messageBodyPart);
+        }
 
-        file = new File("/Users/imc053/Desktop/xmlFile/test.xlsx");
-        fds = new FileDataSource(file);
-        messageBodyPart.setDataHandler(new DataHandler(fds));
-        messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));
-        multipart.addBodyPart(messageBodyPart);
 
         // Put parts in message
         msg.setContent(multipart);
