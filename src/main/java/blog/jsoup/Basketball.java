@@ -74,6 +74,7 @@ public class Basketball {
             System.out.println("after: " + df.format(cal.getTime()));
             int dayNum = cal.get(Calendar.DAY_OF_WEEK);
             String dayOfWeek = getDayoOfWeek(dayNum);
+            cal.set(2019,10,4);
 
             System.out.println(url + df.format(cal.getTime()));
             rootHtml = requestURLToString(url + df.format(cal.getTime()));
@@ -132,6 +133,17 @@ public class Basketball {
                     } else {
                         aTeamStat.setBTeamTotalPoint(0);
                         aTeamStat.setATeamTotalPoint(0);
+                    }
+
+                    if(aTeamStat.getHandiCap() > 0){
+                        aTeamStat.setOdd("역배");
+                        bTeamStat.setOdd("정배");
+                    } else if (aTeamStat.getHandiCap() < 0){
+                        aTeamStat.setOdd("정배");
+                        bTeamStat.setOdd("역배");
+                    } else {
+                        aTeamStat.setOdd("없음");
+                        bTeamStat.setOdd("없음");
                     }
 
                     if(aTeamStat.getHandiCap() == 0){
@@ -502,8 +514,8 @@ public class Basketball {
                     System.out.println(aTeamStat);
                     System.out.println(bTeamStat);
                     System.out.println("!!!");
-//                    setalarmDAO.insertBasketStat(aTeamStat);
-//                    setalarmDAO.insertBasketStat(bTeamStat);
+                    setalarmDAO.insertBasketStat(aTeamStat);
+                    setalarmDAO.insertBasketStat(bTeamStat);
                 }
 
             }

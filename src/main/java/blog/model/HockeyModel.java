@@ -11,12 +11,19 @@ public class HockeyModel {
     String date;
     String dayOfWeek;
     String time;
+
+    Integer aTeamRestDay;
     String aTeam;
     Integer aTeamTotalPoint;
     Integer bTeamTotalPoint;
     String bTeam;
+    Integer bTeamRestDay;
+
     Double handiCap;
     String handiCapResult;
+    String odd;
+
+
     Double pointLine;
     String pointLineResult;
     Integer aTeamFirstQPoint;

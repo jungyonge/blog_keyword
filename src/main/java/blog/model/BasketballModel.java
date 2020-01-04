@@ -12,19 +12,24 @@ public class BasketballModel {
     String dayOfWeek;
     String time;
 
+    Integer aTeamRestDay;
     String aTeam;
     Integer aTeamTotalPoint;
     Integer bTeamTotalPoint;
     String bTeam;
+    Integer bTeamRestDay;
 
     Double handiCap;
     String handiCapResult;
+    String odd;
+
 
     Double pointLine;
     String pointLineResult;
 
     Integer aTeamFirstQPoint;
     Integer bTeamFirstQPoint;
+
     Double firstQHandiCap;
     String firstQHandiCapResult;
     Double firstQPointLine;
@@ -45,19 +50,8 @@ public class BasketballModel {
     String fourthQHandiCapResult;
     String fourthQPointLineResult;
 
-
     Integer aTeamExtendQPoint;
     Integer bTeamExtendQPoint;
-
-
-    Double secondQHandiCap;
-    Double thirdQHandiCap;
-    Double fourthQHandiCap;
-
-
-    Double secondQPointLine;
-    Double thirdQPointLine;
-    Double fourthQPointLine;
 
     String firstQFirstPoint;
     String firstQFirstFreeTwo;
@@ -78,7 +72,6 @@ public class BasketballModel {
     String fourthQFirstFreeTwo;
     String fourthQFirstTwoPoint;
     String fourthQFirstThreePoint;
-
 
     Integer firstQTotalPoint;
     Integer secondQTotalPoint;

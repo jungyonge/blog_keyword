@@ -118,11 +118,6 @@ public class Volleyball {
                         aTeamStat.setHandiCap(0.0);
                     }
 
-                    if(aTeamStat.getHandiCap() < 0){
-                        aTeamStat.setSetHandiCap(-1.5);
-                    }else {
-                        aTeamStat.setSetHandiCap(1.5);
-                    }
 
                     String[] arrayFirstScore = element.select("tbody > tr > td.s").text().split(" ");
 
@@ -230,12 +225,19 @@ public class Volleyball {
                         aTeamStat.setATeamSetScore(0);
                     }
 
+                    if(aTeamStat.getHandiCap() < 0){
+                        aTeamStat.setSetHandiCap(-1.5);
+                    }else {
+                        aTeamStat.setSetHandiCap(1.5);
+                    }
+
+
                     if(aTeamStat.getHandiCap() == 0){
                         aTeamStat.setSetHandiCapResult("적특");
                     }else {
-                        if ((aTeamStat.getBTeamSetScore() + aTeamStat.getSetHandiCap()) > aTeamStat.getATeamSetScore()) {
+                        if ((aTeamStat.getATeamSetScore() + aTeamStat.getSetHandiCap()) > aTeamStat.getBTeamSetScore()) {
                             aTeamStat.setSetHandiCapResult("승리");
-                        } else if ((aTeamStat.getBTeamSetScore() + aTeamStat.getSetHandiCap()) < aTeamStat.getATeamSetScore()) {
+                        } else if ((aTeamStat.getATeamSetScore() + aTeamStat.getSetHandiCap()) < aTeamStat.getBTeamSetScore()) {
                             aTeamStat.setSetHandiCapResult("패배");
                         } else {
                             aTeamStat.setSetHandiCapResult("적특");
@@ -543,13 +545,24 @@ public class Volleyball {
 
     public static void main(String[] args) {
         Volleyball volleyball = new Volleyball();
+        Hockey hockey = new Hockey();
+        Soccer soccer = new Soccer();
+        Basketball basketball = new Basketball();
+        Nba nba = new Nba();
+
         try {
             volleyball.getCategoryList();
+            hockey.getCategoryList();
+            soccer.getCategoryList();
+            basketball.getCategoryList();
+            nba.getCategoryList();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ;

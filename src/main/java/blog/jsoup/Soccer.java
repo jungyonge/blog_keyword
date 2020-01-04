@@ -121,6 +121,17 @@ public class Soccer {
                         aTeamStat.setATeamTotalPoint(0);
                     }
 
+                    if(aTeamStat.getHandiCap() > 0){
+                        aTeamStat.setOdd("역배");
+                        bTeamStat.setOdd("정배");
+                    } else if (aTeamStat.getHandiCap() < 0){
+                        aTeamStat.setOdd("정배");
+                        bTeamStat.setOdd("역배");
+                    } else {
+                        aTeamStat.setOdd("없음");
+                        bTeamStat.setOdd("없음");
+                    }
+
                     if(aTeamStat.getHandiCap() == 0){
                         aTeamStat.setHandiCapResult("적특");
                     }else {
@@ -132,6 +143,7 @@ public class Soccer {
                             aTeamStat.setHandiCapResult("적특");
                         }
                     }
+
 
 
                     if(aTeamStat.getPointLine() == 0){

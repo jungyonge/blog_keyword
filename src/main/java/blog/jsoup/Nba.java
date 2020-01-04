@@ -118,6 +118,16 @@ public class Nba {
                         aTeamStat.setHandiCap(0.0);
                     }
 
+                    if(aTeamStat.getHandiCap() > 0){
+                        aTeamStat.setOdd("역배");
+                        bTeamStat.setOdd("정배");
+                    } else if (aTeamStat.getHandiCap() < 0){
+                        aTeamStat.setOdd("정배");
+                        bTeamStat.setOdd("역배");
+                    } else {
+                        aTeamStat.setOdd("없음");
+                        bTeamStat.setOdd("없음");
+                    }
 
                     String[] arrayTotalScore = element.select("tbody > tr > td.score").text().split(" ");
 

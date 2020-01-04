@@ -12,15 +12,19 @@ public class VolleyballModel {
     String dayOfWeek;
     String time;
 
+    Integer aTeamRestDay;
     String aTeam;
     Integer aTeamSetScore;
     Integer aTeamTotalPoint;
     Integer bTeamTotalPoint;
     Integer bTeamSetScore;
     String bTeam;
+    Integer bTeamRestDay;
 
     Double handiCap;
     String handiCapResult;
+    String odd;
+
 
     Double setHandiCap;
     String setHandiCapResult;
