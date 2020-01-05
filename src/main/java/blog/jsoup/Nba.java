@@ -55,6 +55,96 @@ public class Nba {
     }
 
 
+    public void getAllMatch() throws Exception{
+
+        JSONArray jsonArray = new JSONArray();
+
+        String rootHtml = "";
+        String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
+        int date = 0;
+
+        while (true){
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.set(2019, 9,22);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+            cal.add(Calendar.DATE, date);
+            System.out.println("after: " + df.format(cal.getTime()));
+
+            //nba 10-22 ~ 2020.04.16
+            if(df.format(cal.getTime()).equals("2020-04-17")){
+                System.out.println("시즌끝");
+                break;
+            }
+
+            int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+            String dayOfWeek = getDayoOfWeek(dayNum);
+
+            System.out.println(url + df.format(cal.getTime()));
+            rootHtml = requestURLToString(url + df.format(cal.getTime()));
+
+            Document rootDoc = Jsoup.parse(rootHtml);
+            Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
+
+            for (Element element : rootDoc.select("div#score_board div.score_tbl_individual")) {
+                BasketballModel aTeamStat = new BasketballModel();
+                BasketballModel bTeamStat = new BasketballModel();
+
+                int i = 0;
+
+                String league = element.select("thead tr th.reague").text();
+//                 ||league.equals("KBL") || league.equals("WKBL") || league.contains("CBA")
+                if (league.equals("NBA")) {
+
+                    if (league.contains("CBA")) {
+                        league = league.replaceAll("중국: ", "");
+                    }
+
+                    String gameId = element.select("div.score_tbl_individual").attr("id");
+
+                    aTeamStat.setGameId(gameId);
+                    bTeamStat.setGameId(gameId);
+                    aTeamStat.setDayOfWeek(dayOfWeek);
+                    bTeamStat.setDayOfWeek(dayOfWeek);
+                    aTeamStat.setLeague(league);
+                    bTeamStat.setLeague(league);
+
+
+                    aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+                    bTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+
+                    aTeamStat.setDate(df.format(cal.getTime()));
+                    bTeamStat.setDate(df.format(cal.getTime()));
+
+                    aTeamStat.setGround("홈");
+                    bTeamStat.setGround("원정");
+
+                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                    aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+                    bTeamStat.setATeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                    bTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+                }
+
+                if(aTeamStat.getGameId() == null|| bTeamStat.getGameId() == null){
+                    continue;
+                } else {
+                    System.out.println(aTeamStat);
+                    System.out.println(bTeamStat);
+                    setalarmDAO.insertBasketMatch(aTeamStat);
+                    setalarmDAO.insertBasketMatch(bTeamStat);
+                }
+
+            }
+
+            date++;
+        }
+
+    }
+
+
     public void getCategoryList() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
         BasketballModel aTeamStat = new BasketballModel();
@@ -105,6 +195,16 @@ public class Nba {
                     aTeamStat.setDayOfWeek(dayOfWeek);
                     bTeamStat.setDayOfWeek(dayOfWeek);
                     aTeamStat.setLeague(league);
+
+                    aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+                    aTeamStat.setDate(df.format(cal.getTime()));
+                    bTeamStat.setDate(df.format(cal.getTime()));
+                    aTeamStat.setGround("홈");
+                    bTeamStat.setGround("원정");
+                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                    aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+
                     String[] arrayHandi = element.select("tbody > tr > td.line").text().split(" ");
 
                     if (arrayHandi.length == 1) {
@@ -406,13 +506,7 @@ public class Nba {
 
                     }
 
-                    aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
-                    aTeamStat.setDate(df.format(cal.getTime()));
-                    bTeamStat.setDate(df.format(cal.getTime()));
-                    aTeamStat.setGround("홈");
-                    bTeamStat.setGround("원정");
-                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
-                    aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
 
                     for (Element element1 : element.select("tbody > tr > td.f.ico_linescore > p")) {
                         if (i == 0) {
@@ -724,12 +818,16 @@ public class Nba {
     public static void main(String[] args) {
         Nba nba = new Nba();
         try {
-            nba.getCategoryList();
+//            nba.getCategoryList();
+            nba.getAllMatch();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ;

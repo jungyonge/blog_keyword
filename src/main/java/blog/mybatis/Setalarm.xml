@@ -95,20 +95,61 @@
     </update>
 
     <insert id="insertBasketStat" parameterType="blog.model.BasketballModel">
-INSERT INTO sport.basketball_data (GAME_ID, LEAGUE,GROUND, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM, A_TEAM_TOTAL_POINT, B_TEAM_TOTAL_POINT, B_TEAM, HANDI_CAP, HANDI_CAP_RESULT, POINT_LINE, POINT_LINE_RESULT, A_TEAM_FIRSTQ_POINT, B_TEAM_FIRSTQ_POINT, FIRSTQ_HANDI_CAP, FIRSTQ_HANDI_CAP_RESULT, FIRSTQ_POINT_LINE, FIRSTQ_POINT_LINE_RESULT,
-    A_TEAM_SECONDQ_POINT,
-	B_TEAM_SECONDQ_POINT,
-	SECONDQ_HANDI_CAP_RESULT,
-	SECONDQ_POINT_LINE_RESULT,
-	A_TEAM_THIRDQ_POINT,
-	B_TEAM_THIRDQ_POINT,
-	THIRDQ_HANDI_CAP_RESULT,
-	THIRDQ_POINT_LINE_RESULT,
-	A_TEAM_FOURTHQ_POINT,
-	B_TEAM_FOURTHQ_POINT,
-	FOURTHQ_HANDI_CAP_RESULT,
-	FOURTHQ_POINT_LINE_RESULT,
-     FIRSTQ_FIRST_POINT, FIRSTQ_FIRST_FREE_TWO, FIRSTQ_FIRST_TWO_POINT, FIRSTQ_FIRST_THREE_POINT, SECONDQ_FIRST_POINT, SECONDQ_FIRST_FREE_TWO, SECONDQ_FIRST_TWO_POINT, SECONDQ_FIRST_THREE_POINT, THIRDQ_FIRST_POINT, THIRDQ_FIRST_FREE_TWO, THIRDQ_FIRST_TWO_POINT, THIRDQ_FIRST_THREE_POINT, FOURTHQ_FIRST_POINT, FOURTHQ_FIRST_FREE_TWO, FOURTHQ_FIRST_TWO_POINT, FOURTHQ_FIRST_THREE_POINT, FIRSTQ_TOTAL_POINT, SECONDQ_TOTAL_POINT, THIRDQ_TOTAL_POINT, FOURTHQ_TOTAL_POINT, EXTENDQ_TOTAL_POINT)
+    INSERT INTO sport.basketball_data (
+            GAME_ID,
+            LEAGUE,
+            GROUND,
+            MATCH_DATE,
+            DAY_OF_WEEK,
+            MATCH_TIME,
+            A_TEAM,
+            A_TEAM_TOTAL_POINT,
+            B_TEAM_TOTAL_POINT,
+            B_TEAM,
+            HANDI_CAP,
+            HANDI_CAP_RESULT,
+            POINT_LINE,
+            POINT_LINE_RESULT,
+            A_TEAM_FIRSTQ_POINT,
+            B_TEAM_FIRSTQ_POINT,
+            FIRSTQ_HANDI_CAP,
+            FIRSTQ_HANDI_CAP_RESULT,
+            FIRSTQ_POINT_LINE,
+            FIRSTQ_POINT_LINE_RESUL,
+            A_TEAM_SECONDQ_POINT,
+	        B_TEAM_SECONDQ_POINT,
+	        SECONDQ_HANDI_CAP_RESULT,
+	        SECONDQ_POINT_LINE_RESULT,
+	        A_TEAM_THIRDQ_POINT,
+	        B_TEAM_THIRDQ_POINT,
+	        THIRDQ_HANDI_CAP_RESULT,
+	        THIRDQ_POINT_LINE_RESULT,
+	        A_TEAM_FOURTHQ_POINT,
+	        B_TEAM_FOURTHQ_POINT,
+	        FOURTHQ_HANDI_CAP_RESULT,
+	        FOURTHQ_POINT_LINE_RESULT,
+            FIRSTQ_FIRST_POINT,
+            FIRSTQ_FIRST_FREE_TWO,
+            FIRSTQ_FIRST_TWO_POINT,
+            FIRSTQ_FIRST_THREE_POINT,
+            SECONDQ_FIRST_POINT,
+            SECONDQ_FIRST_FREE_TWO,
+            SECONDQ_FIRST_TWO_POINT,
+            SECONDQ_FIRST_THREE_POINT,
+            THIRDQ_FIRST_POINT,
+            THIRDQ_FIRST_FREE_TWO,
+            THIRDQ_FIRST_TWO_POINT,
+            THIRDQ_FIRST_THREE_POINT,
+            FOURTHQ_FIRST_POINT,
+            FOURTHQ_FIRST_FREE_TW,
+            FOURTHQ_FIRST_TWO_POINT,
+            FOURTHQ_FIRST_THREE_POINT,
+            FIRSTQ_TOTAL_POINT,
+            SECONDQ_TOTAL_POINT,
+            THIRDQ_TOTAL_POINT,
+            FOURTHQ_TOTAL_POINT,
+            EXTENDQ_TOTAL_POINT,
+            )
       VALUES (
                 #{gameId},
                 #{league},
@@ -163,6 +204,81 @@ INSERT INTO sport.basketball_data (GAME_ID, LEAGUE,GROUND, MATCH_DATE, DAY_OF_WE
                 #{thirdQTotalPoint},
                 #{fourthQTotalPoint},
                 #{extendQTotalPoint}
+            )
+    </insert>
+
+    <update id="updateBasketStat" parameterType="blog.model.BasketballModel">
+    UPDATE sport.basketball_data
+            SET
+                A_TEAM_TOTAL_POINT   =     #{aTeamTotalPoint},
+                B_TEAM_TOTAL_POINT   =     #{bTeamTotalPoint},
+                HANDI_CAP   =     #{handiCap},
+                HANDI_CAP_RESULT   =     #{handiCapResult},
+                POINT_LINE   =     #{pointLine},
+                POINT_LINE_RESULT   =     #{pointLineResult},
+                A_TEAM_FIRSTQ_POINT   =     #{aTeamFirstQPoint},
+                B_TEAM_FIRSTQ_POINT   =     #{bTeamFirstQPoint},
+                FIRSTQ_HANDI_CAP   =     #{firstQHandiCap},
+                FIRSTQ_HANDI_CAP_RESULT   =     #{firstQHandiCapResult},
+                FIRSTQ_POINT_LINE   =     #{firstQPointLine},
+                FIRSTQ_POINT_LINE_RESUL   =     #{firstQPointLineResult},
+                A_TEAM_SECONDQ_POINT   =     #{aTeamSecondQPoint},
+	            B_TEAM_SECONDQ_POINT   =     #{bTeamSecondQPoint},
+	            SECONDQ_HANDI_CAP_RESULT   =     #{secondQHandiCapResult},
+	            SECONDQ_POINT_LINE_RESULT   =     #{secondQPointLineResult},
+	            A_TEAM_THIRDQ_POINT   =     #{aTeamThirdQPoint},
+	            B_TEAM_THIRDQ_POINT   =     #{bTeamThirdQPoint},
+	            THIRDQ_HANDI_CAP_RESULT   =     #{thirdQHandiCapResult},
+	            THIRDQ_POINT_LINE_RESULT   =     #{thirdQPointLineResult},
+	            A_TEAM_FOURTHQ_POINT   =     #{aTeamFourthQPoint},
+	            B_TEAM_FOURTHQ_POINT   =     #{bTeamFourthQPoint},
+	            FOURTHQ_HANDI_CAP_RESULT   =     #{fourthQHandiCapResult},
+	            FOURTHQ_POINT_LINE_RESULT   =     #{fourthQPointLineResult},
+                FIRSTQ_FIRST_POINT   =     #{firstQFirstPoint},
+                FIRSTQ_FIRST_FREE_TWO   =     #{firstQFirstFreeTwo},
+                FIRSTQ_FIRST_TWO_POINT   =     #{firstQFirstTwoPoint},
+                FIRSTQ_FIRST_THREE_POINT   =     #{firstQFirstThreePoint},
+                SECONDQ_FIRST_POINT   =     #{secondQFirstPoint},
+                SECONDQ_FIRST_FREE_TWO   =     #{secondQFirstFreeTwo},
+                SECONDQ_FIRST_TWO_POINT   =     #{secondQFirstTwoPoint},
+                SECONDQ_FIRST_THREE_POINT   =     #{secondQFirstThreePoint},
+                THIRDQ_FIRST_POINT   =     #{thirdQFirstPoint},
+                THIRDQ_FIRST_FREE_TWO   =     #{thirdQFirstFreeTwo},
+                THIRDQ_FIRST_TWO_POINT   =     #{thirdQFirstTwoPoint},
+                THIRDQ_FIRST_THREE_POINT   =     #{thirdQFirstThreePoint},
+                FOURTHQ_FIRST_POINT   =     #{fourthQFirstPoint},
+                FOURTHQ_FIRST_FREE_TW   =     #{fourthQFirstFreeTwo},
+                FOURTHQ_FIRST_TWO_POINT   =     #{fourthQFirstTwoPoint},
+                FOURTHQ_FIRST_THREE_POINT   =     #{fourthQFirstThreePoint},
+                FIRSTQ_TOTAL_POINT   =     #{firstQTotalPoint},
+                SECONDQ_TOTAL_POINT   =     #{secondQTotalPoint},
+                THIRDQ_TOTAL_POINT   =     #{thirdQTotalPoint},
+                FOURTHQ_TOTAL_POINT   =     #{fourthQTotalPoint},
+                EXTENDQ_TOTAL_POINT   =     #{extendQTotalPoint}
+            WHERE
+                GAME_ID   =     #{gameId} AND
+                LEAGUE   =     #{league} AND
+                GROUND   =     #{ground} AND
+                MATCH_DATE   =     #{date} AND
+                DAY_OF_WEEK   =     #{dayOfWeek} AND
+                MATCH_TIME   =     #{time} AND
+                A_TEAM   =     #{aTeam} AND
+                B_TEAM   =     #{bTeam}
+    </update>
+
+    <insert id="insertBasketMatch" parameterType="blog.model.BasketballModel">
+        INSERT INTO sport.basketball_data(GAME_ID, LEAGUE, GROUND, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM_REST_DAY,  A_TEAM, B_TEAM, B_TEAM_REST_DAY)
+      VALUES (
+                #{gameId},
+                #{league},
+                #{ground},
+                #{date},
+                #{dayOfWeek},
+                #{time},
+                (SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM  sport.basketball_data A WHERE A_TEAM = #{aTeam} ORDER BY idx DESC LIMIT 1))) -1,
+                #{aTeam},
+                #{bTeam},
+                (SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM  sport.basketball_data B WHERE B_TEAM = #{bTeam} ORDER BY idx DESC LIMIT 1))) -1
             )
     </insert>
 

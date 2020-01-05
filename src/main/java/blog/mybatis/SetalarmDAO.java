@@ -122,6 +122,29 @@ public class SetalarmDAO {
         }
     }
 
+
+    public void insertBasketMatch(BasketballModel basketballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketMatch", basketballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void updateBasketStat(BasketballModel basketballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateBasketStat", basketballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
     public void insertVolleyStat(VolleyballModel volleyballModel){
         SqlSession session = sqlSessionFactory.openSession();
 
