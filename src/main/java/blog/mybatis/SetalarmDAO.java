@@ -156,6 +156,29 @@ public class SetalarmDAO {
         }
     }
 
+    public void insertVolleyMatch(VolleyballModel volleyballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertVolleyMatch", volleyballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void updateVolleyStat(VolleyballModel volleyballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateVolleyStat", volleyballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
     public void insertHockeyStat(HockeyModel hockeyModel){
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -167,11 +190,58 @@ public class SetalarmDAO {
         }
     }
 
+
+    public void insertHockeyMatch(HockeyModel hockeyModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyMatch", hockeyModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void updateHockeyStat(HockeyModel hockeyModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateHockeyStat", hockeyModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
     public void insertSoccerStat(SoccerModel soccerModel){
         SqlSession session = sqlSessionFactory.openSession();
 
         try {
             session.insert("Setalarm.insertSoccerStat", soccerModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertSoccerMatch(SoccerModel soccerModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertSoccerMatch", soccerModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public void updateSoccerStat(SoccerModel soccerModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateSoccerStat", soccerModel);
         } finally {
             session.commit();
             session.close();

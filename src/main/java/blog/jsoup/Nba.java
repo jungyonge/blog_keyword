@@ -144,6 +144,577 @@ public class Nba {
 
     }
 
+    public void updateBasketBall() throws IOException, ParseException, InterruptedException {
+        JSONArray jsonArray = new JSONArray();
+        BasketballModel aTeamStat = new BasketballModel();
+        BasketballModel bTeamStat = new BasketballModel();
+
+        String rootHtml = "";
+        String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
+
+        int date = 0;
+        while (true){
+
+            Calendar startDate = Calendar.getInstance();
+            Calendar curDate = Calendar.getInstance();
+
+            //nba 10-22
+
+            startDate.set(2019,9,21);
+            curDate.setTime(new Date());
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+            startDate.add(Calendar.DATE, date);
+            System.out.println("after: " + df.format(startDate.getTime()));
+            int dayNum = startDate.get(Calendar.DAY_OF_WEEK);
+            String dayOfWeek = getDayoOfWeek(dayNum);
+
+
+            System.out.println(url + df.format(startDate.getTime()));
+            rootHtml = requestURLToString(url + df.format(startDate.getTime()));
+
+
+            if(df.format(startDate.getTime()).equals(df.format(curDate.getTime()))){
+                System.out.println("Today");
+                break;
+            }
+
+//            rootHtml = requestURLToString(url + "2019-12-12");
+//            Thread.sleep(500);
+
+            Document rootDoc = Jsoup.parse(rootHtml);
+            Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
+            for (Element element : rootDoc.select("div#score_board div.score_tbl_individual")) {
+                int i = 0;
+
+                String league = element.select("thead tr th.reague").text();
+
+                if (league.equals("NBA")) {
+
+                    String gameId = element.select("div.score_tbl_individual").attr("id");
+                    aTeamStat.setGameId(gameId);
+                    bTeamStat.setGameId(gameId);
+                    aTeamStat.setDayOfWeek(dayOfWeek);
+                    bTeamStat.setDayOfWeek(dayOfWeek);
+                    aTeamStat.setLeague(league);
+                    String[] arrayHandi = element.select("tbody > tr > td.line").text().split(" ");
+
+                    if (arrayHandi.length == 1) {
+                        System.out.println("stop");
+                    }
+                    if (arrayHandi.length > 1) {
+                        aTeamStat.setPointLine(Double.valueOf(arrayHandi[0]));
+                        aTeamStat.setHandiCap(Double.valueOf(arrayHandi[1]));
+                    } else {
+                        aTeamStat.setPointLine(0.0);
+                        aTeamStat.setHandiCap(0.0);
+                    }
+
+
+                    String[] arrayTotalScore = element.select("tbody > tr > td.score").text().split(" ");
+
+                    if (arrayTotalScore.length == 1) {
+                        System.out.println("stop");
+                    }
+
+                    if (arrayTotalScore.length > 1) {
+                        aTeamStat.setBTeamTotalPoint(Integer.valueOf(arrayTotalScore[0]));
+                        aTeamStat.setATeamTotalPoint(Integer.valueOf(arrayTotalScore[1]));
+                    } else {
+                        aTeamStat.setBTeamTotalPoint(0);
+                        aTeamStat.setATeamTotalPoint(0);
+                    }
+
+                    if(aTeamStat.getHandiCap() > 0){
+                        aTeamStat.setOdd("역배");
+                        bTeamStat.setOdd("정배");
+                    } else if (aTeamStat.getHandiCap() < 0){
+                        aTeamStat.setOdd("정배");
+                        bTeamStat.setOdd("역배");
+                    } else {
+                        aTeamStat.setOdd("없음");
+                        bTeamStat.setOdd("없음");
+                    }
+
+                    if(aTeamStat.getHandiCap() == 0){
+                        aTeamStat.setHandiCapResult("적특");
+                    }else {
+                        if ((aTeamStat.getATeamTotalPoint() + aTeamStat.getHandiCap()) > aTeamStat.getBTeamTotalPoint()) {
+                            aTeamStat.setHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamTotalPoint() + aTeamStat.getHandiCap()) < aTeamStat.getBTeamTotalPoint()) {
+                            aTeamStat.setHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setHandiCapResult("적특");
+                        }
+                    }
+
+
+                    if(aTeamStat.getPointLine() == 0){
+                        aTeamStat.setPointLineResult("적특");
+                        bTeamStat.setPointLineResult("적특");
+                    } else {
+                        if ((aTeamStat.getATeamTotalPoint() + aTeamStat.getBTeamTotalPoint()) > aTeamStat.getPointLine()) {
+                            aTeamStat.setPointLineResult("오버");
+                            bTeamStat.setPointLineResult("오버");
+                        } else if ((aTeamStat.getATeamTotalPoint() + aTeamStat.getBTeamTotalPoint()) < aTeamStat.getPointLine()) {
+                            aTeamStat.setPointLineResult("언더");
+                            bTeamStat.setPointLineResult("언더");
+                        } else {
+                            aTeamStat.setPointLineResult("적특");
+                            bTeamStat.setPointLineResult("적특");
+                        }
+                    }
+
+
+                    String[] arrayFirstScore = element.select("tbody > tr > td.s").text().split(" ");
+                    if (arrayFirstScore.length == 1) {
+                        System.out.println("stop");
+                    }
+
+                    if (arrayFirstScore.length > 8) {
+                        aTeamStat.setBTeamFirstQPoint(Integer.valueOf(arrayFirstScore[0]));
+                        aTeamStat.setBTeamSecondQPoint(Integer.valueOf(arrayFirstScore[1]));
+                        aTeamStat.setBTeamThirdQPoint(Integer.valueOf(arrayFirstScore[2]));
+                        aTeamStat.setBTeamFourthQPoint(Integer.valueOf(arrayFirstScore[3]));
+
+                        bTeamStat.setATeamFirstQPoint(Integer.valueOf(arrayFirstScore[0]));
+                        bTeamStat.setATeamSecondQPoint(Integer.valueOf(arrayFirstScore[1]));
+                        bTeamStat.setATeamThirdQPoint(Integer.valueOf(arrayFirstScore[2]));
+                        bTeamStat.setATeamFourthQPoint(Integer.valueOf(arrayFirstScore[3]));
+
+                        if (arrayFirstScore.length == 10) {
+                            aTeamStat.setBTeamExtendQPoint(Integer.valueOf(arrayFirstScore[4]));
+                            bTeamStat.setATeamExtendQPoint(Integer.valueOf(arrayFirstScore[4]));
+
+                        } else {
+                            aTeamStat.setBTeamExtendQPoint(0);
+                            bTeamStat.setBTeamExtendQPoint(0);
+
+                        }
+
+                        aTeamStat.setATeamFirstQPoint(Integer.valueOf(arrayFirstScore[5]));
+                        aTeamStat.setATeamSecondQPoint(Integer.valueOf(arrayFirstScore[6]));
+                        aTeamStat.setATeamThirdQPoint(Integer.valueOf(arrayFirstScore[7]));
+                        aTeamStat.setATeamFourthQPoint(Integer.valueOf(arrayFirstScore[8]));
+
+                        bTeamStat.setBTeamFirstQPoint(Integer.valueOf(arrayFirstScore[5]));
+                        bTeamStat.setBTeamSecondQPoint(Integer.valueOf(arrayFirstScore[6]));
+                        bTeamStat.setBTeamThirdQPoint(Integer.valueOf(arrayFirstScore[7]));
+                        bTeamStat.setBTeamFourthQPoint(Integer.valueOf(arrayFirstScore[8]));
+                        if (arrayFirstScore.length == 10) {
+                            aTeamStat.setATeamExtendQPoint(Integer.valueOf(arrayFirstScore[9]));
+                            bTeamStat.setBTeamExtendQPoint(Integer.valueOf(arrayFirstScore[9]));
+
+                        } else {
+                            aTeamStat.setATeamExtendQPoint(0);
+                            bTeamStat.setBTeamExtendQPoint(0);
+
+                        }
+                    } else {
+
+                        bTeamStat.setATeamFirstQPoint(0);
+                        bTeamStat.setATeamSecondQPoint(0);
+                        bTeamStat.setATeamThirdQPoint(0);
+                        bTeamStat.setATeamFourthQPoint(0);
+                        bTeamStat.setATeamExtendQPoint(0);
+
+                        aTeamStat.setATeamFirstQPoint(0);
+                        aTeamStat.setATeamSecondQPoint(0);
+                        aTeamStat.setATeamThirdQPoint(0);
+                        aTeamStat.setATeamFourthQPoint(0);
+                        aTeamStat.setATeamExtendQPoint(0);
+
+                        bTeamStat.setBTeamFirstQPoint(0);
+                        bTeamStat.setBTeamSecondQPoint(0);
+                        bTeamStat.setBTeamThirdQPoint(0);
+                        bTeamStat.setBTeamFourthQPoint(0);
+                        bTeamStat.setBTeamExtendQPoint(0);
+
+                        aTeamStat.setBTeamFirstQPoint(0);
+                        aTeamStat.setBTeamSecondQPoint(0);
+                        aTeamStat.setBTeamThirdQPoint(0);
+                        aTeamStat.setBTeamFourthQPoint(0);
+                        aTeamStat.setBTeamExtendQPoint(0);
+                    }
+
+
+                    double handi = aTeamStat.getHandiCap() / 4;
+                    int handiInt = (int) handi;
+                    double pointHandi = handi - handiInt;
+
+                    if (pointHandi == 0.5 || pointHandi == -0.5) {
+                        aTeamStat.setFirstQHandiCap(aTeamStat.getHandiCap() / 4);
+                    }else if (aTeamStat.getHandiCap() >= 0.5 && aTeamStat.getHandiCap() <= 1.5) {
+                        aTeamStat.setFirstQHandiCap(0.5);
+                    } else if (aTeamStat.getHandiCap() <= -0.5 && aTeamStat.getHandiCap() >= -1.5) {
+                        aTeamStat.setFirstQHandiCap(-0.5);
+                    } else {
+                        aTeamStat.setFirstQHandiCap(Double.valueOf(Math.round(aTeamStat.getHandiCap() / 4)));
+                    }
+
+                    if(aTeamStat.getFirstQHandiCap() == 0){
+                        aTeamStat.setFirstQHandiCapResult("적특");
+                        aTeamStat.setSecondQHandiCapResult("적특");
+                        aTeamStat.setThirdQHandiCapResult("적특");
+                        aTeamStat.setFourthQHandiCapResult("적특");
+
+                    }
+                    else {
+                        if ((aTeamStat.getATeamFirstQPoint() + aTeamStat.getFirstQHandiCap()) > aTeamStat.getBTeamFirstQPoint()) {
+                            aTeamStat.setFirstQHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamFirstQPoint() + aTeamStat.getFirstQHandiCap()) < aTeamStat.getBTeamFirstQPoint()) {
+                            aTeamStat.setFirstQHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setFirstQHandiCapResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamSecondQPoint() + aTeamStat.getFirstQHandiCap()) > aTeamStat.getBTeamSecondQPoint()) {
+                            aTeamStat.setSecondQHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamSecondQPoint() + aTeamStat.getFirstQHandiCap()) < aTeamStat.getBTeamSecondQPoint()) {
+                            aTeamStat.setSecondQHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setSecondQHandiCapResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamThirdQPoint() + aTeamStat.getFirstQHandiCap()) > aTeamStat.getBTeamThirdQPoint()) {
+                            aTeamStat.setThirdQHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamThirdQPoint() + aTeamStat.getFirstQHandiCap()) < aTeamStat.getBTeamThirdQPoint()) {
+                            aTeamStat.setThirdQHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setThirdQHandiCapResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamFourthQPoint() + aTeamStat.getFirstQHandiCap()) > aTeamStat.getBTeamFourthQPoint()) {
+                            aTeamStat.setFourthQHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamFourthQPoint() + aTeamStat.getFirstQHandiCap()) < aTeamStat.getBTeamFourthQPoint()) {
+                            aTeamStat.setFourthQHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setFourthQHandiCapResult("적특");
+                        }
+                    }
+
+
+                    double point = aTeamStat.getPointLine() / 4;
+                    int pointInt = (int) point;
+                    double pointLine = point - pointInt;
+
+                    if ((pointLine <= 0.333 && pointLine >= 0.001)) {
+                        aTeamStat.setFirstQPointLine(Double.valueOf(Math.floor(aTeamStat.getPointLine() / 4)));
+                    } else if((pointLine <= 0.999 && pointLine >= 0.666)) {
+                        aTeamStat.setFirstQPointLine(Double.valueOf(Math.ceil(aTeamStat.getPointLine() / 4)));
+                    } else if((pointLine <= 0.665 && pointLine >= 0.334)) {
+                        aTeamStat.setFirstQPointLine(pointInt + 0.5);
+                    } else {
+                        aTeamStat.setFirstQPointLine(Double.valueOf(Math.round(aTeamStat.getPointLine() / 4)));
+                    }
+
+
+                    if(aTeamStat.getFirstQPointLine() == 0){
+                        aTeamStat.setFirstQPointLineResult("적특");
+                        aTeamStat.setSecondQPointLineResult("적특");
+                        aTeamStat.setThirdQPointLineResult("적특");
+                        aTeamStat.setFourthQPointLineResult("적특");
+                        bTeamStat.setFirstQPointLineResult("적특");
+                        bTeamStat.setSecondQPointLineResult("적특");
+                        bTeamStat.setThirdQPointLineResult("적특");
+                        bTeamStat.setFourthQPointLineResult("적특");
+                    }
+                    else {
+                        if ((aTeamStat.getATeamFirstQPoint() + aTeamStat.getBTeamFirstQPoint()) > aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setFirstQPointLineResult("오버");
+                            bTeamStat.setFirstQPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamFirstQPoint() + aTeamStat.getBTeamFirstQPoint()) < aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setFirstQPointLineResult("언더");
+                            bTeamStat.setFirstQPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setFirstQPointLineResult("적특");
+                            bTeamStat.setFirstQPointLineResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamSecondQPoint() + aTeamStat.getBTeamSecondQPoint()) > aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setSecondQPointLineResult("오버");
+                            bTeamStat.setSecondQPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamSecondQPoint() + aTeamStat.getBTeamSecondQPoint()) < aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setSecondQPointLineResult("언더");
+                            bTeamStat.setSecondQPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setSecondQPointLineResult("적특");
+                            bTeamStat.setSecondQPointLineResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamThirdQPoint() + aTeamStat.getBTeamThirdQPoint()) > aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setThirdQPointLineResult("오버");
+                            bTeamStat.setThirdQPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamThirdQPoint() + aTeamStat.getBTeamThirdQPoint()) < aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setThirdQPointLineResult("언더");
+                            bTeamStat.setThirdQPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setThirdQPointLineResult("적특");
+                            bTeamStat.setThirdQPointLineResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamFourthQPoint() + aTeamStat.getBTeamFourthQPoint()) > aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setFourthQPointLineResult("오버");
+                            bTeamStat.setFourthQPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamFourthQPoint() + aTeamStat.getBTeamFourthQPoint()) < aTeamStat.getFirstQPointLine()) {
+                            aTeamStat.setFourthQPointLineResult("언더");
+                            bTeamStat.setFourthQPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setFourthQPointLineResult("적특");
+                            bTeamStat.setFourthQPointLineResult("적특");
+                        }
+
+                    }
+
+
+                    double halfHandi = aTeamStat.getHandiCap() / 2;
+                    int halfHandiInt = (int) halfHandi;
+                    double pointHalfHandi = halfHandi - halfHandiInt;
+
+                    if (pointHalfHandi == 0.5 || pointHalfHandi == -0.5) {
+                        aTeamStat.setHalfHandiCap(aTeamStat.getHandiCap() / 2);
+                    }else if (aTeamStat.getHandiCap() >= 0.5 && aTeamStat.getHandiCap() <= 1.5) {
+                        aTeamStat.setHalfHandiCap(0.5);
+                    } else if (aTeamStat.getHandiCap() <= -0.5 && aTeamStat.getHandiCap() >= -1.5) {
+                        aTeamStat.setHalfHandiCap(-0.5);
+                    } else {
+                        aTeamStat.setHalfHandiCap(Double.valueOf(Math.round(aTeamStat.getHandiCap() / 4)));
+                    }
+
+                    aTeamStat.setATeamFirstHalfPoint(aTeamStat.getATeamFirstQPoint() + aTeamStat.getATeamSecondQPoint());
+                    aTeamStat.setBTeamFirstHalfPoint(aTeamStat.getBTeamFirstQPoint() + aTeamStat.getBTeamSecondQPoint());
+
+                    bTeamStat.setATeamFirstHalfPoint(bTeamStat.getATeamFirstQPoint() + bTeamStat.getATeamSecondQPoint());
+                    bTeamStat.setBTeamFirstHalfPoint(bTeamStat.getBTeamFirstQPoint() + bTeamStat.getBTeamSecondQPoint());
+
+                    aTeamStat.setATeamSecondHalfPoint(aTeamStat.getATeamThirdQPoint() + aTeamStat.getATeamFourthQPoint());
+                    aTeamStat.setBTeamSecondHalfPoint(aTeamStat.getBTeamThirdQPoint() + aTeamStat.getBTeamFourthQPoint());
+
+                    bTeamStat.setATeamSecondHalfPoint(bTeamStat.getATeamThirdQPoint() + bTeamStat.getATeamFourthQPoint());
+                    bTeamStat.setBTeamSecondHalfPoint(bTeamStat.getBTeamThirdQPoint() + bTeamStat.getBTeamFourthQPoint());
+
+
+                    if(aTeamStat.getHalfHandiCap() == 0){
+                        aTeamStat.setFirstHalfHandiCapResult("적특");
+                    }
+                    else {
+                        if ((aTeamStat.getATeamFirstHalfPoint() + aTeamStat.getHalfHandiCap()) > aTeamStat.getBTeamFirstHalfPoint()) {
+                            aTeamStat.setFirstHalfHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamFirstHalfPoint() + aTeamStat.getHalfHandiCap()) < aTeamStat.getBTeamFirstHalfPoint()) {
+                            aTeamStat.setFirstHalfHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setFirstHalfHandiCapResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamSecondHalfPoint() + aTeamStat.getHalfHandiCap()) > aTeamStat.getBTeamSecondHalfPoint()) {
+                            aTeamStat.setSecondHalfHandiCapResult("승리");
+                        } else if ((aTeamStat.getATeamSecondHalfPoint() + aTeamStat.getHalfHandiCap()) < aTeamStat.getBTeamSecondHalfPoint()) {
+                            aTeamStat.setSecondHalfHandiCapResult("패배");
+                        } else {
+                            aTeamStat.setSecondHalfHandiCapResult("적특");
+                        }
+
+                    }
+
+                    double halfPoint = aTeamStat.getPointLine() / 2;
+                    int halfPointInt = (int) halfPoint;
+                    double halftPointLine = halfPoint - halfPointInt;
+
+                    if ((halftPointLine <= 0.333 && halftPointLine >= 0.001)) {
+                        aTeamStat.setHalfPointLine(Double.valueOf(Math.floor(aTeamStat.getPointLine() / 2)));
+                    } else if((halftPointLine <= 0.999 && halftPointLine >= 0.666)) {
+                        aTeamStat.setHalfPointLine(Double.valueOf(Math.ceil(aTeamStat.getPointLine() / 2)));
+                    } else if((halftPointLine <= 0.665 && halftPointLine >= 0.334)) {
+                        aTeamStat.setHalfPointLine(halfPointInt + 0.5);
+                    } else {
+                        aTeamStat.setHalfPointLine(Double.valueOf(Math.round(aTeamStat.getPointLine() / 2)));
+                    }
+
+
+                    if(aTeamStat.getHalfPointLine() == 0){
+                        aTeamStat.setFirstHalfPointLineResult("적특");
+                        aTeamStat.setSecondHalfPointLineResult("적특");
+
+                        bTeamStat.setFirstHalfPointLineResult("적특");
+                        bTeamStat.setSecondHalfPointLineResult("적특");
+
+                    }
+                    else {
+                        if ((aTeamStat.getATeamFirstHalfPoint() + aTeamStat.getBTeamFirstHalfPoint()) > aTeamStat.getHalfPointLine()) {
+                            aTeamStat.setFirstHalfPointLineResult("오버");
+                            bTeamStat.setFirstHalfPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamFirstHalfPoint() + aTeamStat.getBTeamFirstHalfPoint()) < aTeamStat.getHalfPointLine()) {
+                            aTeamStat.setFirstHalfPointLineResult("언더");
+                            bTeamStat.setFirstHalfPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setFirstHalfPointLineResult("적특");
+                            bTeamStat.setFirstHalfPointLineResult("적특");
+                        }
+
+                        if ((aTeamStat.getATeamSecondHalfPoint() + aTeamStat.getBTeamSecondHalfPoint()) > aTeamStat.getHalfPointLine()) {
+                            aTeamStat.setSecondHalfPointLineResult("오버");
+                            bTeamStat.setSecondHalfPointLineResult("오버");
+
+                        } else if ((aTeamStat.getATeamSecondHalfPoint() + aTeamStat.getBTeamSecondHalfPoint()) < aTeamStat.getHalfPointLine()) {
+                            aTeamStat.setSecondHalfPointLineResult("언더");
+                            bTeamStat.setSecondHalfPointLineResult("언더");
+
+                        } else {
+                            aTeamStat.setSecondHalfPointLineResult("적특");
+                            bTeamStat.setSecondHalfPointLineResult("적특");
+                        }
+                    }
+
+                    String[] arrayQScore = element.select("tbody > tr > td.s").text().split(" ");
+                    String[] arrayQTotalScore = element.select("tfoot > tr > td.s").text().split(" ");
+
+                    if (arrayQTotalScore.length == 1) {
+                        System.out.println("stop");
+                    }
+
+                    if (arrayQTotalScore.length > 1) {
+                        aTeamStat.setFirstQTotalPoint(Integer.valueOf(arrayQTotalScore[0]));
+                        aTeamStat.setSecondQTotalPoint(Integer.valueOf(arrayQTotalScore[1]));
+                        aTeamStat.setThirdQTotalPoint(Integer.valueOf(arrayQTotalScore[2]));
+                        aTeamStat.setFourthQTotalPoint(Integer.valueOf(arrayQTotalScore[3]));
+                        if (arrayQTotalScore.length > 4) {
+                            aTeamStat.setExtendQTotalPoint(Integer.valueOf(arrayQTotalScore[4]));
+                        } else {
+                            aTeamStat.setExtendQTotalPoint(0);
+                        }
+                    } else {
+                        aTeamStat.setFirstQTotalPoint(0);
+                        aTeamStat.setSecondQTotalPoint(0);
+                        aTeamStat.setThirdQTotalPoint(0);
+                        aTeamStat.setFourthQTotalPoint(0);
+                        aTeamStat.setExtendQTotalPoint(0);
+
+                    }
+
+                    aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+                    aTeamStat.setDate(df.format(startDate.getTime()));
+                    bTeamStat.setDate(df.format(startDate.getTime()));
+                    aTeamStat.setGround("홈");
+                    bTeamStat.setGround("원정");
+                    aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                    aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+                    for (Element element1 : element.select("tbody > tr > td.f.ico_linescore > p")) {
+                        if (i == 0) {
+                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
+                                aTeamStat.setFirstQFirstPoint("패배");
+                            } else {
+                                aTeamStat.setFirstQFirstPoint("승리");
+                            }
+                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
+                                aTeamStat.setFirstQFirstFreeTwo("패배");
+                            } else {
+                                aTeamStat.setFirstQFirstFreeTwo("승리");
+                            }
+                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
+                                aTeamStat.setFirstQFirstTwoPoint("패배");
+                            } else {
+                                aTeamStat.setFirstQFirstTwoPoint("승리");
+                            }
+                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
+                                aTeamStat.setFirstQFirstThreePoint("패배");
+                            } else {
+                                aTeamStat.setFirstQFirstThreePoint("승리");
+                            }
+                        }
+                        if (i == 1) {
+                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
+                                aTeamStat.setSecondQFirstPoint("패배");
+                            } else {
+                                aTeamStat.setSecondQFirstPoint("승리");
+                            }
+                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
+                                aTeamStat.setSecondQFirstFreeTwo("패배");
+                            } else {
+                                aTeamStat.setSecondQFirstFreeTwo("승리");
+                            }
+                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
+                                aTeamStat.setSecondQFirstTwoPoint("패배");
+                            } else {
+                                aTeamStat.setSecondQFirstTwoPoint("승리");
+                            }
+                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
+                                aTeamStat.setSecondQFirstThreePoint("패배");
+                            } else {
+                                aTeamStat.setSecondQFirstThreePoint("승리");
+                            }
+                        }
+                        if (i == 2) {
+                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
+                                aTeamStat.setThirdQFirstPoint("패배");
+                            } else {
+                                aTeamStat.setThirdQFirstPoint("승리");
+                            }
+                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
+                                aTeamStat.setThirdQFirstFreeTwo("패배");
+                            } else {
+                                aTeamStat.setThirdQFirstFreeTwo("승리");
+                            }
+                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
+                                aTeamStat.setThirdQFirstTwoPoint("패배");
+                            } else {
+                                aTeamStat.setThirdQFirstTwoPoint("승리");
+                            }
+                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
+                                aTeamStat.setThirdQFirstThreePoint("패배");
+                            } else {
+                                aTeamStat.setThirdQFirstThreePoint("승리");
+                            }
+                        }
+                        if (i == 3) {
+                            if (element1.select("span.ico_firstpoint").text().equals("첫득점")) {
+                                aTeamStat.setFourthQFirstPoint("패배");
+                            } else {
+                                aTeamStat.setFourthQFirstPoint("승리");
+                            }
+                            if (element1.select("span.ico_freetwo").text().equals("자유투")) {
+                                aTeamStat.setFourthQFirstFreeTwo("패배");
+                            } else {
+                                aTeamStat.setFourthQFirstFreeTwo("승리");
+                            }
+                            if (element1.select("span.ico_twopoint").text().equals("2점슛")) {
+                                aTeamStat.setFourthQFirstTwoPoint("패배");
+                            } else {
+                                aTeamStat.setFourthQFirstTwoPoint("승리");
+                            }
+                            if (element1.select("span.ico_threepoint").text().equals("3점슛")) {
+                                aTeamStat.setFourthQFirstThreePoint("패배");
+                            } else {
+                                aTeamStat.setFourthQFirstThreePoint("승리");
+                            }
+                        }
+                        i++;
+                    }
+                    setBteamStat(aTeamStat, bTeamStat);
+
+
+                    System.out.println(aTeamStat);
+                    System.out.println(bTeamStat);
+                    System.out.println("!!!");
+                    setalarmDAO.updateBasketStat(aTeamStat);
+                    setalarmDAO.updateBasketStat(bTeamStat);
+                }
+
+            }
+
+            date++;
+        }
+    }
 
     public void getCategoryList() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
@@ -618,6 +1189,10 @@ public class Nba {
 
         bTeamStat.setPointLine(aTeamStat.getPointLine());
         bTeamStat.setHandiCap(-(aTeamStat.getHandiCap()));
+        bTeamStat.setHalfHandiCap(-(aTeamStat.getHalfHandiCap()));
+        bTeamStat.setHalfPointLine((aTeamStat.getHalfPointLine()));
+
+
 
         bTeamStat.setBTeamTotalPoint(aTeamStat.getATeamTotalPoint());
         bTeamStat.setATeamTotalPoint(aTeamStat.getBTeamTotalPoint());
@@ -628,6 +1203,22 @@ public class Nba {
             bTeamStat.setHandiCapResult("패배");
         } else {
             bTeamStat.setHandiCapResult("적특");
+        }
+
+        if (aTeamStat.getFirstHalfHandiCapResult().equals("패배")) {
+            bTeamStat.setFirstHalfHandiCapResult("승리");
+        } else if (aTeamStat.getFirstHalfHandiCapResult().equals("승리")) {
+            bTeamStat.setFirstHalfHandiCapResult("패배");
+        } else {
+            bTeamStat.setFirstHalfHandiCapResult("적특");
+        }
+
+        if (aTeamStat.getSecondHalfHandiCapResult().equals("패배")) {
+            bTeamStat.setSecondHalfHandiCapResult("승리");
+        } else if (aTeamStat.getSecondHalfHandiCapResult().equals("승리")) {
+            bTeamStat.setSecondHalfHandiCapResult("패배");
+        } else {
+            bTeamStat.setSecondHalfHandiCapResult("적특");
         }
 
 
@@ -786,6 +1377,8 @@ public class Nba {
         }
 
     }
+
+
     public String getDayoOfWeek(int dayNum){
         String dayOfWeek = "";
 
@@ -819,8 +1412,8 @@ public class Nba {
         Nba nba = new Nba();
         try {
 //            nba.getCategoryList();
-            nba.getAllMatch();
-
+//            nba.getAllMatch();
+            nba.updateBasketBall();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

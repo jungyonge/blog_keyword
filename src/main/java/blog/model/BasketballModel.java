@@ -53,6 +53,20 @@ public class BasketballModel {
     Integer aTeamExtendQPoint;
     Integer bTeamExtendQPoint;
 
+    Integer aTeamFirstHalfPoint;
+    Integer bTeamFirstHalfPoint;
+    Double halfHandiCap;
+    String firstHalfHandiCapResult;
+    Double halfPointLine;
+    String firstHalfPointLineResult;
+    Integer aTeamSecondHalfPoint;
+    Integer bTeamSecondHalfPoint;
+    String secondHalfHandiCapResult;
+    String secondHalfPointLineResult;
+
+
+
+
     String firstQFirstPoint;
     String firstQFirstFreeTwo;
     String firstQFirstTwoPoint;
