@@ -148,14 +148,15 @@ public class Hockey {
         String rootHtml = "";
         String url = "https://livescore.co.kr/sports/score_board/hockey/view.php?date=";
         int date = 0;
+        Calendar curDate = Calendar.getInstance();
+        curDate.setTime(new Date());
+        curDate.add(Calendar.DATE, 1);
 
         while (true){
             Calendar startDate = Calendar.getInstance();
-            Calendar curDate = Calendar.getInstance();
 
             startDate.set(2019, 9,1);
 
-            curDate.setTime(new Date());
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -861,8 +862,8 @@ public class Hockey {
     public static void main(String[] args) {
         Hockey hockey = new Hockey();
         try {
-//            hockey.getAllMatch();
-            hockey.updateHockeyStat();
+            hockey.getAllMatch();
+//            hockey.updateHockeyStat();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

@@ -152,13 +152,16 @@ public class Basketball {
         String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
 
         int date = 0;
+        Calendar curDate = Calendar.getInstance();
+        curDate.setTime(new Date());
+        curDate.add(Calendar.DATE, 1);
+
         while (true){
 
             Calendar startDate = Calendar.getInstance();
-            Calendar curDate = Calendar.getInstance();
 
             startDate.set(2019,9,03);
-            curDate.setTime(new Date());
+
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);

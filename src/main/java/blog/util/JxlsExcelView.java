@@ -22,7 +22,6 @@ public class JxlsExcelView extends AbstractExcelView {
 
     private static final String[] fileList = { "basketball","volleyball","hockey","soccer"};
 
-    private static final Logger logger = LoggerFactory.getLogger(JxlsExcelView.class);
     private static final String FILE_EXT1 = ".xls";
     private static final String FILE_EXT2 = ".xlsx";
     private static final String SHEET_NAME = "sheet";
@@ -57,6 +56,7 @@ public class JxlsExcelView extends AbstractExcelView {
             logger.debug("엑셀 템플릿 output 이름   ========> " + excelOutputName);
             logger.debug("=======================================================>");
 
+            System.out.println(1111);
             InputStream inputStream = null;
             String ext = FILE_EXT1;
             try {
@@ -131,7 +131,7 @@ public class JxlsExcelView extends AbstractExcelView {
 
             OutputStream out = response.getOutputStream();
             String fileName1 = fileList[0] +"_"+ df1.format(cal.getTime()) + ".xlsx";
-            FileOutputStream fos = new FileOutputStream("/Users/imc053/Desktop/xmlFile/test.xlsx");
+            FileOutputStream fos = new FileOutputStream("D:test/test.xlsx");
             workbook.write(fos);
             workbook.write(out);
             out.flush();

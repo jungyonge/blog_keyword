@@ -123,6 +123,19 @@ public class SetalarmDAO {
     }
 
 
+
+    public List selectBasketStat() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketStat");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
     public void insertBasketMatch(BasketballModel basketballModel){
         SqlSession session = sqlSessionFactory.openSession();
 

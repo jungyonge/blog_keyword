@@ -65,6 +65,8 @@ public class Soccer {
 
         String rootHtml = "";
         String url = "http://livescore.co.kr/sports/score_board/football/view.php?date=";
+
+
         int date = 0;
 
         while (true){
@@ -150,6 +152,11 @@ public class Soccer {
         SoccerModel bTeamStat = new SoccerModel();
 //2019년 9월 5일 ~ 2020년 2월 (현지기준)
 
+        Calendar curDate = Calendar.getInstance();
+        curDate.setTime(new Date());
+        curDate.add(Calendar.DATE, 1);
+
+
         String rootHtml = "";
         String url = "http://livescore.co.kr/sports/score_board/football/view.php?date=";
 
@@ -158,10 +165,8 @@ public class Soccer {
         while (true){
 
             Calendar startDate = Calendar.getInstance();
-            Calendar curDate = Calendar.getInstance();
 
             startDate.set(2019,8,03);
-            curDate.setTime(new Date());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -703,7 +708,7 @@ public class Soccer {
         Soccer soccer = new Soccer();
         try {
 //            soccer.getCategoryList();
-//            soccer.getAllMatch();
+            soccer.getAllMatch();
             soccer.updateSoccerStat();
         } catch (IOException e) {
             e.printStackTrace();

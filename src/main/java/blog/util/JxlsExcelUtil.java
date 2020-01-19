@@ -26,17 +26,17 @@ public class JxlsExcelUtil {
     private static final String XLSX = ".xlsx";
     private static final String XLSX_CONTENT_TYPE = "officedocument";
 
-    public static <T> View exportJxlsExcel(ModelMap model, List<T> list, T tModel) {
-        return exportJxlsExcel(model, list, tModel, null);
+    public static <T> void  exportJxlsExcel(ModelMap model, List<T> list, T tModel) {
+        exportJxlsExcel(model, list, tModel, null);
     }
-//exportJxlsExcel
-    public static <T> View exportJxlsExcel(ModelMap model, List<T> list, T tModel, Map<String, Object> headerInfos) {
+
+    public static <T> void exportJxlsExcel(ModelMap model, List<T> list, T tModel, Map<String, Object> headerInfos) {
         model.addAttribute("list", list);
         model.addAttribute("params", model);
         model.addAttribute("vo", tModel);
         model.addAttribute("headerInfos", headerInfos);
 
-        return new JxlsExcelView();
+        new JxlsExcelView();
     }
 
     public static <T> View exportJxlsExcelMultiSheet(ModelMap model, List<T> list, String sheetName, T tModel, Map<String, Object> headerInfos) {

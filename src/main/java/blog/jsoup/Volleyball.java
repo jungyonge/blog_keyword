@@ -148,17 +148,19 @@ public class Volleyball {
         VolleyballModel aTeamStat = new VolleyballModel();
         VolleyballModel bTeamStat = new VolleyballModel();
 
+        Calendar curDate = Calendar.getInstance();
+        curDate.setTime(new Date());
+        curDate.add(Calendar.DATE, 1);
+
+
         String rootHtml = "";
         String url = "https://livescore.co.kr/sports/score_board/volley/view.php?date=";
         int date = 0;
 
         while (true){
             Calendar startDate = Calendar.getInstance();
-            Calendar curDate = Calendar.getInstance();
 
             startDate.set(2019, 9,11);
-
-            curDate.setTime(new Date());
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1019,11 +1021,18 @@ public class Volleyball {
         Nba nba = new Nba();
 
         try {
-//            volleyball.getCategoryList();
-//            hockey.getCategoryList();
-//            soccer.getCategoryList();
-//            basketball.getCategoryList();
-//            nba.getCategoryList();
+
+            hockey.getAllMatch();
+            soccer.getAllMatch();
+            basketball.getAllMatch();
+            nba.getAllMatch();
+            volleyball.getAllMatch();
+
+
+            hockey.updateHockeyStat();
+            soccer.updateSoccerStat();
+            basketball.updateBasketBall();
+            nba.updateBasketBall();
             volleyball.updateVolleyBall();
         } catch (IOException e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package blog.jsoup;
 import blog.model.BasketballModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
+import blog.util.JxlsMakeExcel;
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,13 +13,16 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Nba {
 
@@ -151,17 +155,17 @@ public class Nba {
 
         String rootHtml = "";
         String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
-
+        Calendar curDate = Calendar.getInstance();
+        curDate.setTime(new Date());
+        curDate.add(Calendar.DATE, 1);
         int date = 0;
         while (true){
 
             Calendar startDate = Calendar.getInstance();
-            Calendar curDate = Calendar.getInstance();
 
             //nba 10-22
 
             startDate.set(2019,9,21);
-            curDate.setTime(new Date());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -1410,10 +1414,14 @@ public class Nba {
     }
     public static void main(String[] args) {
         Nba nba = new Nba();
+        JxlsMakeExcel jxlsMakeExcel = new JxlsMakeExcel();
+        List excelDataList = new ArrayList<>();
         try {
 //            nba.getCategoryList();
 //            nba.getAllMatch();
             nba.updateBasketBall();
+            jxlsMakeExcel.statXlsDown("basketball");
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
