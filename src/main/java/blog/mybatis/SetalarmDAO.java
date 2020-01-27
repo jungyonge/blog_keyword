@@ -204,6 +204,7 @@ public class SetalarmDAO {
         }
         return list;
     }
+
     public void insertHockeyStat(HockeyModel hockeyModel){
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -236,6 +237,19 @@ public class SetalarmDAO {
             session.commit();
             session.close();
         }
+    }
+
+    public List selectHockeyStat() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectHockeyStat");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
     }
 
     public void insertSoccerStat(SoccerModel soccerModel){
@@ -271,6 +285,19 @@ public class SetalarmDAO {
             session.commit();
             session.close();
         }
+    }
+
+    public List selectSoccerStat() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectSoccerStat");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
     }
 
     public void insertKeywordStat(Map map){

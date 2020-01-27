@@ -49,7 +49,6 @@ public class JxlsMakeExcel {
         buildExcelDocument(model);
     }
 
-    private static final String[] fileList = { "basketball","volleyball","hockey","soccer"};
 
     private static final String FILE_EXT1 = ".xls";
     private static final String FILE_EXT2 = ".xlsx";
