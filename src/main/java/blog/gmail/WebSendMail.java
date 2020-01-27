@@ -96,8 +96,8 @@ public class WebSendMail
         for(int i = 0 ; i < fileList.length ; i++){
             messageBodyPart = new MimeBodyPart();
 
-            String fileName = fileList[i] +"_"+ df1.format(cal.getTime()) + ".xlsx";
-            File file = new File("/Users/imc053/Desktop/xmlFile/"+fileName);
+            String fileName = fileList[i] +"_"+ df1.format(cal.getTime()) + ".xls";
+            File file = new File("D:test/"+fileName);
             FileDataSource fds = new FileDataSource(file);
             messageBodyPart.setDataHandler(new DataHandler(fds));
             messageBodyPart.setFileName(MimeUtility.encodeText(fds.getName(),"UTF-8","B"));

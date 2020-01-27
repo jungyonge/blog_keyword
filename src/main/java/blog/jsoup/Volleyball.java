@@ -1,5 +1,6 @@
 package blog.jsoup;
 
+import blog.gmail.WebSendMail;
 import blog.model.BasketballModel;
 import blog.model.VolleyballModel;
 import blog.mybatis.MyBatisConnectionFactory;
@@ -11,9 +12,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.mail.MessagingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -1338,14 +1341,22 @@ public class Volleyball {
 //            basketball.getAllMatch();
 //            nba.getAllMatch();
 //            volleyball.getAllMatch();
-
-
-/*            hockey.updateHockeyStat();
-            soccer.updateSoccerStat();
-            basketball.updateBasketBall();
-            nba.updateBasketBall();*/
+//
+//
+//            hockey.updateHockeyStat();
+//            soccer.updateSoccerStat();
+//            basketball.updateBasketBall();
+//            nba.updateBasketBall();
 //            volleyball.updateVolleyBall();
+
+            jxlsMakeExcel.statXlsDown("basketball");
             jxlsMakeExcel.statXlsDown("volleyball");
+            jxlsMakeExcel.statXlsDown("soccer");
+            jxlsMakeExcel.statXlsDown("hockey");
+            WebSendMail webSendMail = new WebSendMail();
+            String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
+            webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+
 
         } catch (IOException e) {
             e.printStackTrace();

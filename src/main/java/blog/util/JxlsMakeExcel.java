@@ -33,9 +33,9 @@ public class JxlsMakeExcel {
         }else if (type == "volleyball"){
             excelDataList = setalarmDAO.selectVolleyStat();
         }else if (type == "hockey"){
-            excelDataList = setalarmDAO.selectBasketStat();
+            excelDataList = setalarmDAO.selectHockeyStat();
         }else if (type == "soccer"){
-            excelDataList = setalarmDAO.selectBasketStat();
+            excelDataList = setalarmDAO.selectSoccerStat();
         }
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
@@ -62,7 +62,7 @@ public class JxlsMakeExcel {
         List resultList = (List)model.get("list");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        DateFormat df1 = new SimpleDateFormat("yyyyMMddhhmmss");
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
 
         String excelTemplatePath = (String)model.get("EXCEL_TEMPLATE_PATH");
         String excelTemplateName = (String)model.get("excelTemplateName");
