@@ -727,5 +727,11 @@ VALUES (
     ORDER BY MATCH_DATE,GAME_ID;
     </select>
 
+    <select id="selectMemberList"  resultType="HashMap">
+        SELECT EMAIL
+            FROM sport.member
+        WHERE END_DATE > NOW();
+    </select>
+
 
 </mapper>

@@ -7,6 +7,7 @@ import blog.model.VolleyballModel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -299,6 +300,20 @@ public class SetalarmDAO {
         }
         return list;
     }
+
+    public List<HashMap<String, Object>> selectMemberList() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List<HashMap<String, Object>> memberList ;
+
+        try {
+            memberList = session.selectList("Setalarm.selectMemberList");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return memberList;
+    }
+
 
     public void insertKeywordStat(Map map){
         SqlSession session = sqlSessionFactory.openSession();
