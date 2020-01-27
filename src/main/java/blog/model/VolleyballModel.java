@@ -37,9 +37,33 @@ public class VolleyballModel {
 
     Double firstQHandiCap;
     String firstQHandiCapResult;
-
+    String firstQResult;
     Double firstQPointLine;
     String firstQPointLineResult;
+
+    Integer aTeamSecondQPoint;
+    Integer bTeamSecondQPoint;
+    String secondQResult;
+    String secondQHandiCapResult;
+    String secondQPointLineResult;
+
+    Integer aTeamThirdQPoint;
+    Integer bTeamThirdQPoint;
+    String thirdQResult;
+    String thirdQHandiCapResult;
+    String thirdQPointLineResult;
+
+    Integer aTeamFourthQPoint;
+    Integer bTeamFourthQPoint;
+    String fourthQResult;
+    String fourthQHandiCapResult;
+    String fourthQPointLineResult;
+
+    Integer aTeamFifthQPoint;
+    Integer bTeamFifthQPoint;
+    String fifthQResult;
+    String fifthQHandiCapResult;
+    String fifthQPointLineResult;
 
     String firstPoint;
     String firstBlock;

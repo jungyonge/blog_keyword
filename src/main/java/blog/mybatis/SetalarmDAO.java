@@ -192,6 +192,18 @@ public class SetalarmDAO {
         }
     }
 
+    public List selectVolleyStat() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectVolleyStat");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
     public void insertHockeyStat(HockeyModel hockeyModel){
         SqlSession session = sqlSessionFactory.openSession();
 

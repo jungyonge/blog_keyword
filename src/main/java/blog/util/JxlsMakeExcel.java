@@ -28,18 +28,25 @@ public class JxlsMakeExcel {
         // 세션값 얻기
         List excelDataList = new ArrayList<>();
 
-        excelDataList = setalarmDAO.selectBasketStat();
+        if(type == "basketball"){
+            excelDataList = setalarmDAO.selectBasketStat();
+        }else if (type == "volleyball"){
+            excelDataList = setalarmDAO.selectVolleyStat();
+        }else if (type == "hockey"){
+            excelDataList = setalarmDAO.selectBasketStat();
+        }else if (type == "soccer"){
+            excelDataList = setalarmDAO.selectBasketStat();
+        }
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         model.put("EXCEL_TEMPLATE_PATH", excelTemplatePath);
 
-        model.put("excelTemplateName", "basketball");
-        model.put("excelOutputName", "basketball");
+        model.put("excelTemplateName", type);
+        model.put("excelOutputName", type);
         model.put("list",excelDataList);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         buildExcelDocument(model);
-//        JxlsExcelUtil.exportJxlsExcel(model, excelDataList, null, paramMap);
     }
 
     private static final String[] fileList = { "basketball","volleyball","hockey","soccer"};
@@ -134,7 +141,7 @@ public class JxlsMakeExcel {
 
             String fileName = null;
 
-            String fileName1 = fileList[0] +"_"+ df1.format(cal.getTime()) + ".xls";
+            String fileName1 = excelOutputName +"_"+ df1.format(cal.getTime()) + ".xls";
             FileOutputStream fos = new FileOutputStream("D:test/" + fileName1);
             workbook.write(fos);
         }
