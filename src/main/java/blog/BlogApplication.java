@@ -1,5 +1,7 @@
 package blog;
 
+import blog.quartz.CronTrigger;
+import org.quartz.SchedulerException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class BlogApplication {
 
     public static void main(String[] args) {
+
+        CronTrigger cronTrigger = new CronTrigger();
+        System.out.println("트리거실행");
+        try {
+            cronTrigger.start();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
         SpringApplication.run(BlogApplication.class, args);
     }
 

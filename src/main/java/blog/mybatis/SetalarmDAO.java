@@ -301,6 +301,8 @@ public class SetalarmDAO {
         return list;
     }
 
+
+
     public List<HashMap<String, Object>> selectMemberList() {
         SqlSession session = sqlSessionFactory.openSession();
         List<HashMap<String, Object>> memberList ;
@@ -313,6 +315,147 @@ public class SetalarmDAO {
         }
         return memberList;
     }
+
+    public void truncateBasketSpecialSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketQuarterHandiOverSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketQuarterHandiOverSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketSpecialComboSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialComboSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketQuarterHandiComboSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketQuarterHandiComboSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBasketSpecialSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketSpecialSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public List selectBasketQuarterHandiOverSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketQuarterHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public List selectBasketSpecialComboSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketSpecialComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public List selectBasketQuarterHandiComboSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketQuarterHandiComboSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
 
 
     public void insertKeywordStat(Map map){

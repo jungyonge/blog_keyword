@@ -474,7 +474,9 @@ public class Volleyball {
                         aTeamStat.setFirstQHandiCap(0.5);
                     } else if (aTeamStat.getHandiCap() <= -0.5 && aTeamStat.getHandiCap() >= -1.5) {
                         aTeamStat.setFirstQHandiCap(-0.5);
-                    };
+                    }else {
+                        aTeamStat.setFirstQHandiCap(0.0);
+                    }
 
 
                     if(aTeamStat.getFirstQHandiCap() == 0){
@@ -754,29 +756,30 @@ public class Volleyball {
 //                        String[] arrayFirstPointList = ele.select("td.f.navy").text().split(" ");
                         String arrayFirst = ele.text();
                         if(cnt == 0 && arrayFirst.equals("●")){
-                            aTeamStat.setFirst5Point("승리");
-                            bTeamStat.setFirst5Point("패배");
-                        } else {
                             aTeamStat.setFirst5Point("패배");
                             bTeamStat.setFirst5Point("승리");
+                        } else if(cnt == 0 && !arrayFirst.equals("●")) {
+                            aTeamStat.setFirst5Point("승리");
+                            bTeamStat.setFirst5Point("패배");
                         }
-                        if(cnt == 1 && arrayFirst.equals("●")){
 
-                            aTeamStat.setFirst7Point("승리");
-                            bTeamStat.setFirst7Point("패배");
-                        } else {
+                        if(cnt == 1 && arrayFirst.equals("●")){
 
                             aTeamStat.setFirst7Point("패배");
                             bTeamStat.setFirst7Point("승리");
+                        } else if(cnt == 1 && !arrayFirst.equals("●")){
+                            aTeamStat.setFirst7Point("승리");
+                            bTeamStat.setFirst7Point("패배");
 
                         }
                         if(cnt == 2 && arrayFirst.equals("●")){
-                            aTeamStat.setFirst10Point("승리");
-                            bTeamStat.setFirst10Point("패배");
-                        } else {
-;
+
                             aTeamStat.setFirst10Point("패배");
                             bTeamStat.setFirst10Point("승리");
+                        } else if(cnt == 2 && !arrayFirst.equals("●")) {
+;                           aTeamStat.setFirst10Point("승리");
+                            bTeamStat.setFirst10Point("패배");
+
                         }
                         cnt++;
                     }
@@ -1341,7 +1344,7 @@ public class Volleyball {
 //            basketball.getAllMatch();
 //            nba.getAllMatch();
 //            volleyball.getAllMatch();
-//
+
 //
 //            hockey.updateHockeyStat();
 //            soccer.updateSoccerStat();
@@ -1349,20 +1352,42 @@ public class Volleyball {
 //            nba.updateBasketBall();
 //            volleyball.updateVolleyBall();
 
-//            jxlsMakeExcel.statXlsDown("basketball");
-//            jxlsMakeExcel.statXlsDown("volleyball");
-//            jxlsMakeExcel.statXlsDown("soccer");
-//            jxlsMakeExcel.statXlsDown("hockey");
-            List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
-            String[] recipients = new String[memberList.size()];
 
+            setalarmDAO.truncateBasketSpecialSummary();
+            setalarmDAO.insertBasketSpecialSummary();
+            setalarmDAO.truncateBasketQuarterHandiOverSummary();
+            setalarmDAO.insertBasketQuarterHandiOverSummary();
+            setalarmDAO.truncateBasketSpecialComboSummary();
+            setalarmDAO.insertBasketSpecialComboSummary();
+            setalarmDAO.truncateBasketQuarterHandiComboSummary();
+            setalarmDAO.insertBasketQuarterHandiComboSummary();
+
+
+            jxlsMakeExcel.statXlsDown("basketball");
+            jxlsMakeExcel.statXlsDown("volleyball");
+            jxlsMakeExcel.statXlsDown("soccer");
+            jxlsMakeExcel.statXlsDown("hockey");
+
+            jxlsMakeExcel.statXlsDown("basketball_special");
+            jxlsMakeExcel.statXlsDown("basketball_quarter_special_combo");
+            jxlsMakeExcel.statXlsDown("basketball_quarter_handi_over");
+            jxlsMakeExcel.statXlsDown("basketball_quarter_handi_combo");
+//
+//            List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
+////            String[] recipients = new String[1];
+//
             WebSendMail webSendMail = new WebSendMail();
+//
+////            for (int i = 0 ; i < memberList.size() ; i++){
+////                recipients[0] = memberList.get(i).get("EMAIL").toString();
+////                System.out.println(recipients[0]);
+////                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+////            }
+//
+                 String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
+                System.out.println(recipients[0]);
+                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
 
-            for (int i = 0 ; i < memberList.size() ; i++){
-                recipients[i] = memberList.get(i).get("EMAIL").toString();
-            }
-
-            webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
 
 
         } catch (Exception e) {

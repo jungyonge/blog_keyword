@@ -36,7 +36,17 @@ public class JxlsMakeExcel {
             excelDataList = setalarmDAO.selectHockeyStat();
         }else if (type == "soccer"){
             excelDataList = setalarmDAO.selectSoccerStat();
+        }else if (type == "basketball_special"){
+            excelDataList = setalarmDAO.selectBasketSpecialSummary();
+        }else if (type == "basketball_quarter_special_combo"){
+            excelDataList = setalarmDAO.selectBasketSpecialComboSummary();
+        }else if (type == "basketball_quarter_handi_over"){
+            excelDataList = setalarmDAO.selectBasketQuarterHandiOverSummary();
+        }else if (type == "basketball_quarter_handi_combo"){
+            excelDataList = setalarmDAO.selectBasketQuarterHandiComboSummary();
         }
+
+
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         model.put("EXCEL_TEMPLATE_PATH", excelTemplatePath);
