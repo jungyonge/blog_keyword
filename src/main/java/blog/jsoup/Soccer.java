@@ -166,7 +166,9 @@ public class Soccer {
 
             Calendar startDate = Calendar.getInstance();
 
-            startDate.set(2019,8,03);
+//            startDate.set(2019,8,03);
+            startDate.setTime(new Date());
+
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -379,8 +381,8 @@ public class Soccer {
                     setBteamStat(aTeamStat, bTeamStat);
 
 
-                    System.out.println(aTeamStat);
-                    System.out.println(bTeamStat);
+//                    System.out.println(aTeamStat);
+//                    System.out.println(bTeamStat);
                     setalarmDAO.updateSoccerStat(aTeamStat);
                     setalarmDAO.updateSoccerStat(bTeamStat);
                 }

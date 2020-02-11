@@ -160,8 +160,8 @@ public class Basketball {
 
             Calendar startDate = Calendar.getInstance();
 
-            startDate.set(2019,9,03);
-
+//            startDate.set(2019,9,03);
+            startDate.setTime(new Date());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -705,8 +705,8 @@ public class Basketball {
                     setBteamStat(aTeamStat, bTeamStat);
 
 
-                    System.out.println(aTeamStat);
-                    System.out.println(bTeamStat);
+//                    System.out.println(aTeamStat);
+//                    System.out.println(bTeamStat);
                     System.out.println("!!!");
                     setalarmDAO.updateBasketStat(aTeamStat);
                     setalarmDAO.updateBasketStat(bTeamStat);

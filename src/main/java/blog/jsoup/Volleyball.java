@@ -162,7 +162,8 @@ public class Volleyball {
         while (true){
             Calendar startDate = Calendar.getInstance();
 
-            startDate.set(2019, 9,11);
+//            startDate.set(2019, 9,11);
+            startDate.setTime(new Date());
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -786,9 +787,9 @@ public class Volleyball {
 
                     setBteamStat(aTeamStat, bTeamStat);
 
-
-                    System.out.println(aTeamStat);
-                    System.out.println(bTeamStat);
+//
+//                    System.out.println(aTeamStat);
+//                    System.out.println(bTeamStat);
                     setalarmDAO.updateVolleyStat(aTeamStat);
                     setalarmDAO.updateVolleyStat(bTeamStat);
                 }
@@ -1346,11 +1347,11 @@ public class Volleyball {
 //            volleyball.getAllMatch();
 
 //
-//            hockey.updateHockeyStat();
-//            soccer.updateSoccerStat();
-//            basketball.updateBasketBall();
-//            nba.updateBasketBall();
-//            volleyball.updateVolleyBall();
+            hockey.updateHockeyStat();
+            soccer.updateSoccerStat();
+            basketball.updateBasketBall();
+            nba.updateBasketBall();
+            volleyball.updateVolleyBall();
 
 
             setalarmDAO.truncateBasketSpecialSummary();

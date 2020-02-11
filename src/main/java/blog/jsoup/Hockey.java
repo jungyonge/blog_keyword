@@ -155,7 +155,8 @@ public class Hockey {
         while (true){
             Calendar startDate = Calendar.getInstance();
 
-            startDate.set(2019, 9,1);
+//            startDate.set(2019, 9,1);
+            startDate.setTime(new Date());
 
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -447,8 +448,8 @@ public class Hockey {
 
                     setBteamStat(aTeamStat, bTeamStat);
 
-                    System.out.println(aTeamStat);
-                    System.out.println(bTeamStat);
+//                    System.out.println(aTeamStat);
+//                    System.out.println(bTeamStat);
                     setalarmDAO.updateHockeyStat(aTeamStat);
                     setalarmDAO.updateHockeyStat(bTeamStat);
                 }

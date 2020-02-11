@@ -164,7 +164,9 @@ public class Nba {
 
             //nba 10-22
 
-            startDate.set(2019,9,21);
+//            startDate.set(2019,9,21);
+            startDate.setTime(new Date());
+
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -706,9 +708,8 @@ public class Nba {
                     setBteamStat(aTeamStat, bTeamStat);
 
 
-                    System.out.println(aTeamStat);
-                    System.out.println(bTeamStat);
-                    System.out.println("!!!");
+//                    System.out.println(aTeamStat);
+//                    System.out.println(bTeamStat);
                     setalarmDAO.updateBasketStat(aTeamStat);
                     setalarmDAO.updateBasketStat(bTeamStat);
                 }
