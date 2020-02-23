@@ -166,6 +166,7 @@ public class Nba {
 
 //            startDate.set(2019,9,21);
             startDate.setTime(new Date());
+            startDate.add(Calendar.DATE, -5);
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1479,9 +1480,9 @@ public class Nba {
         List excelDataList = new ArrayList<>();
         try {
 //            nba.getCategoryList();
-//            nba.getAllMatch();
+            nba.getAllMatch();
             nba.updateBasketBall();
-            jxlsMakeExcel.statXlsDown("basketball");
+//            jxlsMakeExcel.statXlsDown("basketball");
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,7 +21,8 @@ public class WebSendMail
     private static final String emailFromAddress = "jungyongee@gmail.com";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final String[] sendTo = { "jungyongee@gmail.com"};
-    private static final String[] fileList = { "basketball","volleyball","hockey","soccer","basketball_special","basketball_quarter_special_combo","basketball_quarter_handi_over","basketball_quarter_handi_combo"};
+//    private static final String[] fileList = { "basketball","volleyball","hockey","soccer","basketball_special","basketball_quarter_special_combo","basketball_quarter_handi_over","basketball_quarter_handi_combo"};
+private static final String[] fileList = { "basketball","volleyball","hockey","soccer","basketball_summary"};
 
 
     public void sendSSLMessage(String recipients[], String subject,

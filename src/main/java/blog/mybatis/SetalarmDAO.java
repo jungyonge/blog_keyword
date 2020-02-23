@@ -457,6 +457,165 @@ public class SetalarmDAO {
     }
 
 
+    public void truncateBasketSpecialGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBasketSpecialGroundSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketSpecialGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public void truncateBasketQuarterHandiOverGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketQuarterHandiOverGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBasketQuarterHandiOverGroundSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketQuarterHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+
+    public void truncateBasketHandiOverSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketHandiOverSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBasketHandiOverSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketHandiOverSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public void truncateBasketHandiOverGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketHandiOverGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBasketHandiOverGroundSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBasketHandiOverGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public List selectAllSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectAllSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////키워드 파싱
 
     public void insertKeywordStat(Map map){
         SqlSession session = sqlSessionFactory.openSession();

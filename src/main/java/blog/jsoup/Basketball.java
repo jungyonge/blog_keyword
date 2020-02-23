@@ -69,7 +69,9 @@ public class Basketball {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.set(2019, 9,03);
+
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
 
             cal.add(Calendar.DATE, date);
             System.out.println("after: " + df.format(cal.getTime()));
@@ -162,6 +164,8 @@ public class Basketball {
 
 //            startDate.set(2019,9,03);
             startDate.setTime(new Date());
+            startDate.add(Calendar.DATE, -5);
+
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             startDate.add(Calendar.DATE, date);
@@ -705,8 +709,8 @@ public class Basketball {
                     setBteamStat(aTeamStat, bTeamStat);
 
 
-//                    System.out.println(aTeamStat);
-//                    System.out.println(bTeamStat);
+                    System.out.println(aTeamStat);
+                    System.out.println(bTeamStat);
                     System.out.println("!!!");
                     setalarmDAO.updateBasketStat(aTeamStat);
                     setalarmDAO.updateBasketStat(bTeamStat);
@@ -1423,6 +1427,7 @@ public class Basketball {
                 "부산 KT",
                 "원주 DB",
                 "KEB하나",
+                "하나은행",
                 "BNK 썸",
                 "KB스타즈",
                 "신한은행",
@@ -1471,7 +1476,7 @@ public class Basketball {
         Basketball basketball = new Basketball();
         try {
 //            basketball.getCategoryList();
-//            basketball.getAllMatch();
+            basketball.getAllMatch();
             basketball.updateBasketBall();
         } catch (IOException e) {
             e.printStackTrace();

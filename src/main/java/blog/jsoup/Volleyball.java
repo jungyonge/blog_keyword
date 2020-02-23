@@ -5,6 +5,7 @@ import blog.model.VolleyballModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import blog.util.JxlsMakeExcel;
+import blog.util.JxlsMakeExcelText;
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -164,6 +165,7 @@ public class Volleyball {
 
 //            startDate.set(2019, 9,11);
             startDate.setTime(new Date());
+            startDate.add(Calendar.DATE, -5);
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1336,6 +1338,9 @@ public class Volleyball {
         Basketball basketball = new Basketball();
         Nba nba = new Nba();
         JxlsMakeExcel jxlsMakeExcel = new JxlsMakeExcel();
+        JxlsMakeExcelText jxlsMakeExcelText = new JxlsMakeExcelText();
+
+
         SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
         try {
@@ -1356,12 +1361,30 @@ public class Volleyball {
 
             setalarmDAO.truncateBasketSpecialSummary();
             setalarmDAO.insertBasketSpecialSummary();
+
             setalarmDAO.truncateBasketQuarterHandiOverSummary();
             setalarmDAO.insertBasketQuarterHandiOverSummary();
+
             setalarmDAO.truncateBasketSpecialComboSummary();
             setalarmDAO.insertBasketSpecialComboSummary();
+
             setalarmDAO.truncateBasketQuarterHandiComboSummary();
             setalarmDAO.insertBasketQuarterHandiComboSummary();
+
+            setalarmDAO.truncateBasketQuarterHandiOverGroundSummary();
+            setalarmDAO.insertBasketQuarterHandiOverGroundSummary();
+
+            setalarmDAO.truncateBasketSpecialGroundSummary();
+            setalarmDAO.insertBasketSpecialGroundSummary();
+
+            setalarmDAO.truncateBasketHandiOverSummary();
+            setalarmDAO.insertBasketHandiOverSummary();
+
+            setalarmDAO.truncateBasketHandiOverGroundSummary();
+            setalarmDAO.insertBasketHandiOverGroundSummary();
+
+
+
 
 
             jxlsMakeExcel.statXlsDown("basketball");
@@ -1369,26 +1392,23 @@ public class Volleyball {
             jxlsMakeExcel.statXlsDown("soccer");
             jxlsMakeExcel.statXlsDown("hockey");
 
-            jxlsMakeExcel.statXlsDown("basketball_special");
-            jxlsMakeExcel.statXlsDown("basketball_quarter_special_combo");
-            jxlsMakeExcel.statXlsDown("basketball_quarter_handi_over");
-            jxlsMakeExcel.statXlsDown("basketball_quarter_handi_combo");
-//
-//            List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
-////            String[] recipients = new String[1];
+            jxlsMakeExcelText.statXlsDown("basketball_summary");
+
+            List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
+            String[] recipients = new String[1];
 //
             WebSendMail webSendMail = new WebSendMail();
 //
-////            for (int i = 0 ; i < memberList.size() ; i++){
-////                recipients[0] = memberList.get(i).get("EMAIL").toString();
-////                System.out.println(recipients[0]);
-////                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
-////            }
-//
-                 String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
+            for (int i = 0 ; i < memberList.size() ; i++){
+                recipients[0] = memberList.get(i).get("EMAIL").toString();
                 System.out.println(recipients[0]);
                 webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+            }
 
+//                 String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
+//                System.out.println(recipients[0]);
+//                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+//
 
 
         } catch (Exception e) {
