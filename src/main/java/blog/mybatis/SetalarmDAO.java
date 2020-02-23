@@ -611,6 +611,214 @@ public class SetalarmDAO {
         return list;
     }
 
+    public void truncateBasketSpecialOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketQuarterHandiOverOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiOverOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketHandiOverOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketHandiOverOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public void insertBasketQuarterHandiOverOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiOverOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketHandiOverOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketHandiOverOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public void truncateBasketSpecialWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketQuarterHandiOverWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiOverWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketHandiOverWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketHandiOverWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public void insertBasketQuarterHandiOverWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiOverWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketHandiOverWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketHandiOverWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketSpecialRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketSpecialRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketQuarterHandiOverRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketQuarterHandiOverRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBasketHandiOverRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateBasketHandiOverRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketSpecialRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketSpecialRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public void insertBasketQuarterHandiOverRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketQuarterHandiOverRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertBasketHandiOverRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBasketHandiOverRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
 
 
 

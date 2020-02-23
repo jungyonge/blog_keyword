@@ -1383,6 +1383,34 @@ public class Volleyball {
             setalarmDAO.truncateBasketHandiOverGroundSummary();
             setalarmDAO.insertBasketHandiOverGroundSummary();
 
+            setalarmDAO.truncateBasketSpecialOddSummary();
+            setalarmDAO.insertBasketSpecialOddSummary();
+
+            setalarmDAO.truncateBasketQuarterHandiOverOddSummary();
+            setalarmDAO.insertBasketQuarterHandiOverOddSummary();
+
+            setalarmDAO.truncateBasketHandiOverOddSummary();
+            setalarmDAO.insertBasketHandiOverOddSummary();
+
+            setalarmDAO.truncateBasketSpecialWeekSummary();
+            setalarmDAO.insertBasketSpecialWeekSummary();
+
+            setalarmDAO.truncateBasketQuarterHandiOverWeekSummary();
+            setalarmDAO.insertBasketQuarterHandiOverWeekSummary();
+
+            setalarmDAO.truncateBasketHandiOverWeekSummary();
+            setalarmDAO.insertBasketHandiOverWeekSummary();
+
+            setalarmDAO.truncateBasketSpecialRestSummary();
+            setalarmDAO.insertBasketSpecialRestSummary();
+
+            setalarmDAO.truncateBasketQuarterHandiOverRestSummary();
+            setalarmDAO.insertBasketQuarterHandiOverRestSummary();
+
+            setalarmDAO.truncateBasketHandiOverRestSummary();
+            setalarmDAO.insertBasketHandiOverRestSummary();
+
+
 
 
 
