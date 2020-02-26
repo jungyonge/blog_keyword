@@ -147,6 +147,113 @@ public class Nba {
 
     }
 
+    public void getTomorrowMatch() throws Exception{
+
+        JSONArray jsonArray = new JSONArray();
+
+        String rootHtml = "";
+        String url = "https://livescore.co.kr/sports/score_board/basket/view.php?date=";
+        int date = 0;
+
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        cal.add(Calendar.DATE, 1);
+        System.out.println("after: " + df.format(cal.getTime()));
+
+
+
+        int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+        String dayOfWeek = getDayoOfWeek(dayNum);
+
+        System.out.println(url + df.format(cal.getTime()));
+        rootHtml = requestURLToString(url + df.format(cal.getTime()));
+
+        Document rootDoc = Jsoup.parse(rootHtml);
+        Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
+
+        for (Element element : rootDoc.select("div#score_board div.score_tbl_individual")) {
+            BasketballModel aTeamStat = new BasketballModel();
+            BasketballModel bTeamStat = new BasketballModel();
+
+            int i = 0;
+
+            String league = element.select("thead tr th.reague").text();
+            if (league.equals("NBA")) {
+
+
+                String gameId = element.select("div.score_tbl_individual").attr("id");
+
+                aTeamStat.setGameId(gameId);
+                bTeamStat.setGameId(gameId);
+                aTeamStat.setDayOfWeek(dayOfWeek);
+                bTeamStat.setDayOfWeek(dayOfWeek);
+                aTeamStat.setLeague(league);
+                bTeamStat.setLeague(league);
+
+
+                aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+                bTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+
+                aTeamStat.setDate(df.format(cal.getTime()));
+                bTeamStat.setDate(df.format(cal.getTime()));
+
+                aTeamStat.setGround("홈");
+                bTeamStat.setGround("원정");
+
+                aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+                bTeamStat.setATeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                bTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+                String[] arrayHandi = element.select("tbody > tr > td.line").text().split(" ");
+
+                if (arrayHandi.length == 1) {
+                    System.out.println("stop");
+                }
+                if (arrayHandi.length > 1) {
+                    aTeamStat.setPointLine(Double.valueOf(arrayHandi[0]));
+                    aTeamStat.setHandiCap(Double.valueOf(arrayHandi[1]));
+                } else {
+                    aTeamStat.setPointLine(0.0);
+                    aTeamStat.setHandiCap(0.0);
+                }
+
+                if(aTeamStat.getHandiCap() > 0){
+                    aTeamStat.setOdd("역배");
+                    bTeamStat.setOdd("정배");
+                } else if (aTeamStat.getHandiCap() < 0){
+                    aTeamStat.setOdd("정배");
+                    bTeamStat.setOdd("역배");
+                } else {
+                    aTeamStat.setOdd("없음");
+                    bTeamStat.setOdd("없음");
+                }
+
+
+
+            }
+
+            if(aTeamStat.getGameId() != null && bTeamStat.getGameId() != null){
+                if (checkTeam(aTeamStat.getATeam()) && checkTeam(bTeamStat.getATeam())){
+                    System.out.println(aTeamStat);
+                    System.out.println(bTeamStat);
+                    setalarmDAO.updateTomorrowBasketStat(aTeamStat);
+                    setalarmDAO.updateTomorrowBasketStat(bTeamStat);
+                }
+            }
+
+        }
+
+    }
+
+
     public void updateBasketBall() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
         BasketballModel aTeamStat = new BasketballModel();
@@ -1480,9 +1587,10 @@ public class Nba {
         List excelDataList = new ArrayList<>();
         try {
 //            nba.getCategoryList();
-            nba.getAllMatch();
-            nba.updateBasketBall();
+//            nba.getAllMatch();
+//            nba.updateBasketBall();
 //            jxlsMakeExcel.statXlsDown("basketball");
+            nba.getTomorrowMatch();
 
         } catch (IOException e) {
             e.printStackTrace();

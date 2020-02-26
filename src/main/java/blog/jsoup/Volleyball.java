@@ -1352,12 +1352,15 @@ public class Volleyball {
 //            volleyball.getAllMatch();
 
 //
+
             hockey.updateHockeyStat();
             soccer.updateSoccerStat();
             basketball.updateBasketBall();
             nba.updateBasketBall();
             volleyball.updateVolleyBall();
 
+            nba.getTomorrowMatch();
+            basketball.getTomorrowMatch();
 
             setalarmDAO.truncateBasketSpecialSummary();
             setalarmDAO.insertBasketSpecialSummary();
