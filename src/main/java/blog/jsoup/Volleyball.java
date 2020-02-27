@@ -1413,11 +1413,6 @@ public class Volleyball {
             setalarmDAO.truncateBasketHandiOverRestSummary();
             setalarmDAO.insertBasketHandiOverRestSummary();
 
-
-
-
-
-
             jxlsMakeExcel.statXlsDown("basketball");
             jxlsMakeExcel.statXlsDown("volleyball");
             jxlsMakeExcel.statXlsDown("soccer");

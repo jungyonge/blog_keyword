@@ -251,9 +251,6 @@ public class Basketball {
 
         }
 
-
-
-
     public void updateBasketBall() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
         BasketballModel aTeamStat = new BasketballModel();

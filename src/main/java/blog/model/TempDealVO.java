@@ -1,0 +1,15 @@
+package blog.model;
+
+import lombok.Data;
+
+@Data
+public class TempDealVO {
+    String sdid;
+    String dealName;
+    String dcPrice;
+    String nmPrice;
+    String dcRatio;
+    String productUrl;
+    String imgUrl;
+
+}
