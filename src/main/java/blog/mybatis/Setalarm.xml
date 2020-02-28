@@ -3196,5 +3196,55 @@ VALUES (
         ]]>
     </insert>
 
+    <insert id="insertCoupangDeal" parameterType="blog.model.TempDealVO">
+        INSERT INTO coupang.coupang_deal
+            (
+                      sdid
+                    , dealname
+                    , cate
+                    , nmprice
+                    , dcprice
+                    , dcratio
+                    , producturl
+                    , imgurl
+             )
+        VALUES (
+                     #{sdid}
+                   ,#{dealName}
+                    ,#{cate}
+                   ,#{nmPrice}
+                   ,#{dcPrice}
+                   ,#{dcRatio}
+                   ,#{productUrl}
+                   ,#{imgUrl}
+               )
+    </insert>
+
+    <select id="selectCoupangDeal"  resultType="blog.model.TempDealVO">
+
+        SELECT
+               idx
+              , sdid
+             , dealname
+             , cate
+             , nmprice
+             , dcprice
+             , dcratio
+             , producturl
+             , imgurl
+        FROM coupang.coupang_deal
+        WHERE postid IS NULL
+        LIMIT 1;
+
+    </select>
+
+    <update id="updateCoupangDeal" parameterType="blog.model.TempDealVO">
+
+        UPDATE coupang.coupang_deal
+            SET postid = #{postid}
+        WHERE idx = #{idx};
+
+    </update>
+
 
 </mapper>

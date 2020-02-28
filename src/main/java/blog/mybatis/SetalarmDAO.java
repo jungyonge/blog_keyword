@@ -1,9 +1,6 @@
 package blog.mybatis;
 
-import blog.model.BasketballModel;
-import blog.model.HockeyModel;
-import blog.model.SoccerModel;
-import blog.model.VolleyballModel;
+import blog.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -884,6 +881,42 @@ public class SetalarmDAO {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.insert("Setalarm.updateUsed_Relate",map);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void insertCoupangDeal(TempDealVO tempDealVO){
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.insert("Setalarm.insertCoupangDeal",tempDealVO);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+    public TempDealVO selectCoupangDeal() {
+        SqlSession session = sqlSessionFactory.openSession();
+        TempDealVO tempDealVO ;
+
+        try {
+            tempDealVO = session.selectOne("Setalarm.selectCoupangDeal");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return tempDealVO;
+    }
+
+    public void updateCoupangDeal(TempDealVO tempDealVO){
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.insert("Setalarm.updateCoupangDeal",tempDealVO);
         } finally {
             session.commit();
             session.close();
