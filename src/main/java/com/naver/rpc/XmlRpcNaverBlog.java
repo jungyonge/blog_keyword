@@ -36,13 +36,13 @@ public class XmlRpcNaverBlog {
     SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
 
-    public void writeBlogPost(TempDealVO tempDealVO) {
+    public String writeBlogPost(TempDealVO tempDealVO) {
         // TODO Auto-generated method stub
 
         CoupangCateParse coupangCateParse = new CoupangCateParse();
         CoupangAPI coupangAPI = new CoupangAPI();
         MakeCoupangDesc makeCoupangDesc = new MakeCoupangDesc();
-
+        String rsString ="";
 
         try {
 
@@ -125,15 +125,16 @@ public class XmlRpcNaverBlog {
             XmlRpcClient client = new XmlRpcClient();
             client.setConfig(config);
 
-            String rsString = (String) client.execute("metaWeblog.newPost", params);
+            rsString = (String) client.execute("metaWeblog.newPost", params);
 
             resultDealVO.setPostid(rsString);
             setalarmDAO.updateCoupangDeal(resultDealVO);
-            System.out.println(rsString);
+//            System.out.println(rsString);
 
         }catch(Exception e) {
             e.printStackTrace();
         }
+        return rsString;
 
     }
 

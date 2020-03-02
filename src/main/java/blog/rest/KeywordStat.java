@@ -152,7 +152,7 @@ public class KeywordStat {
             e.printStackTrace();
         }
         System.out.println(resultMap);
-        System.out.println("1번 : " + keyword);
+//        System.out.println("1번 : " + keyword);
         return resultMap;
     }
 
@@ -160,7 +160,7 @@ public class KeywordStat {
     //저장된 키워드 stat 구하기기
     @GetMapping("/getKeywordStat1")
     public void getKeywordStat1(){
-        System.out.println("1번 시작");
+//        System.out.println("1번 시작");
         List keywordList = null;
         Map<String, Object> map = new HashMap<String, Object>();
         keywordList = setalarmDAO.getKeywordRelate1();
@@ -305,7 +305,7 @@ public class KeywordStat {
                 e.printStackTrace();
             }
         System.out.println(resultMap);
-        System.out.println("1번 : " + keyword);
+//        System.out.println("1번 : " + keyword);
     }
 
 

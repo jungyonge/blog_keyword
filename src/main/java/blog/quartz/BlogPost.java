@@ -23,12 +23,13 @@ public class BlogPost implements Job {
         XmlRpcNaverBlog xmlRpcNaverBlog = new XmlRpcNaverBlog();
         KeywordStat keywordStat = new KeywordStat();
         Map<String, Object> statMap = new HashMap<String, Object>();
+        String rsString = "";
         try {
 
 
             for(int i = 0 ; i < 10000 ; i++){
                 TempDealVO tempDealVO = setalarmDAO.selectCoupangDeal();
-
+                System.out.println(i + "번째");
                 statMap = keywordStat.getCoupangDealStat(xmlRpcNaverBlog.replaceDealName(tempDealVO.getDealName()));
                 System.out.println("monthlyPcQcCnt : " + statMap.get("monthlyPcQcCnt"));
                 System.out.println("monthlyMobileQcCnt : " + statMap.get("monthlyMobileQcCnt"));
@@ -37,7 +38,8 @@ public class BlogPost implements Job {
 //              &&  (!statMap.get("monthlyPcQcCnt").toString().equals("< 10") || !statMap.get("monthlyMobileQcCnt").toString().equals("< 10"))
 
                 if(!statMap.get("make").toString().equals("error") && Integer.parseInt(statMap.get("totalPost").toString()) < 20000 ){
-                    xmlRpcNaverBlog.writeBlogPost(tempDealVO);
+                    rsString = xmlRpcNaverBlog.writeBlogPost(tempDealVO);
+                    System.out.println(rsString);
                     break;
                 } else {
                     System.out.println("보류");
