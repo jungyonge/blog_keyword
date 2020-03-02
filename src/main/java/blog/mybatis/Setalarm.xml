@@ -3200,6 +3200,7 @@ VALUES (
         INSERT INTO coupang.coupang_deal
             (
                       sdid
+                    , dealrank
                     , dealname
                     , cate
                     , nmprice
@@ -3207,16 +3208,19 @@ VALUES (
                     , dcratio
                     , producturl
                     , imgurl
+                    , rdate
              )
         VALUES (
                      #{sdid}
-                   ,#{dealName}
+                    ,#{dealrank}
+                    ,#{dealName}
                     ,#{cate}
                    ,#{nmPrice}
                    ,#{dcPrice}
                    ,#{dcRatio}
                    ,#{productUrl}
                    ,#{imgUrl}
+                   ,now()
                )
     </insert>
 
@@ -3225,6 +3229,7 @@ VALUES (
         SELECT
                idx
               , sdid
+             ,dealrank
              , dealname
              , cate
              , nmprice
@@ -3234,6 +3239,9 @@ VALUES (
              , imgurl
         FROM coupang.coupang_deal
         WHERE postid IS NULL
+          AND cate LIKE '%가전디지털%'
+          AND dcprice > 500000
+        ORDER BY dealrank
         LIMIT 1;
 
     </select>

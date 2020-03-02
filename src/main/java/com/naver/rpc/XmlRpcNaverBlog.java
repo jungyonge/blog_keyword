@@ -1,24 +1,38 @@
 package com.naver.rpc;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 import blog.coupang.CoupangAPI;
 import blog.coupang.CoupangCateParse;
+import blog.coupang.MakeCoupangDesc;
 import blog.model.TempDealVO;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
+import blog.rest.KeywordStat;
+import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+
+import javax.activation.MimetypesFileTypeMap;
+import javax.imageio.ImageIO;
 
 
 public class XmlRpcNaverBlog {
 
     static final String API_URL = "https://api.blog.naver.com/xmlrpc";
-
-    static final String API_ID = "qjsro1204";
-    static final String API_PASSWORD = "51030047387b5a1e2483c2d7f6e82e19";
+//    static final String API_ID = "qjsro1204";
+//    static final String API_PASSWORD = "51030047387b5a1e2483c2d7f6e82e19";
+    static final String API_ID = "jungyong_e";
+    static final String API_PASSWORD = "904bbe94bf3af4d06b48e97a1e64c49e";
     SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
 
@@ -27,7 +41,13 @@ public class XmlRpcNaverBlog {
 
         CoupangCateParse coupangCateParse = new CoupangCateParse();
         CoupangAPI coupangAPI = new CoupangAPI();
+        MakeCoupangDesc makeCoupangDesc = new MakeCoupangDesc();
+
+
         try {
+
+
+            String imgUrl = makeImgUrl(tempDealVO);
 
             TempDealVO resultDealVO = new TempDealVO();
             resultDealVO.setIdx(tempDealVO.getIdx());
@@ -41,6 +61,7 @@ public class XmlRpcNaverBlog {
                 todayProductCate += cateArr[i] + " ";
             }
             String productPriceInfo = "";
+            String productTitle = "";
 
             DecimalFormat df = new DecimalFormat("#,###");
 
@@ -55,136 +76,57 @@ public class XmlRpcNaverBlog {
             if(Integer.parseInt(tempDealVO.getDcRatio()) > 0){
                 productPriceInfo =
                         "      <b><span style=\"color:rgb(255, 0, 0); font-size : 50pt\">할인률 : "+ Integer.parseInt(tempDealVO.getDcRatio()) + "%<br></span></b>\n" +
-                        "            <b><span style=\" font-size :40pt\">할인 가격 : " + df.format(Integer.parseInt(tempDealVO.getDcPrice())) + "원</span></b><br>\n" +
+                                "    <b><span style=\" color:rgb(255, 125, 0) ;font-size :30pt\">본가격 : " + df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원 </span></b>\n" +
+                                "\t<b><span style=\" color:rgb(0, 0, 0) ;font-size :30pt\"> ->  </span></b>\n" +
+                                "\t<b><span style=\" color:rgb(255, 0, 0) ;font-size :40pt\">할인 가격 : " + df.format(Integer.parseInt(tempDealVO.getDcPrice())) + "원</span></b><br>\n" +
                         "\n" +
+                         "          <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\"> 할인가 행사 </span></b>는 언제 마감될지 모르니 서두르세요.<br>" +
                         "      <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 할인가 구매하러 가기 ◀</a><br>\n" +
                         "      \n" +
                         "      <br>\n" ;
+                productTitle = "[할인행사 상품] " + replaceDealName(tempDealVO.getDealName());
             }else {
                 productPriceInfo =
                         "      <br>\n" +
                         "      \n" +
                         "      <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\">최저가격 : "+  df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원<br></span></b>\n" +
+                                "          <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\"> 최저가 행사</span></b>는 언제 마감될지 모르니 서두르세요.<br>" +
                         "       <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 최저가 구매하러 가기 ◀</a><br>\n" +
                         "\n" +
                         "\n" ;
+                productTitle = "[최저가 상품] " + replaceDealName(tempDealVO.getDealName());
+
             }
 
 
 
-            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-            config.setServerURL(new URL(API_URL));
-
             Map<String, String> contents = new HashMap<String, String>();
 
-            String desc = "";
+            String desc = makeCoupangDesc.desc1(todayProductCate,tempDealVO,productPriceInfo,coupangUrl,imgUrl,productInfoDetail,productReview,time2);
 
-            desc = "<div>\n" +
-                    "  <center>\n" +
-                    "    <p class=\"se_textarea\">오늘은 " + todayProductCate + " 관련 상품을 준비해보았습니다<br>\n" +
-                    "      바로!" +
-                    "   <b><span style=\\\"font-size : 50pt\\\">" +  tempDealVO.getDealName()+ "%<br></span></b>\\n\" +\n" +
-                    "     입니다!!<br><br>\n" +
-                    "      구매는 아래 링크에서 가능합니다.<br>\n" +
-                            productPriceInfo +
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "\n" +
-                    "<div>\n" +
-                    "  <center>\n" +
-                    "    \n" +
-                    "        <p >제품상세 이미지<br>\n" +
-                    "\n" +
-                    "        <img src=\"" + tempDealVO.getImgUrl() + "\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\">\n" +
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "\n" +
 
-                    "<div>\n" +
-                    "  <center>\n" +
-                    "            <p >상세정보 참고하여 구매하세요<br>\n" +
-                                productInfoDetail +
-                    "        <a href=\"" + coupangUrl +" \" target=\"_blank\">∇ 상세정보 더보기 ∇</a>\n" +
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-
-                    "<div>\n" +
-                    "  <center>\n" +
-                    "            <p >로켓와우 회원이실 경우 캐시백 적립가능합니다.<br>\n" +
-                    "            <p >또한 로켓와우를 아직 사용안해보신 분은 한달 무료 사용할 수 있습니다.<br>\n" +
-                    "            <p >무료사용기간 후에 맘에 드시면 2,900원만 내시면 많은 해택도 이용 하실 수 있으니 참고하세요.<br>\n" +
-                    "            <a href=\"https://coupa.ng/brzmh7\" target=\"_blank\">▶ 로켓와우 1달 무료 체험하기◀</a>" +
-
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "<div>\n" +
-                    "  <center>\n" +
-                    "\n" +
-                    "    \n" +
-                                productReview +
-                    "<a href=\"" + coupangUrl + "\" target=\"_blank\">▶ 구매 전 상세리뷰 더보기◀</a><br>\n" +
-                    "\n" +
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "\t\t\t<br>\n" +
-                    "\t\t\t<br>\n" +
-
-                    "<div>\n" +
-                    "  <center>\n" +
-                    "            <p >특가 상품은 조기 품절 될 수 있으니 참고하세요.<br>\n" +
-                    "<a href=\"" + coupangUrl + " \" target=\"_blank\">▶ 특가 상품 더보기◀</a>" +
-                    "              <p>\n" +
-                    "\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "                 본 게시글은 " + time2 + "에 작성되었습니다.\n" +
-                    "    \t\t</p>\n" +
-                    "\n" +
-                    "            <p >이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받고 있습니다.<br>\n" +
-                    "\n" +
-                    "              \n" +
-                    "  </center>\n" +
-                    "</div>\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "    \t\t<br>\n" +
-                    "\n";
 
             contents.put("categories", "일상"); // 카테고리 텍스트
-            contents.put("title", "[최저가 상품] " + tempDealVO.getDealName() ); // 제목
+            contents.put("title", productTitle); // 제목
             contents.put("description", desc);
             contents.put("tags", "최저가, 쿠팡, 쿠팡파트너스, 로켓와우"); // 태크 콤마로 구분한다.
 
 
             List<Object> params = new ArrayList<Object>();
-
-            // 블로그ID를 넣으라는데 공백으로 해도 된다.
             params.add("아무거나 넣어도 된다");
-
-            // API ID
             params.add(API_ID);
-
-            // API 암호
             params.add(API_PASSWORD);
-
-            // 블로그 컨텐츠
             params.add(contents);
-
-            // 공개여부 true이면 공개, false면 비공개
             params.add(new Boolean(true));
+
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+            config.setServerURL(new URL(API_URL));
 
             XmlRpcClient client = new XmlRpcClient();
             client.setConfig(config);
 
             String rsString = (String) client.execute("metaWeblog.newPost", params);
+
             resultDealVO.setPostid(rsString);
             setalarmDAO.updateCoupangDeal(resultDealVO);
             System.out.println(rsString);
@@ -195,22 +137,123 @@ public class XmlRpcNaverBlog {
 
     }
 
+    private String makeImgUrl(TempDealVO tempDealVO){
+        Map<String, Object> contents = new HashMap<String, Object>();
+        SimpleDateFormat format2 = new SimpleDateFormat( "yyyy_MMdd_HHmmss");
+        Date time = new Date();
+        String time2 = format2.format(time);
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+            config.setServerURL(new URL(API_URL));
+            XmlRpcClient client = new XmlRpcClient();
+            client.setConfig(config);
+            String fileName = tempDealVO.getSdid() + "_" + time2 + ".jpg";
+            String filePath = "D:test/" + fileName;
+            File outputFile = new File(filePath);
+            URL url = null;
+            BufferedImage bi = null;
+            url = new URL(tempDealVO.getImgUrl());
+            bi = ImageIO.read(url);
+            ImageIO.write(bi, "jpg", outputFile);
+
+            File file = new File(filePath);
+
+            contents.put("name", file.getName());
+            contents.put("type", new MimetypesFileTypeMap().getContentType(file));
+            contents.put("bits", getFileData(file));
+
+            retMap = (HashMap)client.execute("metaWeblog.newMediaObject", new Object[] {API_ID, API_ID, API_PASSWORD, contents});
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlRpcException e) {
+            e.printStackTrace();
+        }
+
+        return retMap.get("url").toString();
+    }
+
+    private static byte[] getFileData( File file ) throws IOException {
+        int total = 0;
+        int length = (int) file.length();
+        byte[] ret = new byte[length];
+        FileInputStream reader = new FileInputStream( file );
+        while ( total < length ) {
+            int read = reader.read( ret );
+            if ( read < 0 ) throw new IOException( "fail read file: " + file );
+            total += read;
+        }
+        return ret;
+    }
+
+    public String replaceDealName(String dealName){
+        String resultDealName = "";
+
+        resultDealName = dealName.replaceAll(",","");
+        resultDealName = resultDealName.replaceAll("상세페이지참조()","");
+        resultDealName = resultDealName.replaceAll("상세설명참조","");
+        resultDealName = resultDealName.replaceAll("단일상품","");
+        resultDealName = resultDealName.replaceAll("단일 색상","");
+        resultDealName = resultDealName.replaceAll("해당없음","");
+        resultDealName = resultDealName.replaceAll("상세페이지 참조","");
+        resultDealName = resultDealName.replaceAll("상세 설명 참조0","");
+        resultDealName = resultDealName.replaceAll("상세 설명 참조","");
+        resultDealName = resultDealName.replaceAll("선택하세요","");
+        resultDealName = resultDealName.replaceAll("본 상품 선택","");
+        resultDealName = resultDealName.replaceAll("단일옵션","");
+        resultDealName = resultDealName.replaceAll("단품","");
+        resultDealName = resultDealName.replaceAll("기본형","");
+        resultDealName = resultDealName.replaceAll("일반","");
+        resultDealName = resultDealName.replaceAll("상세","");
+        resultDealName = resultDealName.replaceAll("설명","");
+        resultDealName = resultDealName.replaceAll("참조","");
+        resultDealName = resultDealName.replaceAll("단일","");
+        resultDealName = resultDealName.replaceAll("단품","");
+        resultDealName = resultDealName.replaceAll("옵션","");
+        resultDealName = resultDealName.replaceAll("선택","");
+        resultDealName = resultDealName.replaceAll("1개","");
+
+
+
+        return resultDealName;
+    }
+
+
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
 
         XmlRpcNaverBlog xmlRpcNaverBlog = new XmlRpcNaverBlog();
-
+        KeywordStat keywordStat = new KeywordStat();
+        Map<String, Object> statMap = new HashMap<String, Object>();
         try {
 
             for(int i = 0 ; i < 10000 ; i++){
                 TempDealVO tempDealVO = setalarmDAO.selectCoupangDeal();
-                xmlRpcNaverBlog.writeBlogPost(tempDealVO);
-                Thread.sleep(120000);
+
+                statMap = keywordStat.getCoupangDealStat(xmlRpcNaverBlog.replaceDealName(tempDealVO.getDealName()));
+                System.out.println("monthlyPcQcCnt : " + statMap.get("monthlyPcQcCnt"));
+                System.out.println("monthlyMobileQcCnt : " + statMap.get("monthlyMobileQcCnt"));
+                System.out.println("totalPost : " + statMap.get("totalPost"));
+
+//              &&  (!statMap.get("monthlyPcQcCnt").toString().equals("< 10") || !statMap.get("monthlyMobileQcCnt").toString().equals("< 10"))
+
+                if(!statMap.get("make").toString().equals("error") && Integer.parseInt(statMap.get("totalPost").toString()) < 20000 ){
+                    xmlRpcNaverBlog.writeBlogPost(tempDealVO);
+                    Thread.sleep(300000);
+                } else {
+                    System.out.println("보류");
+                    tempDealVO.setPostid("보류");
+                    setalarmDAO.updateCoupangDeal(tempDealVO);
+                }
 
             }
-
 
         }catch(Exception e) {
             e.printStackTrace();
@@ -218,6 +261,18 @@ public class XmlRpcNaverBlog {
 
     }
 }
+//{naverCnt=10,
+// compIdx=낮음,
+// whereMobileWeb=0,
+// monthlyPcQcCnt=< 10,
+// monthlyMobileQcCnt=< 10,
+// whereWeb=1,
+// relKeyword=쿠팡 브랜드 - 베이스알파 에센셜 남녀공용 30수 라운드 반팔티 3p,
+// monthlyAveMobileCtr=0.0,
+// plAvgDepth=0,
+// totalPost=8221, m
+// onthlyAvePcCtr=0.0, t
+// istoryCnt=0, elseCnt=0, whereMobileBlog=0, monthlyAveMobileClkCnt=0.0, monthlyAvePcClkCnt=0.0, make=make, whereBlog=2}
 
 
 

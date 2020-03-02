@@ -60,83 +60,83 @@ public class CoupangCateParse {
             "213101//베이비패션 (0~3세)"
     };*/
     private String[] cateRoketDelvrArr = {
-            "194176//식품",
-            "115573//생활용품",
-            "176422//뷰티",
-            "184455//홈인테리어",
-            "178155//가전디지털",
-            "185569//주방용품",
-            "221834//출산/유아동",
-            "115574//반려동물용품",
-            "317679//완구/취미",
-            "183960//자동차용품",
-            "177195//문구/오피스",
-            "317678//스포츠/레저",
-            "317677//도서/음반/DVD",
-            "305698//헬스/건강식품",
-            "186664//여성패션//186666//티셔츠",
-            "186664//여성패션//186676//블라우스/셔츠",
-            "186664//여성패션//224931//원피스/세트류",
-            "186664//여성패션//186703//바지/레깅스",
-            "186664//여성패션//384722//스커트/치마",
-            "186664//여성패션//186693//니트류/조끼",
-            "186664//여성패션//186671//맨투맨/후드집업",
-            "186664//여성패션//186718//아우터",
-            "186664//여성패션//186727//패션운동복",
-            "186664//여성패션//186736//비키니/비치웨어",
+            "194176//로켓배송/식품",
+            "115573//로켓배송/생활용품",
+            "176422//로켓배송/뷰티",
+            "184455//로켓배송/홈인테리어",
+            "178155//로켓배송/가전디지털",
+            "185569//로켓배송/주방용품",
+            "221834//로켓배송/출산/유아동",
+            "115574//로켓배송/반려동물용품",
+            "317679//로켓배송/완구/취미",
+            "183960//로켓배송/자동차용품",
+            "177195//로켓배송/문구/오피스",
+            "317678//로켓배송/스포츠/레저",
+            "317677//로켓배송/도서/음반/DVD",
+            "305698//로켓배송/헬스/건강식품",
+            "186664//여성패션//186666//로켓배송/티셔츠",
+            "186664//여성패션//186676//로켓배송/블라우스/셔츠",
+            "186664//여성패션//224931//로켓배송/원피스/세트류",
+            "186664//여성패션//186703//로켓배송/바지/레깅스",
+            "186664//여성패션//384722//로켓배송/스커트/치마",
+            "186664//여성패션//186693//로켓배송/니트류/조끼",
+            "186664//여성패션//186671//로켓배송/맨투맨/후드집업",
+            "186664//여성패션//186718//로켓배송/아우터",
+            "186664//여성패션//186727//로켓배송/패션운동복",
+            "186664//여성패션//186736//로켓배송/비키니/비치웨어",
             //"186664//여성패션//186746//빅사이즈 의류",
-            "186664//여성패션//186810//속옷/잠옷",
-            "186664//여성패션//186875//임부복",
+            "186664//여성패션//186810///로켓배송/속옷/잠옷",
+            "186664//여성패션//186875///로켓배송/임부복",
             //"186664//여성패션//402745//테마의류",
             //"186664//여성패션//207907//커플룩/패밀리룩",
-            "186664//여성패션//197258//신발",
-            "186664//여성패션//197292//가방/잡화",
+            "186664//여성패션//197258//로켓배송/신발",
+            "186664//여성패션//197292//로켓배송/가방/잡화",
             //"186664//여성패션//186933//해외직구",
-            "186969//남성패션//186971//티셔츠",
-            "186969//남성패션//186976//맨투맨/후드티",
-            "186969//남성패션//186981//셔츠",
-            "186969//남성패션//186996//바지/청바지",
-            "186969//남성패션//187020//트레이닝복",
-            "186969//남성패션//186980//후드집업/집업류",
-            "186969//남성패션//186985//스웨터",
-            "186969//남성패션//186991//가디건",
-            "186969//남성패션//186995//베스트/조끼",
-            "186969//남성패션//187007//아우터",
-            "186969//남성패션//187084//속옷/잠옷",
+            "186969//남성패션//186971//로켓배송/티셔츠",
+            "186969//남성패션//186976//로켓배송/맨투맨/후드티",
+            "186969//남성패션//186981//로켓배송/셔츠",
+            "186969//남성패션//186996//로켓배송/바지/청바지",
+            "186969//남성패션//187020//로켓배송/트레이닝복",
+            "186969//남성패션//186980//로켓배송/후드집업/집업류",
+            "186969//남성패션//186985//로켓배송/스웨터",
+            "186969//남성패션//186991//로켓배송/가디건",
+            "186969//남성패션//186995//로켓배송/베스트/조끼",
+            "186969//남성패션//187007//로켓배송/아우터",
+            "186969//남성패션//187084//로켓배송/속옷/잠옷",
             //"186969//남성패션//187032//빅사이즈 의류",
-            "186969//남성패션//187025//패션 래쉬가드",
+            "186969//남성패션//187025//로켓배송/패션 래쉬가드",
             //"186969//남성패션//207939//커플룩/패밀리룩",
             //"186969//남성패션//402768//테마의류",
-            "186969//남성패션//197356//신발",
-            "186969//남성패션//197377//가방/잡화",
-            "213414//여아패션 (3세 이상)",
-            "213641//남아패션 (3세 이상)",
-            "213101//베이비패션 (0~3세)"
+            "186969//남성패션//197356//로켓배송/신발",
+            "186969//남성패션//197377//로켓배송/가방/잡화",
+            "213414//로켓배송/여아패션 (3세 이상)",
+            "213641//로켓배송/남아패션 (3세 이상)",
+//            "213101//로켓배송/베이비패션 (0~3세)"
     };
 
     // 로켓직구 카테고리 목록
     private String[] cateRoketDrctrArr = {
-            "356277//주방용품",
-            "393388//홈인테리어",
-            "218672//반려동물용품",
-            "266106//도서",
-            "393321//생활용품",
-            "217526//출산/유아동",
-            "217822//메이크업",
-            "217886//스킨/바디케어",
-            "217957//헤어케어",
-            "218018//커피/차/음료",
-            "218059//스낵/시리얼",
-            "218113//조미료/오일/드레싱",
-            "218139//통조림/가공식품",
-            "218163//요리/베이킹",
-            "362791//부위/효능별 건강식품",
-            "217454//비타민/미네랄",
-            "217473//영양제",
-            "217495//허브/자연추출물",
-            "217509//헬스보충식품",
-            "217518//다이어트식품",
-            "419205//스포츠/레저"
+            "356277//로켓직구/주방용품",
+            "393388//로켓직구/홈인테리어",
+            "218672//로켓직구/반려동물용품",
+            "266106//로켓직구/도서",
+            "393321//로켓직구/생활용품",
+            "217526//로켓직구/출산/유아동",
+            "217822//로켓직구/메이크업",
+            "217886//로켓직구/스킨/바디케어",
+            "217957//로켓직구/헤어케어",
+            "218018//로켓직구/커피/차/음료",
+            "218059//로켓직구/스낵/시리얼",
+            "218113//로켓직구/조미료/오일/드레싱",
+            "218139//로켓직구/통조림/가공식품",
+            "218163//로켓직구/요리/베이킹",
+            "362791//로켓직구/부위/효능별 건강식품",
+            "217454//로켓직구/비타민/미네랄",
+            "217473//로켓직구/영양제",
+            "217495//로켓직구/허브/자연추출물",
+            "217509//로켓직구/헬스보충식품",
+            "217518//로켓직구/다이어트식품",
+            "419205//로켓직구/스포츠/레저"
     };
 
 
@@ -287,12 +287,12 @@ public class CoupangCateParse {
     }
 
 
-    private boolean htmlToDealsParsing(String url, List<TempDealVO> temps, String cate1Nm) throws Exception {
+    private boolean htmlToDealsParsing(String url, List<TempDealVO> temps, String cate1Nm , int page) throws Exception {
         Thread.sleep(100);
         boolean result = false;
         String html = requestURLToString(baseUrl + url, true, 5, 0);
         Document rootDoc = Jsoup.parse(html);
-
+        int i = 1;
         Elements list = rootDoc.select("ul#productList > li");
         if (list != null && list.size() > 0) {
             result = true;
@@ -328,6 +328,7 @@ public class CoupangCateParse {
 
 
                     tempDeals.setSdid(sdid);
+                    tempDeals.setDealrank(i  + ((page - 1 ) * 120));
                     tempDeals.setDealName(dealName);
                     tempDeals.setCate(cate1Nm);
                     tempDeals.setNmPrice(nmPrice);
@@ -337,6 +338,7 @@ public class CoupangCateParse {
                     tempDeals.setImgUrl(imgUrl);
 
                     setalarmDAO.insertCoupangDeal(tempDeals);
+                    i++;
 //                    temps.add(tempDeals);
                     System.out.println(tempDeals);
 
@@ -392,18 +394,22 @@ public class CoupangCateParse {
                     cate2Id = null;
                 }
 
-                for (int page = 1; page <= 9; page++) {
+                String[] cateDetail = cate1Nm.split("/");
+                if(Integer.parseInt(cateDetail[0]) > 1819){
+                    for (int page = 1; page <= 9; page++) {
 
-                    String url = "/np/categories/" + cateUrlKey + "?listSize=120&page=" + page;
+                        String url = "/np/categories/" + cateUrlKey + "?listSize=120&page=" + page;
 
-                    htmlToDealsParsing(url, temps,cate1Nm);
+                        htmlToDealsParsing(url, temps,cate1Nm, page);
+                    }
+
                 }
 
             }
-
-            //로켓배송 카테고리 별(19 * 120 * 9) 9페이지까지 처리
-            // 현재 1뎁쓰 기준으로 루프(추후 뎁쓰가 더 늘어 나게 변경 가능성 있어 임시로 하드코딩
-            // 일부 카테고리 2뎁쓰 기준으로 변경. 2뎁쓰의 카테고리 경우 2뎁쓰까지 카테고리 지정. 2019.04.22. by Daniel
+//
+//            로켓배송 카테고리 별(19 * 120 * 9) 9페이지까지 처리
+//             현재 1뎁쓰 기준으로 루프(추후 뎁쓰가 더 늘어 나게 변경 가능성 있어 임시로 하드코딩
+//             일부 카테고리 2뎁쓰 기준으로 변경. 2뎁쓰의 카테고리 경우 2뎁쓰까지 카테고리 지정. 2019.04.22. by Daniel
             for (String cate : cateRoketDelvrArr) {
                 cateInfo = cate.split("//");
 
@@ -426,40 +432,40 @@ public class CoupangCateParse {
 
                     String url = "/np/campaigns/82/components/" + cateUrlKey + "?listSize=120&page=" + page;
 
-                    htmlToDealsParsing(url, temps,cate1Nm);
+                    htmlToDealsParsing(url, temps,cate1Nm,page);
                 }
 
             }
 
             //로켓직구 카테고리 별(21 * 60 * 17) 17페이지까지 처리
             // 현재 1뎁쓰 기준으로 루프(추후 뎁쓰가 더 늘어 나게 변경 가능성 있어 임시로 하드코딩
-            for (String cate : cateRoketDrctrArr) {
-
-                cateInfo = cate.split("//");
-
-                cate1Id = cateInfo[0];
-                cate1Nm = cateInfo[1];
-
-                if (cateInfo.length > 2) {
-                    cateUrlKey = cateInfo[2];
-                    cate2Nm = cateInfo[3];
-                    cate2Id = cateInfo[2];
-                } else {
-                    cateUrlKey = cateInfo[0];
-                    cate2Nm = null;
-                    cate2Id = null;
-                }
-
-                int beforeDealSize = temps.size();
-
-                for (int page = 1; page <= 17; page++) {
-
-                    String url = "/np/coupangglobal/categories/" + cateUrlKey + "?eventCategory=GNB2&eventLabel=coupangglobal_all&page=" + page;
-
-                    htmlToDealsParsing(url, temps,cate1Nm);
-                }
-
-            }
+//            for (String cate : cateRoketDrctrArr) {
+//
+//                cateInfo = cate.split("//");
+//
+//                cate1Id = cateInfo[0];
+//                cate1Nm = cateInfo[1];
+//
+//                if (cateInfo.length > 2) {
+//                    cateUrlKey = cateInfo[2];
+//                    cate2Nm = cateInfo[3];
+//                    cate2Id = cateInfo[2];
+//                } else {
+//                    cateUrlKey = cateInfo[0];
+//                    cate2Nm = null;
+//                    cate2Id = null;
+//                }
+//
+//                int beforeDealSize = temps.size();
+//
+//                for (int page = 1; page <= 17; page++) {
+//
+//                    String url = "/np/coupangglobal/categories/" + cateUrlKey + "?eventCategory=GNB2&eventLabel=coupangglobal_all&page=" + page;
+//
+//                    htmlToDealsParsing(url, temps,cate1Nm);
+//                }
+//
+//            }
 
             if (temps.size() == 0) throw new Exception("수집 상품수가 없습니다. 수집 점검 필요");
         } catch (Exception e) {
@@ -498,15 +504,21 @@ public class CoupangCateParse {
             String tr = "";
             for(int i = 1 ; i < jsonArray.size() + 1 ; i++){
                 JsonObject object = (JsonObject) jsonArray.get(i - 1 );
-                thtd +=
-                        "     <th>" + object.get("title").toString().replaceAll("\\\"", "") + "</th>\n" +
-                                "     <td>" + object.get("description").toString().replaceAll("\\\"", "") + " </td>\n" ;
+                if(i != jsonArray.size()) {
+                    thtd +=
+                            "     <th>" + object.get("title").toString().replaceAll("\\\"", "") + "</th>\n" +
+                            "     <td>" + object.get("description").toString().replaceAll("\\\"", "") + " </td>\n" ;
+                }else {
+                    thtd +=
+                            "     <th>" + object.get("title").toString().replaceAll("\\\"", "") + "</th>\n" +
+                            "     <td colspan=\"3\">" + object.get("description").toString().replaceAll("\\\"", "") + " </td>\n" ;
+                }
 
                 if( i % 2 == 0){
                     tr +=
                             "       <tr>\n" +
                                     thtd +
-                                    "      </tr>\n" ;
+                            "      </tr>\n" ;
                     thtd = "";
                 }
 
@@ -514,7 +526,7 @@ public class CoupangCateParse {
                     tr +=
                             "       <tr>\n" +
                                     thtd +
-                                    "      </tr>\n" ;
+                            "      </tr>\n" ;
                     thtd = "";
                 }
 
@@ -523,12 +535,12 @@ public class CoupangCateParse {
                     "<table class=\"prod-delivery-return-policy-table essential-info-table\">\n" +
                             "                <colgroup>\n" +
                             "                    <col width=\"150px\">\n" +
-                            "                    <col width=\"120px\">\n" +
+                            "                    <col width=\"230px\">\n" +
                             "                    <col width=\"150px\">\n" +
                             "                    <col width=\"*\">\n" +
                             "                </colgroup>\n" +
                             "                <tbody>\n" +
-                            tr+
+                                                tr+
                             "                </tbody>\n" +
                             "            </table>";
 
@@ -582,8 +594,17 @@ public class CoupangCateParse {
                             "    \t\t별점:\t<span style=\"color:rgb(255, 200, 0);\"> "+ star + "<br></span>\n" +
                             "            상품평 :   " + review  +
                             "    \t\t<br>\n" +
-                            "    \t\t<br>\n" ;
+                            "    \t\t<br>\n" +
+                            "<div class=\"se-module se-module-horizontalLine\">\n" +
+                            "                                <hr class=\"se-hr\">\n" +
+                            "</div>" ;
                 }
+            }else {
+                reviewDiv +=
+                                "           아쉽게 해당상품의 등록된 상품평이 없네요. <br>" +
+                                "           판매자의 다른 리뷰도 같이 확인 해보세요!"+
+                                "    \t\t<br>\n" +
+                                "    \t\t<br>\n" ;
             }
 
             System.out.println(reviewDiv);

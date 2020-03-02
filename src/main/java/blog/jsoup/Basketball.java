@@ -616,6 +616,8 @@ public class Basketball {
 
                     if(aTeamStat.getHalfHandiCap() == 0){
                         aTeamStat.setFirstHalfHandiCapResult("적특");
+                        aTeamStat.setSecondHalfHandiCapResult("적특");
+
                     }
                     else {
                         if ((aTeamStat.getATeamFirstHalfPoint() + aTeamStat.getHalfHandiCap()) > aTeamStat.getBTeamFirstHalfPoint()) {
