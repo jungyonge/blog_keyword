@@ -26,6 +26,7 @@ public class BlogPost implements Job {
         try {
 
 
+            for(int i = 0 ; i < 10000 ; i++){
                 TempDealVO tempDealVO = setalarmDAO.selectCoupangDeal();
 
                 statMap = keywordStat.getCoupangDealStat(xmlRpcNaverBlog.replaceDealName(tempDealVO.getDealName()));
@@ -37,12 +38,14 @@ public class BlogPost implements Job {
 
                 if(!statMap.get("make").toString().equals("error") && Integer.parseInt(statMap.get("totalPost").toString()) < 20000 ){
                     xmlRpcNaverBlog.writeBlogPost(tempDealVO);
+                    break;
                 } else {
                     System.out.println("보류");
                     tempDealVO.setPostid("보류");
                     setalarmDAO.updateCoupangDeal(tempDealVO);
                 }
 
+            }
 
         }catch(Exception e) {
             e.printStackTrace();
