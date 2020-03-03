@@ -29,7 +29,7 @@ public final class NamedGetAPI {
                 .addHeader("accept", "*/*")
                 .addHeader("oki-api-key",API_KEY)
                 .addHeader("oki-api-name",API_NAME)
-                .addHeader("referer","http://sports.named.com/basketball")
+                .addHeader("referer","http://sports.named.com/baseball")
                 .addHeader("origin","http://sports.named.com")
                 .addHeader("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
                 .addParameter("broadcast","true")
@@ -41,7 +41,7 @@ public final class NamedGetAPI {
                 .addParameter("startDate","20200226")
                 .addParameter("endDate","20200226")
                 .addParameter("v", String.valueOf(unixTime))
-                 .build();
+                .build();
 
 
         org.apache.http.HttpResponse httpResponse = org.apache.http.impl.client.HttpClientBuilder.create().build().execute(host, request);
