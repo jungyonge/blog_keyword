@@ -1,9 +1,11 @@
 package blog.jsoup;
 
+import blog.model.BasketballModel;
 import blog.model.HockeyModel;
 import blog.model.VolleyballModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -122,7 +124,12 @@ public class Hockey {
                     aTeamStat.setLeague(league);
                     bTeamStat.setLeague(league);
 
+                    if(aTeamStat.getATeam().contains("디비전")){
+                        continue;
+                    }
+
                 }
+
 
                 if(aTeamStat.getGameId() == null|| bTeamStat.getGameId() == null){
                     continue;
@@ -200,6 +207,10 @@ public class Hockey {
                     bTeamStat.setGround("원정");
                     aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
                     aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+                    if(aTeamStat.getATeam().contains("디비전")){
+                        continue;
+                    }
 
                     aTeamStat.setLeague(league);
 
@@ -462,6 +473,126 @@ public class Hockey {
         }
     }
 
+    public void getTomorrowMatch() throws Exception{
+
+        JSONArray jsonArray = new JSONArray();
+
+        String rootHtml = "";
+        String url = "https://livescore.co.kr/sports/score_board/hockey/view.php?date=";
+        int date = 0;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        cal.add(Calendar.DATE, 1);
+        System.out.println("after: " + df.format(cal.getTime()));
+
+
+
+        int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+        String dayOfWeek = getDayoOfWeek(dayNum);
+
+        System.out.println(url + df.format(cal.getTime()));
+        rootHtml = requestURLToString(url + df.format(cal.getTime()));
+
+        Document rootDoc = Jsoup.parse(rootHtml);
+        Elements elements = rootDoc.select("div#score_board div.score_tbl_individual");
+
+        for (Element element : rootDoc.select("div#score_board div.score_tbl_individual")) {
+            BasketballModel aTeamStat = new BasketballModel();
+            BasketballModel bTeamStat = new BasketballModel();
+
+            int i = 0;
+
+            String league = element.select("thead tr th.reague").text();
+            if (league.equals("NHL") ) {
+
+
+                String gameId = element.select("div.score_tbl_individual").attr("id");
+
+                aTeamStat.setGameId(gameId);
+                bTeamStat.setGameId(gameId);
+                aTeamStat.setDayOfWeek(dayOfWeek);
+                bTeamStat.setDayOfWeek(dayOfWeek);
+                aTeamStat.setLeague(league);
+                bTeamStat.setLeague(league);
+
+
+                aTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+                bTeamStat.setTime(element.select("thead tr th.ptime").text().replaceAll("오전 ", "").replaceAll("오후 ", ""));
+
+                aTeamStat.setDate(df.format(cal.getTime()));
+                bTeamStat.setDate(df.format(cal.getTime()));
+
+                aTeamStat.setGround("홈");
+                bTeamStat.setGround("원정");
+
+                aTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                aTeamStat.setATeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+                bTeamStat.setATeam(element.select("tbody tr > td.teaminfo.visitor strong").text());
+                bTeamStat.setBTeam(element.select("tbody tr > td.teaminfo.hometeam strong").text());
+
+                String[] arrayHandi = element.select("tbody > tr > td.line").text().split(" ");
+
+                if (arrayHandi.length == 1) {
+                    System.out.println("stop");
+                }
+                if (arrayHandi.length > 1) {
+                    aTeamStat.setPointLine(Double.valueOf(arrayHandi[0]));
+                    aTeamStat.setHandiCap(Double.valueOf(arrayHandi[1]));
+                } else {
+                    aTeamStat.setPointLine(0.0);
+                    aTeamStat.setHandiCap(0.0);
+                }
+
+                if(aTeamStat.getHandiCap() > 0){
+                    aTeamStat.setOdd("역배");
+                    bTeamStat.setOdd("정배");
+                } else if (aTeamStat.getHandiCap() < 0){
+                    aTeamStat.setOdd("정배");
+                    bTeamStat.setOdd("역배");
+                } else {
+                    aTeamStat.setOdd("없음");
+                    bTeamStat.setOdd("없음");
+                }
+
+
+
+            }
+
+            if(aTeamStat.getGameId() != null && bTeamStat.getGameId() != null){
+                    System.out.println(aTeamStat);
+                    System.out.println(bTeamStat);
+                    setalarmDAO.updateTomorrowBasketStat(aTeamStat);
+                    setalarmDAO.updateTomorrowBasketStat(bTeamStat);
+
+            }
+
+        }
+    }
+
+
+
+    public void getHockeySummary(){
+        setalarmDAO.truncateHockeySummary();
+        setalarmDAO.insertHockeySummary();
+
+        setalarmDAO.truncateHockeyOddSummary();
+        setalarmDAO.insertHockeyOddSummary();
+
+        setalarmDAO.truncateHockeyWeekSummary();
+        setalarmDAO.insertHockeyWeekSummary();
+
+        setalarmDAO.truncateHockeyRestSummary();
+        setalarmDAO.insertHockeyRestSummary();
+
+        setalarmDAO.truncateHockeyGroundSummary();
+        setalarmDAO.insertHockeyGroundSummary();
+
+    }
     public void getCategoryList() throws IOException, ParseException, InterruptedException {
         JSONArray jsonArray = new JSONArray();
         HockeyModel aTeamStat = new HockeyModel();
@@ -865,10 +996,9 @@ public class Hockey {
     public static void main(String[] args) {
         Hockey hockey = new Hockey();
         try {
-            hockey.getAllMatch();
-//            hockey.updateHockeyStat();
-        } catch (IOException e) {
-            e.printStackTrace();
+//            hockey.getAllMatch();
+////            hockey.updateHockeyStat();
+            hockey.getHockeySummary();
         } catch (Exception e) {
             e.printStackTrace();
         }

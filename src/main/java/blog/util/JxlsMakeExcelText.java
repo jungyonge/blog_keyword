@@ -31,7 +31,7 @@ public class JxlsMakeExcelText {
         List<HashMap<String, Object>> dataList = new ArrayList<HashMap<String, Object>>();
 
 
-        sheetNames.add(type);
+        sheetNames.add("내일의 경기 농구");
         sheetMap = new HashMap<String, Object>();
         sheetMap.put("special",setalarmDAO.selectBasketSpecialSummary());
         sheetMap.put("handi",setalarmDAO.selectBasketQuarterHandiOverSummary());
@@ -42,6 +42,8 @@ public class JxlsMakeExcelText {
         sheetMap.put("full",setalarmDAO.selectBasketHandiOverSummary());
         sheetMap.put("fullground",setalarmDAO.selectBasketHandiOverGroundSummary());
         sheetMap.put("summary",setalarmDAO.selectAllSummary());
+        sheetMap.put("hockeySummary",setalarmDAO.selectAllHockeySummary());
+
 
         List list = setalarmDAO.selectAllSummary();
 

@@ -621,6 +621,20 @@ public class SetalarmDAO {
         return list;
     }
 
+
+    public List selectAllHockeySummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectAllHockeySummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
     public void truncateBasketSpecialOddSummary(){
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -827,6 +841,116 @@ public class SetalarmDAO {
         }
     }
 
+
+    public void truncateHockeySummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateHockeySummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeySummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeySummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateHockeyOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateHockeyOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeyOddSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyOddSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void truncateHockeyWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateHockeyWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeyWeekSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyWeekSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+    public void truncateHockeyRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateHockeyRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeyRestSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyRestSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateHockeyGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.truncateHockeyGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void insertHockeyGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertHockeyGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
 
 
 

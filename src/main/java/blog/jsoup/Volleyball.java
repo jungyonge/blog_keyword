@@ -1361,57 +1361,10 @@ public class Volleyball {
 
             nba.getTomorrowMatch();
             basketball.getTomorrowMatch();
+            basketball.getBasketBallSummary();
 
-            setalarmDAO.truncateBasketSpecialSummary();
-            setalarmDAO.insertBasketSpecialSummary();
+            hockey.getHockeySummary();
 
-            setalarmDAO.truncateBasketQuarterHandiOverSummary();
-            setalarmDAO.insertBasketQuarterHandiOverSummary();
-
-            setalarmDAO.truncateBasketSpecialComboSummary();
-            setalarmDAO.insertBasketSpecialComboSummary();
-
-            setalarmDAO.truncateBasketQuarterHandiComboSummary();
-            setalarmDAO.insertBasketQuarterHandiComboSummary();
-
-            setalarmDAO.truncateBasketQuarterHandiOverGroundSummary();
-            setalarmDAO.insertBasketQuarterHandiOverGroundSummary();
-
-            setalarmDAO.truncateBasketSpecialGroundSummary();
-            setalarmDAO.insertBasketSpecialGroundSummary();
-
-            setalarmDAO.truncateBasketHandiOverSummary();
-            setalarmDAO.insertBasketHandiOverSummary();
-
-            setalarmDAO.truncateBasketHandiOverGroundSummary();
-            setalarmDAO.insertBasketHandiOverGroundSummary();
-
-            setalarmDAO.truncateBasketSpecialOddSummary();
-            setalarmDAO.insertBasketSpecialOddSummary();
-
-            setalarmDAO.truncateBasketQuarterHandiOverOddSummary();
-            setalarmDAO.insertBasketQuarterHandiOverOddSummary();
-
-            setalarmDAO.truncateBasketHandiOverOddSummary();
-            setalarmDAO.insertBasketHandiOverOddSummary();
-
-            setalarmDAO.truncateBasketSpecialWeekSummary();
-            setalarmDAO.insertBasketSpecialWeekSummary();
-
-            setalarmDAO.truncateBasketQuarterHandiOverWeekSummary();
-            setalarmDAO.insertBasketQuarterHandiOverWeekSummary();
-
-            setalarmDAO.truncateBasketHandiOverWeekSummary();
-            setalarmDAO.insertBasketHandiOverWeekSummary();
-
-            setalarmDAO.truncateBasketSpecialRestSummary();
-            setalarmDAO.insertBasketSpecialRestSummary();
-
-            setalarmDAO.truncateBasketQuarterHandiOverRestSummary();
-            setalarmDAO.insertBasketQuarterHandiOverRestSummary();
-
-            setalarmDAO.truncateBasketHandiOverRestSummary();
-            setalarmDAO.insertBasketHandiOverRestSummary();
 
             jxlsMakeExcel.statXlsDown("basketball");
             jxlsMakeExcel.statXlsDown("volleyball");

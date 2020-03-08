@@ -102,9 +102,9 @@ public class MakeCoupangDesc {
                 "    \t\t<br>\n" +
                 "    \t\t<br>\n" +
                 "    \t\t<br>\n" +
-                "    \t\t<br>\n" +
-                "<a href=\"https://coupa.ng/brzoEo\" target=\"_blank\"></a>";
+                "    \t\t<br>\n" ;
 
+        
         return resultDesc;
     }
 
