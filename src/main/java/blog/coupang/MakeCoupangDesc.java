@@ -35,7 +35,7 @@ public class MakeCoupangDesc {
                 "    \n" +
                 "        <p >제품상세 이미지<br>\n" +
                 "\n" +
-                "       <a href=\"" + coupangUrl + "\"><img src=\"" + imgUrl + "\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n" +
+                "      <img src=\"" + imgUrl + "\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n" +
                 "  </center>\n" +
                 "</div>\n" +
                 "\n" +
@@ -52,17 +52,7 @@ public class MakeCoupangDesc {
                 "    \t\t<br>\n" +
                 "    \t\t<br>\n" +
 
-                "<div>\n" +
-                "  <center>\n" +
 
-                "             <p >로켓와우 회원이실 경우 캐시백 적립가능합니다.\n" +
-                "             <p >또한 로켓와우를 아직 사용안해보신 분은 <b><span style=\" color:rgb(255, 125, 0) ;font-size :20pt\"> 1달 무료 체험 </span></b>할 수 있습니다.\n" +
-                "             <p >무료사용기간 후에 맘에 드시면 <b><span style=\" color:rgb(255, 125, 0) ;font-size :20pt\">2,900원 </span></b>만 내시면 많은 해택도 이용 하실 수 있으니 참고하세요.\n<br>" +
-                "             <a href=\"https://coupa.ng/brzmh7\" target=\"_blank\">▶ 로켓와우 1달 무료 체험하기◀</a>\n" +
-
-                "  </center>\n" +
-                "</div>\n" +
-                "\n" +
                 "    \t\t<br>\n" +
                 "    \t\t<br>\n" +
                 "<div>\n" +
@@ -70,9 +60,7 @@ public class MakeCoupangDesc {
                 "\n" +
                 "    \n" +
                 productReview +
-                "<a href=\"" + coupangUrl + "\" target=\"_blank\">" +
-                "<span style=\"background-color:null;border:1px solid rgb(52, 106, 255);color:rgb(52, 106, 255);display:inline-block;padding:12px 20px;text-decoration-line:none;font-size:14.5px;font-weight:bold;user-select:auto;\">▽ 구매 전 상세리뷰 더보기 ▽</span></a>\n" +
-                "\n" +
+
                 "  </center>\n" +
                 "</div>\n" +
                 "\t\t\t<br>\n" +
@@ -80,16 +68,7 @@ public class MakeCoupangDesc {
 
                 "<div>\n" +
                 "  <center>\n" +
-                "             <p >쿠팡에서 <b><span style=\" color:rgb(255, 0, 0) ;font-size :20pt\"> 초특급 할인 </span></b>하는 상품만 모았습니다.\n" +
-                "             <p >코로나19로 인해 품절사태가 일어나고 있으니 품절되기 전에 빨리 구입하세요.\n" +
-                "             <p >  <b><span style=\" color:rgb(255, 0, 0) ;font-size :20pt\">특가 상품 </span></b>은 조기 품절 될 수 있으니 참고하세요.\n" +
-                "    \t\t<br>\n" +
-                "<a href=\"https://coupa.ng/brzoEo\" target=\"_blank\">" +
-                "<span style=\"background-color:null;border:1px solid rgb(52, 106, 255);color:rgb(52, 106, 255);display:inline-block;padding:12px 20px;text-decoration-line:none;font-size:14.5px;font-weight:bold;user-select:auto;\">▽ 특가 상품 더보기 ▽</span></a>\n</a>" +
-                "              <p>\n" +
-                "\n" +
-                "    \t\t<br>\n" +
-                "    \t\t<br>\n" +
+
                 "    \t\t<br>\n" +
                 "                 본 게시글은 " + time2 + "에 작성되었습니다.\n" +
                 "    \t\t</p>\n" +
@@ -110,6 +89,8 @@ public class MakeCoupangDesc {
 
     public String desc2(String todayProductCate, TempDealVO tempDealVO, String productPriceInfo, String coupangUrl, String imgUrl, String productInfoDetail, String productReview ,String time2) {
         String resultDesc = "";
+
+
 
         return resultDesc;
     }

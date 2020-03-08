@@ -566,8 +566,8 @@ public class Hockey {
             if(aTeamStat.getGameId() != null && bTeamStat.getGameId() != null){
                     System.out.println(aTeamStat);
                     System.out.println(bTeamStat);
-                    setalarmDAO.updateTomorrowBasketStat(aTeamStat);
-                    setalarmDAO.updateTomorrowBasketStat(bTeamStat);
+                    setalarmDAO.updateTomorrowHockeyStat(aTeamStat);
+                    setalarmDAO.updateTomorrowHockeyStat(bTeamStat);
 
             }
 

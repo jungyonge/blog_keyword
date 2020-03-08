@@ -1363,6 +1363,7 @@ public class Volleyball {
             basketball.getTomorrowMatch();
             basketball.getBasketBallSummary();
 
+            hockey.getTomorrowMatch();
             hockey.getHockeySummary();
 
 
@@ -1378,11 +1379,11 @@ public class Volleyball {
 //
             WebSendMail webSendMail = new WebSendMail();
 //
-            for (int i = 0 ; i < memberList.size() ; i++){
-                recipients[0] = memberList.get(i).get("EMAIL").toString();
-                System.out.println(recipients[0]);
-                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
-            }
+//            for (int i = 0 ; i < memberList.size() ; i++){
+//                recipients[0] = memberList.get(i).get("EMAIL").toString();
+//                System.out.println(recipients[0]);
+//                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+//            }
 
 //                 String[] recipients = {"qjsro1204@naver.com","jungyong_e@naver.com"};
 //                System.out.println(recipients[0]);

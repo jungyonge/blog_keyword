@@ -288,6 +288,19 @@
             B_TEAM   =     #{bTeam}
     </update>
 
+    <update id="updateTomorrowHockeyStat" parameterType="blog.model.HockeyModel">
+        UPDATE sport.hockey_data
+        SET
+            ODD            = #{odd}
+        WHERE
+            GAME_ID   =     #{gameId} AND
+            LEAGUE   =     #{league} AND
+            GROUND   =     #{ground} AND
+            MATCH_DATE   =     #{date} AND
+            A_TEAM   =     #{aTeam} AND
+            B_TEAM   =     #{bTeam}
+    </update>
+
     <insert id="insertBasketMatch" parameterType="blog.model.BasketballModel">
         INSERT INTO sport.basketball_data(GAME_ID, LEAGUE, GROUND, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM_REST_DAY,  A_TEAM, B_TEAM, B_TEAM_REST_DAY)
       VALUES (

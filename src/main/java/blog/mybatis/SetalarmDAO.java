@@ -168,6 +168,16 @@ public class SetalarmDAO {
         }
     }
 
+    public void updateTomorrowHockeyStat(BasketballModel basketballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateTomorrowHockeyStat", basketballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
 
     public void insertVolleyStat(VolleyballModel volleyballModel){
         SqlSession session = sqlSessionFactory.openSession();
