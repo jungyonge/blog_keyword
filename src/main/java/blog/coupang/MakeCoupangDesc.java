@@ -2,9 +2,11 @@ package blog.coupang;
 
 import blog.model.TempDealVO;
 
+import java.util.Map;
+
 public class MakeCoupangDesc {
 
-    public String desc1(String todayProductCate, TempDealVO tempDealVO, String productPriceInfo, String coupangUrl, String imgUrl, String productInfoDetail, String productReview ,String time2){
+    public String desc1(String todayProductCate, TempDealVO tempDealVO, String productPriceInfo, String coupangUrl, String imgUrl, String productImg, String productInfoDetail, String productReview , String time2){
         String resultDesc = "";
 
         resultDesc = "<div>\n" +
@@ -29,12 +31,11 @@ public class MakeCoupangDesc {
                 productPriceInfo +
                 "  </center>\n" +
                 "</div>\n" +
-                "\n" +
+                "\n<br>" +
                 "<div>\n" +
                 "  <center>\n" +
                 "    \n" +
-                "        <p >제품상세 이미지<br>\n" +
-                "\n" +
+                "        <p >제품 이미지<br>\n" +
                 "      <img src=\"" + imgUrl + "\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n" +
                 "  </center>\n" +
                 "</div>\n" +
@@ -50,22 +51,16 @@ public class MakeCoupangDesc {
                 "</div>\n" +
                 "\n" +
                 "    \t\t<br>\n" +
-                "    \t\t<br>\n" +
-
-
-                "    \t\t<br>\n" +
-                "    \t\t<br>\n" +
                 "<div>\n" +
                 "  <center>\n" +
                 "\n" +
-                "    \n" +
                 productReview +
 
                 "  </center>\n" +
                 "</div>\n" +
                 "\t\t\t<br>\n" +
                 "\t\t\t<br>\n" +
-
+                productImg +
                 "<div>\n" +
                 "  <center>\n" +
 

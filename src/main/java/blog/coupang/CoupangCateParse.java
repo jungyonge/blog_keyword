@@ -555,6 +555,68 @@ public class CoupangCateParse {
         return result;
     }
 
+    public Map getDealImg(String url) throws Exception {
+
+//        https://www.coupang.com/vp/products/185502198/items/530600312/vendoritems/4381872911
+//        https://www.coupang.com/vp/products/185502198?itemId=530600312&vendorItemId=4381872911&sourceType=CATEGORY&categoryId=186666
+        Map<Object,String > result = new HashMap<Object, String>();
+        try {
+
+            Thread.sleep(100);
+            Map<Object,Object> paramMap = new HashMap<>();
+            String[] urlArr = url.split("\\?");
+
+            String[] testArr = urlArr[1].split("&");
+            for(String tessStr : testArr){
+                String[] testArr2 = tessStr.split("=");
+                paramMap.put(testArr2[0],testArr2[1]);
+            }
+
+            url = urlArr[0] + "/items/" + paramMap.get("itemId") + "/vendoritems/" + paramMap.get("vendorItemId");
+            String json = requestURLToString(url, true, 5, 0);
+            JsonParser jsonParser = new JsonParser();
+
+            JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+            JsonArray jsonArray = (JsonArray) jsonParser.parse(jsonObject.get("details").toString());
+            int i = 0;
+            for (JsonElement js : jsonArray){
+                JsonArray imgDesc = js.getAsJsonObject().get("vendorItemContentDescriptions").getAsJsonArray();
+                JsonObject tempObj = imgDesc.get(0).getAsJsonObject();
+                String imgUrl = tempObj.get("content").getAsString();
+                result.put(i,imgUrl);
+                i++;
+            }
+
+        } catch (Exception ex) {
+            errorCount++;
+            System.out.println(ex);
+            if (errorCount > 100)
+                throw new Exception(this.getClass().getName() + ".parseDefault:::::" + sid + " : 상품 수집 파싱 오류가 많습니다. 점검 필요");
+        }
+
+
+        return result;
+    }
+
+    public String getProductImg(Map productImgMap){
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0 ; i < productImgMap.size() ; i++){
+            sb.append("  <img src=\"").append(productImgMap.get(i)).append("\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n");
+        }
+        String result =
+                    "<div>\n" +
+                        "  <center>\n" +
+                        "    \n" +
+                        "        <p >제품상세 이미지<br>\n" +
+                        "\n" +      sb +
+                         "  </center>\n" +
+                    "</div>\n" ;
+
+        return result;
+    }
+
     public String getDealReview(String sdid) throws Exception {
 
 //        https://www.coupang.com/vp/products/185502198/items/530600312/vendoritems/4381872911
@@ -579,6 +641,8 @@ public class CoupangCateParse {
 
             Elements list = rootDoc.select("article.sdp-review__article__list.js_reviewArticleReviewList");
             if (list != null && list.size() > 0) {
+                reviewDiv +=     "  아래의 베스트 리뷰도 참조하시면 좋을 것 같네요. \n<br>" ;
+
                 for (Element dealItem : list) {
                     int rating = Integer.parseInt(dealItem.select("div.sdp-review__article__list__info__product-info__star-orange.js_reviewArticleRatingValue").attr("data-rating"));
                     String review = dealItem.select("div.sdp-review__article__list__review__content.js_reviewArticleContent").html();
@@ -590,14 +654,17 @@ public class CoupangCateParse {
                     for(int i = 0 ; i < rating ; i++){
                         star += "★";
                     }
+
+
+
                     reviewDiv +=
                             "    \t\t별점:\t<span style=\"color:rgb(255, 200, 0);\"> "+ star + "<br></span>\n" +
-                            "            상품평 :   " + review  +
-                            "    \t\t<br>\n" +
-                            "    \t\t<br>\n" +
-                            "<div class=\"se-module se-module-horizontalLine\">\n" +
-                            "                                <hr class=\"se-hr\">\n" +
-                            "</div>" ;
+                                    "            상품평 :   " + review  +
+                                    "    \t\t<br>\n" +
+                                    "    \t\t<br>\n" +
+                                    "<div class=\"se-module se-module-horizontalLine\">\n" +
+                                    "                                <hr class=\"se-hr\">\n" +
+                                    "</div>" ;
                 }
             }else {
                 reviewDiv +=
@@ -625,9 +692,9 @@ public class CoupangCateParse {
         String test = "https://www.coupang.com/vp/products/185502198?itemId=530600312&vendorItemId=4381872911&sourceType=CATEGORY&categoryId=186666";
 
         try {
-//            coupangCateParse.getDealInfoDetal("https://www.coupang.com/vp/products/185502198?itemId=530600312&vendorItemId=4381872911&sourceType=CATEGORY&categoryId=186666");
+            coupangCateParse.getDealImg("https://www.coupang.com/vp/products/185502198?itemId=530600312&vendorItemId=4381872911&sourceType=CATEGORY&categoryId=186666");
 //            coupangCateParse.getDealReview("185502198");
-            coupangCateParse.parseDefault("UTF-8");
+//            coupangCateParse.parseDefault("UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

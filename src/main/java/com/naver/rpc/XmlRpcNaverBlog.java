@@ -36,7 +36,8 @@ public class XmlRpcNaverBlog {
     SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
 
-    public String writeBlogPost(TempDealVO tempDealVO) {
+    public String
+    writeBlogPost(TempDealVO tempDealVO) {
         // TODO Auto-generated method stub
 
         CoupangCateParse coupangCateParse = new CoupangCateParse();
@@ -46,12 +47,27 @@ public class XmlRpcNaverBlog {
 
         try {
 
-
+            Map<Object,Object> tempProductImgMap = new HashMap<>();
+            Map<Object,Object> productImgMap = new HashMap<>();
+            String prodcutImg = "";
             String imgUrl = makeImgUrl(tempDealVO);
+            tempProductImgMap = coupangCateParse.getDealImg(tempDealVO.getProductUrl());
+            if (!tempProductImgMap.get(0).toString().contains("<img")) {
+                for(int i = 0 ; i < tempProductImgMap.size() ; i++){
+                    tempDealVO.setImgUrl(tempProductImgMap.get(i).toString().replaceAll("//","http://"));
+                    String tempImgUrl = makeImgUrl(tempDealVO);
+                    productImgMap.put(i,tempImgUrl);
+                }
+                prodcutImg = coupangCateParse.getProductImg(productImgMap);
+            } else {
+                prodcutImg = tempProductImgMap.get(0).toString();
+            }
+
 
             TempDealVO resultDealVO = new TempDealVO();
             resultDealVO.setIdx(tempDealVO.getIdx());
             String productInfoDetail = coupangCateParse.getDealInfoDetal(tempDealVO.getProductUrl());
+
             String coupangUrl = coupangAPI.getCoupangUrl(tempDealVO.getProductUrl());
             String productReview = coupangCateParse.getDealReview(tempDealVO.getSdid());
             String cate = tempDealVO.getCate();
@@ -75,34 +91,43 @@ public class XmlRpcNaverBlog {
 
             if(Integer.parseInt(tempDealVO.getDcRatio()) > 0){
                 productPriceInfo =
-                        "      <b><span style=\"color:rgb(255, 0, 0); font-size : 50pt\">할인률 : "+ Integer.parseInt(tempDealVO.getDcRatio()) + "%<br></span></b>\n" +
-                                "    <b><span style=\" color:rgb(255, 125, 0) ;font-size :30pt\">본가격 : " + df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원 </span></b>\n" +
-                                "\t<b><span style=\" color:rgb(0, 0, 0) ;font-size :30pt\"> ->  </span></b>\n" +
-                                "\t<b><span style=\" color:rgb(255, 0, 0) ;font-size :40pt\">할인 가격 : " + df.format(Integer.parseInt(tempDealVO.getDcPrice())) + "원</span></b><br>\n" +
+                        "      <b><span style=\"color:rgb(255, 0, 0); font-size : 15pt\">할인률 : "+ Integer.parseInt(tempDealVO.getDcRatio()) + "%<br></span></b>\n" +
+                                "    <b><span style=\" color:rgb(255, 125, 0) ;font-size :15pt\">본가격 : " + df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원 </span></b>\n<br>" +
+                                "\t<b><span style=\" color:rgb(0, 0, 0) ;font-size :15pt\"> ↓↓↓↓  </span></b><br>\n" +
+                                "\t<b><span style=\" color:rgb(255, 0, 0) ;font-size :15pt\">할인 가격 : " + df.format(Integer.parseInt(tempDealVO.getDcPrice())) + "원</span></b><br>\n" +
                         "\n" +
-                         "          <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\"> 할인가 행사 </span></b>는 언제 마감될지 모르니 서두르세요.<br>" +
-                        "      <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 할인가 구매하러 가기 ◀</a><br>\n" +
+                         "          <b><span style=\"color:rgb(255, 0, 0); font-size :15pt\"> 할인가 행사 </span></b> 마감 전에 구매하세요.<br>" +
+                                "        <a href=\"" + coupangUrl +" \" target=\"_blank\">" +
+                                "       <span style=\"background-color:rgb(52, 106, 255);border:1px solid rgb(52, 106, 255);color:rgb(255, 255, 255);display:inline-block;padding:12px 20px;text-decoration-line:none;font-size:14.5px;font-weight:bold;user-select:auto;\">▶ 할인가 구매하러 가기 ◀</span></a>\n" +
+//                        "      <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 할인가 구매하러 가기 ◀</a><br>\n" +
                         "      \n" +
                         "      <br>\n" ;
                 productTitle = "[할인행사 상품] " + replaceDealName(tempDealVO.getDealName());
+                if(!productReview.contains("아쉽게 해당상품의 등록된 상품평이 없네요")){
+                    productTitle = "[특가 리뷰 상품] " + replaceDealName(tempDealVO.getDealName());
+                }
             }else {
                 productPriceInfo =
                         "      <br>\n" +
                         "      \n" +
-                        "      <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\">최저가격 : "+  df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원<br></span></b>\n" +
-                                "          <b><span style=\"color:rgb(255, 0, 0); font-size :40pt\"> 최저가 행사</span></b>는 언제 마감될지 모르니 서두르세요.<br>" +
-                        "       <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 최저가 구매하러 가기 ◀</a><br>\n" +
-                        "\n" +
+                        "      <b><span style=\"color:rgb(255, 0, 0); font-size :15pt\">최저가격 : "+  df.format(Integer.parseInt(tempDealVO.getNmPrice())) +"원<br></span></b>\n" +
+                        "          <b><span style=\"color:rgb(255, 0, 0); font-size :15pt\"> 최저가 행사</span></b> 마감 전에 구입하세요.<br>" +
+                                "        <a href=\"" + coupangUrl +" \" target=\"_blank\">" +
+                                "       <span style=\"background-color:rgb(52, 106, 255);border:1px solid rgb(52, 106, 255);color:rgb(255, 255, 255);display:inline-block;padding:12px 20px;text-decoration-line:none;font-size:14.5px;font-weight:bold;user-select:auto;\">▶ 할인가 구매하러 가기 ◀</span></a>\n" +
+//                        "       <a href=\"" + coupangUrl + " \" target=\"_blank\" style=\" font-size : 35pt\" >▶ 최저가 구매하러 가기 ◀</a><br>\n" +
+                        "\n<br>" +
                         "\n" ;
                 productTitle = "[최저가 상품] " + replaceDealName(tempDealVO.getDealName());
+                if(!productReview.contains("아쉽게 해당상품의 등록된 상품평이 없네요")){
+                    productTitle = "[최저가 리뷰후기] " + replaceDealName(tempDealVO.getDealName());
+                }
 
             }
 
 
-
             Map<String, String> contents = new HashMap<String, String>();
 
-            String desc = makeCoupangDesc.desc1(todayProductCate,tempDealVO,productPriceInfo,coupangUrl,imgUrl,productInfoDetail,productReview,time2);
+            String desc = makeCoupangDesc.desc1(todayProductCate,tempDealVO,productPriceInfo,coupangUrl,imgUrl,prodcutImg,productInfoDetail,productReview,time2);
 
 
 
@@ -133,6 +158,8 @@ public class XmlRpcNaverBlog {
 
         }catch(Exception e) {
             e.printStackTrace();
+            tempDealVO.setPostid("이미지이상");
+            setalarmDAO.updateCoupangDeal(tempDealVO);
         }
         return rsString;
 
@@ -247,7 +274,7 @@ public class XmlRpcNaverBlog {
 
                 if(!statMap.get("make").toString().equals("error") && Integer.parseInt(statMap.get("totalPost").toString()) < 20000 ){
                     xmlRpcNaverBlog.writeBlogPost(tempDealVO);
-                    Thread.sleep(300000);
+                    Thread.sleep(180000);
                 } else {
                     System.out.println("보류");
                     tempDealVO.setPostid("보류");
