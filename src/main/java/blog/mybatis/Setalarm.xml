@@ -3911,8 +3911,7 @@ VALUES (
              , imgurl
         FROM coupang.coupang_deal
         WHERE postid IS NULL
-          AND cate LIKE '%가전디지털%'
-          AND dcprice > 500000
+          AND dcprice > 300000
         ORDER BY dealrank
         LIMIT 1;
 

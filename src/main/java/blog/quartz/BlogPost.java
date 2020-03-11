@@ -24,11 +24,12 @@ public class BlogPost implements Job {
         KeywordStat keywordStat = new KeywordStat();
         Map<String, Object> statMap = new HashMap<String, Object>();
         String rsString = "";
+        TempDealVO tempDealVO = new TempDealVO();
         try {
 
 
             for(int i = 0 ; i < 10000 ; i++){
-                TempDealVO tempDealVO = setalarmDAO.selectCoupangDeal();
+                tempDealVO = setalarmDAO.selectCoupangDeal();
                 System.out.println(i + "번째");
                 statMap = keywordStat.getCoupangDealStat(xmlRpcNaverBlog.replaceDealName(tempDealVO.getDealName()));
                 System.out.println("monthlyPcQcCnt : " + statMap.get("monthlyPcQcCnt"));
@@ -51,6 +52,8 @@ public class BlogPost implements Job {
 
         }catch(Exception e) {
             e.printStackTrace();
+            tempDealVO.setPostid("에러");
+            setalarmDAO.updateCoupangDeal(tempDealVO);
         }
     }
 }

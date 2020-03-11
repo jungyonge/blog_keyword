@@ -50,18 +50,20 @@ public class XmlRpcNaverBlog {
             Map<Object,Object> tempProductImgMap = new HashMap<>();
             Map<Object,Object> productImgMap = new HashMap<>();
             String prodcutImg = "";
+            String tempImgUrl = "";
             String imgUrl = makeImgUrl(tempDealVO);
             tempProductImgMap = coupangCateParse.getDealImg(tempDealVO.getProductUrl());
-            if (!tempProductImgMap.get(0).toString().contains("<img")) {
-                for(int i = 0 ; i < tempProductImgMap.size() ; i++){
+            for(int i = 0 ; i < tempProductImgMap.size() ; i++){
+                if(tempProductImgMap.get(i).toString().contains("src") || tempProductImgMap.get(i).toString().contains("span")){
+                    tempImgUrl = tempProductImgMap.get(i).toString();
+                }else {
                     tempDealVO.setImgUrl(tempProductImgMap.get(i).toString().replaceAll("//","http://"));
-                    String tempImgUrl = makeImgUrl(tempDealVO);
-                    productImgMap.put(i,tempImgUrl);
+                    tempImgUrl = makeImgUrl(tempDealVO);
                 }
-                prodcutImg = coupangCateParse.getProductImg(productImgMap);
-            } else {
-                prodcutImg = tempProductImgMap.get(0).toString();
+                productImgMap.put(i,tempImgUrl);
             }
+            prodcutImg = coupangCateParse.getProductImg(productImgMap);
+
 
 
             TempDealVO resultDealVO = new TempDealVO();

@@ -18,8 +18,8 @@ public final class CoupangAPI {
     private final static String DOMAIN = "https://api-gateway.coupang.com";
     private final static String URL = "/v2/providers/affiliate_open_api/apis/openapi/v1/deeplink";
     // Replace with your own ACCESS_KEY and SECRET_KEY
-    private final static String ACCESS_KEY = "c3715adc-4409-48fc-b43d-4b2b70244207";
-    private final static String SECRET_KEY = "763e477d0c86f41f76221f0960949e1b15ce1c78";
+    private final static String ACCESS_KEY = "7722a2c2-9b08-440d-b594-88c31c0e30d2";
+    private final static String SECRET_KEY = "52cf0616003e99b9f598a38a8aea31f80d410a8c";
 
 
     public String getCoupangUrl (String url) throws IOException {

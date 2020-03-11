@@ -603,7 +603,11 @@ public class CoupangCateParse {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0 ; i < productImgMap.size() ; i++){
-            sb.append("  <img src=\"").append(productImgMap.get(i)).append("\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n");
+            if(productImgMap.get(i).toString().contains("src") || productImgMap.get(i).toString().contains("span")) {
+                sb.append(productImgMap.get(i));
+            } else {
+                sb.append("  <img src=\"").append(productImgMap.get(i)).append("\" data-lazy-src=\"\" data-width=\"500\" data-height=\"500\" width=\"500\" height=\"500\"></a>\n");
+            }
         }
         String result =
                     "<div>\n" +
