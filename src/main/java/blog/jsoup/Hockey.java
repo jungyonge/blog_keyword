@@ -35,14 +35,21 @@ public class Hockey {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setDoOutput(true);
-        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-        con.setRequestProperty("referer", "https://livescore.co.kr/");
-        con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36");
+        con.setRequestProperty("referer", "http://hackers-say.com/frontend/home");
+        con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
         con.setRequestProperty("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7");
         con.setRequestProperty("Content-Type", "text/html;charset=UTF-8");
+        con.setRequestProperty("Cookie","ci_session=a5i6kt83l3g1d4ultj36kijln6f6vc3k");
+        con.setRequestProperty("Host","hackers-say.com");
+        con.setRequestProperty("Upgrade-Insecure-Requests","1");
+
+
 
         con.setConnectTimeout(2000);
 
+
+        int code = con.getResponseCode();
         StringBuffer sInputData = new StringBuffer(1024);
         String sInputLine = "";
         BufferedReader in;
@@ -998,8 +1005,11 @@ public class Hockey {
         try {
 //            hockey.getAllMatch();
 ////            hockey.updateHockeyStat();
-            hockey.getHockeySummary();
+//            hockey.getHockeySummary();
+            hockey.requestURLToString("http://hackers-say.com/courses/details/1");
+
         } catch (Exception e) {
+
             e.printStackTrace();
         }
         ;
