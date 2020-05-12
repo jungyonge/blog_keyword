@@ -79,7 +79,7 @@ public final class NamedGetAPI {
                 aTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
                 bTeamModel.setLeague(matchObject.getJSONObject("leagu1e").getString("name"));
 
-                aTeamModel.setGround(matchObject.getJSONObject("league").getString("name"));
+                aTeamModel.setGround(matchObject.getJSONObject("leag1ue").getString("name"));
                 bTeamModel.setGround(matchObject.getJSONObject("league").getString("name"));
 
                 JSONArray teamArr = matchArr.

@@ -11,7 +11,7 @@ public class BaseballModel {
 
     String date;
     String dayOfWeek;
-    String time;
+    String time1;
 
     Integer aTeamRestDay;
     String aTeamPitcher;
