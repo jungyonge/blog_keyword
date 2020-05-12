@@ -77,7 +77,7 @@ public final class NamedGetAPI {
                 bTeamModel.setGameId(matchObject.getJSONObject("odds").getString("gameId"));
 
                 aTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
-                bTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
+                bTeamModel.setLeague(matchObject.getJSONObject("leagu1e").getString("name"));
 
                 aTeamModel.setGround(matchObject.getJSONObject("league").getString("name"));
                 bTeamModel.setGround(matchObject.getJSONObject("league").getString("name"));
