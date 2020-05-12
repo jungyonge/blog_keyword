@@ -8,10 +8,12 @@ public class BaseballModel {
     String gameId;
     String league;
     String ground;
+    String stadium;
+
 
     String date;
     String dayOfWeek;
-    String time1;
+    String time;
 
     Integer aTeamRestDay;
     String aTeamPitcher;
@@ -52,5 +54,8 @@ public class BaseballModel {
     Integer eighthScore;
     Integer ninthScore;
 
-
+    public int getTotalScore(){
+        int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore + sixthScore+ seventhScore+eighthScore+ninthScore;
+        return total;
+    }
 }

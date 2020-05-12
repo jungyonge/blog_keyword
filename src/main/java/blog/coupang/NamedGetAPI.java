@@ -68,7 +68,7 @@ public final class NamedGetAPI {
             //books의 배열을 추출
             JSONArray matchArr = jsonObject.getJSONArray("response");
 
-            for(int i = 0 ; i < matchArr.length() ; i++){
+            for (int i = 0; i < matchArr.length(); i++) {
                 BaseballModel aTeamModel = new BaseballModel();
                 BaseballModel bTeamModel = new BaseballModel();
 
@@ -77,14 +77,54 @@ public final class NamedGetAPI {
                 bTeamModel.setGameId(matchObject.getJSONObject("odds").getString("gameId"));
 
                 aTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
-                bTeamModel.setLeague(matchObject.getJSONObject("leagu1e").getString("name"));
+                bTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
 
-                aTeamModel.setGround(matchObject.getJSONObject("leag1ue").getString("name"));
-                bTeamModel.setGround(matchObject.getJSONObject("league").getString("name"));
+                aTeamModel.setGround("홈");
+                bTeamModel.setGround("원정");
 
-                JSONArray teamArr = matchArr.
+                aTeamModel.setStadium(matchObject.getJSONObject("venue").getString("name"));
+                bTeamModel.setStadium(matchObject.getJSONObject("venue").getString("name"));
+
+                JSONObject homeTeam = (JSONObject) matchObject.getJSONArray("gameTeams").get(1);
+                JSONObject awayTeam = (JSONObject) matchObject.getJSONArray("gameTeams").get(0);
+
+                aTeamModel.setATeamPitcher(matchObject.getJSONObject("gameStaus").getJSONObject("homeStarterPlayer").getString("displayName"));
+                aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
+
+                aTeamModel.setFirstScore(homeTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
+                aTeamModel.setSecondScore(homeTeam.getJSONArray("scores").getJSONObject(1).getInt("score"));
+                aTeamModel.setThirdScore(homeTeam.getJSONArray("scores").getJSONObject(2).getInt("score"));
+                aTeamModel.setFourthScore(homeTeam.getJSONArray("scores").getJSONObject(3).getInt("score"));
+                aTeamModel.setFifthScore(homeTeam.getJSONArray("scores").getJSONObject(4).getInt("score"));
+                aTeamModel.setSixthScore(homeTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
+                aTeamModel.setSeventhScore(homeTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
+                aTeamModel.setEighthScore(homeTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
+                aTeamModel.setNinthScore(homeTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+
+                bTeamModel.setFirstScore(awayTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
+                bTeamModel.setSecondScore(awayTeam.getJSONArray("scores").getJSONObject(1).getInt("score"));
+                bTeamModel.setThirdScore(awayTeam.getJSONArray("scores").getJSONObject(2).getInt("score"));
+                bTeamModel.setFourthScore(awayTeam.getJSONArray("scores").getJSONObject(3).getInt("score"));
+                bTeamModel.setFifthScore(awayTeam.getJSONArray("scores").getJSONObject(4).getInt("score"));
+                bTeamModel.setSixthScore(awayTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
+                bTeamModel.setSeventhScore(awayTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
+                bTeamModel.setEighthScore(awayTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
+                bTeamModel.setNinthScore(awayTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+
+                aTeamModel.setATeamTotalPoint(aTeamModel.getTotalScore());
+                aTeamModel.setBTeamTotalPoint(bTeamModel.getTotalScore());
+
+                aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
+                aTeamModel.setBTeamPitcher(matchObject.getJSONObject("gameStatus").getJSONObject("awayStarterPlayer").getString("displayName"));
+
+                aTeamModel.setHandiCap("");
+
+
+
+
+
+
             }
-            System.out.println(matchArr);
         } catch (Exception e) {
             e.printStackTrace();
         }
