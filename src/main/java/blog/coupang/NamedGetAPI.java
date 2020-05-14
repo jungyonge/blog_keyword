@@ -73,11 +73,14 @@ public final class NamedGetAPI {
                 BaseballModel bTeamModel = new BaseballModel();
 
                 JSONObject matchObject = matchArr.getJSONObject(i);
-                aTeamModel.setGameId(matchObject.getJSONObject("odds").getString("gameId"));
-                bTeamModel.setGameId(matchObject.getJSONObject("odds").getString("gameId"));
-
+                System.out.println(matchObject);
+                aTeamModel.setGameId(String.valueOf(matchObject.getInt("id")));
+                bTeamModel.setGameId(String.valueOf(matchObject.getInt("id")));
                 aTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
                 bTeamModel.setLeague(matchObject.getJSONObject("league").getString("name"));
+
+                if(!aTeamModel.getLeague().equals("KBO"))
+                    continue;;
 
                 aTeamModel.setGround("홈");
                 bTeamModel.setGround("원정");
@@ -88,7 +91,7 @@ public final class NamedGetAPI {
                 JSONObject homeTeam = (JSONObject) matchObject.getJSONArray("gameTeams").get(1);
                 JSONObject awayTeam = (JSONObject) matchObject.getJSONArray("gameTeams").get(0);
 
-                aTeamModel.setATeamPitcher(matchObject.getJSONObject("gameStaus").getJSONObject("homeStarterPlayer").getString("displayName"));
+                aTeamModel.setATeamPitcher(matchObject.getJSONObject("gameStatus").getJSONObject("homeStarterPlayer").getString("displayName"));
                 aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
 
                 aTeamModel.setFirstScore(homeTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
@@ -99,7 +102,7 @@ public final class NamedGetAPI {
                 aTeamModel.setSixthScore(homeTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
                 aTeamModel.setSeventhScore(homeTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
                 aTeamModel.setEighthScore(homeTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
-                aTeamModel.setNinthScore(homeTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+//                aTeamModel.setNinthScore(homeTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
 
                 bTeamModel.setFirstScore(awayTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
                 bTeamModel.setSecondScore(awayTeam.getJSONArray("scores").getJSONObject(1).getInt("score"));
@@ -109,7 +112,7 @@ public final class NamedGetAPI {
                 bTeamModel.setSixthScore(awayTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
                 bTeamModel.setSeventhScore(awayTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
                 bTeamModel.setEighthScore(awayTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
-                bTeamModel.setNinthScore(awayTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+//                bTeamModel.setNinthScore(awayTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
 
                 aTeamModel.setATeamTotalPoint(aTeamModel.getTotalScore());
                 aTeamModel.setBTeamTotalPoint(bTeamModel.getTotalScore());
@@ -117,7 +120,69 @@ public final class NamedGetAPI {
                 aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
                 aTeamModel.setBTeamPitcher(matchObject.getJSONObject("gameStatus").getJSONObject("awayStarterPlayer").getString("displayName"));
 
-                aTeamModel.setHandiCap("");
+                JSONObject koreaOdd = matchObject.getJSONArray("odds").getJSONObject(1);
+                aTeamModel.setHandiCap(koreaOdd.getDouble("handi"));
+                aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
+                bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
+
+
+
+                if(aTeamModel.getHandiCap() > 0){
+                    aTeamModel.setOdd("역배");
+                    bTeamModel.setOdd("정배");
+
+                    aTeamModel.setHalfHandiCap(0.5);
+                    aTeamModel.setHalfHandiCap(-0.5);
+
+                } else if (aTeamModel.getHandiCap() < 0){
+                    aTeamModel.setOdd("정배");
+                    bTeamModel.setOdd("역배");
+
+                    aTeamModel.setHalfHandiCap(-0.5);
+                    aTeamModel.setHalfHandiCap(0.5);
+                } else {
+                    aTeamModel.setOdd("없음");
+                    bTeamModel.setOdd("없음");
+
+                    aTeamModel.setHalfHandiCap(0.0);
+                    aTeamModel.setHalfHandiCap(0.0);
+                }
+
+                if(aTeamModel.getHandiCap() == 0){
+                    aTeamModel.setHandiCapResult("적특");
+                }else {
+                    if ((aTeamModel.getATeamTotalPoint() + aTeamModel.getHandiCap()) > aTeamModel.getBTeamTotalPoint()) {
+                        aTeamModel.setHandiCapResult("승리");
+                        bTeamModel.setHandiCapResult("패배");
+
+                    } else if ((aTeamModel.getATeamTotalPoint() + aTeamModel.getHandiCap()) < aTeamModel.getBTeamTotalPoint()) {
+                        aTeamModel.setHandiCapResult("패배");
+                        bTeamModel.setHandiCapResult("승리");
+
+                    } else {
+                        aTeamModel.setHandiCapResult("적특");
+                        bTeamModel.setHandiCapResult("적특");
+                    }
+                }
+
+                if(aTeamModel.getHalfHandiCap() == 0){
+                    aTeamModel.setHandiCapResult("적특");
+                }else {
+                    if ((aTeamModel.getATeamTotalPoint() + aTeamModel.getHandiCap()) > aTeamModel.getBTeamTotalPoint()) {
+                        aTeamModel.setHandiCapResult("승리");
+                        bTeamModel.setHandiCapResult("패배");
+
+                    } else if ((aTeamModel.getATeamTotalPoint() + aTeamModel.getHandiCap()) < aTeamModel.getBTeamTotalPoint()) {
+                        aTeamModel.setHandiCapResult("패배");
+                        bTeamModel.setHandiCapResult("승리");
+
+                    } else {
+                        aTeamModel.setHandiCapResult("적특");
+                        bTeamModel.setHandiCapResult("적특");
+                    }
+                }
+
+                System.out.println(aTeamModel);
 
 
 

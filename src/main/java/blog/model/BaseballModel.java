@@ -58,4 +58,19 @@ public class BaseballModel {
         int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore + sixthScore+ seventhScore+eighthScore+ninthScore;
         return total;
     }
+
+    public int get3InningScore(){
+        int total = firstScore +  secondScore + thirdScore ;
+        return total;
+    }
+
+    public int get4InningScore(){
+        int total = firstScore +  secondScore + thirdScore +  fourthScore ;
+        return total;
+    }
+
+    public int get5InningScore(){
+        int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore ;
+        return total;
+    }
 }
