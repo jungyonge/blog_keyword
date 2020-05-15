@@ -1,23 +1,15 @@
 package blog.coupang;
 
 import blog.model.BaseballModel;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import static java.lang.Math.round;
 
 public final class NamedGetAPI {
     private final static String REQUEST_METHOD = "GET";
@@ -102,7 +94,11 @@ public final class NamedGetAPI {
                 aTeamModel.setSixthScore(homeTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
                 aTeamModel.setSeventhScore(homeTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
                 aTeamModel.setEighthScore(homeTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
-//                aTeamModel.setNinthScore(homeTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+                if(homeTeam.getJSONArray("scores").length() > 8){
+                    aTeamModel.setNinthScore(homeTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+                } else {
+                    aTeamModel.setNinthScore(0);
+                }
 
                 bTeamModel.setFirstScore(awayTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
                 bTeamModel.setSecondScore(awayTeam.getJSONArray("scores").getJSONObject(1).getInt("score"));
@@ -112,8 +108,11 @@ public final class NamedGetAPI {
                 bTeamModel.setSixthScore(awayTeam.getJSONArray("scores").getJSONObject(5).getInt("score"));
                 bTeamModel.setSeventhScore(awayTeam.getJSONArray("scores").getJSONObject(6).getInt("score"));
                 bTeamModel.setEighthScore(awayTeam.getJSONArray("scores").getJSONObject(7).getInt("score"));
-//                bTeamModel.setNinthScore(awayTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
-
+                if(awayTeam.getJSONArray("scores").length() > 8){
+                    bTeamModel.setNinthScore(awayTeam.getJSONArray("scores").getJSONObject(8).getInt("score"));
+                } else {
+                    bTeamModel.setNinthScore(0);
+                }
                 aTeamModel.setATeamTotalPoint(aTeamModel.getTotalScore());
                 aTeamModel.setBTeamTotalPoint(bTeamModel.getTotalScore());
 
@@ -125,27 +124,64 @@ public final class NamedGetAPI {
                 aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
                 bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
 
+                double firstInninPointLine =   koreaOdd.getDouble("unover") / 9;
 
+                double forthPointLine = firstInninPointLine * 4;
+                int forthPointLineInt = (int) forthPointLine;
+                double pointLine = forthPointLine - forthPointLineInt;
+
+                if ((pointLine <= 0.333 && pointLine >= 0.001)) {
+                    aTeamModel.setFourthPointLine((double) forthPointLineInt);
+                } else if((pointLine <= 0.999 && pointLine >= 0.666)) {
+                    aTeamModel.setFourthPointLine((double) (forthPointLineInt + 1));
+                } else if((pointLine <= 0.665 && pointLine >= 0.334)) {
+                    aTeamModel.setFourthPointLine(forthPointLineInt + 0.5);
+                } else {
+                    aTeamModel.setFourthPointLine((double) round(forthPointLine));
+                }
+
+                double fifthPointLine = firstInninPointLine * 5;
+                int fifthPointLineInt = (int) fifthPointLine;
+                pointLine = fifthPointLine - fifthPointLineInt;
+
+                if ((pointLine <= 0.333 && pointLine >= 0.001)) {
+                    aTeamModel.setFifthPointLine((double) fifthPointLineInt);
+                } else if((pointLine <= 0.999 && pointLine >= 0.666)) {
+                    aTeamModel.setFifthPointLine((double) (fifthPointLineInt + 1));
+                } else if((pointLine <= 0.665 && pointLine >= 0.334)) {
+                    aTeamModel.setFifthPointLine(fifthPointLineInt + 0.5);
+                } else {
+                    aTeamModel.setFifthPointLine((double) round(fifthPointLine));
+                }
 
                 if(aTeamModel.getHandiCap() > 0){
                     aTeamModel.setOdd("역배");
                     bTeamModel.setOdd("정배");
 
-                    aTeamModel.setHalfHandiCap(0.5);
-                    aTeamModel.setHalfHandiCap(-0.5);
+                    aTeamModel.setFourthHandiCap(0.5);
+                    aTeamModel.setFourthHandiCap(-0.5);
+
+                    aTeamModel.setFifthHandiCap(0.5);
+                    aTeamModel.setFifthHandiCap(-0.5);
 
                 } else if (aTeamModel.getHandiCap() < 0){
                     aTeamModel.setOdd("정배");
                     bTeamModel.setOdd("역배");
 
-                    aTeamModel.setHalfHandiCap(-0.5);
-                    aTeamModel.setHalfHandiCap(0.5);
+                    aTeamModel.setFourthHandiCap(-0.5);
+                    aTeamModel.setFourthHandiCap(0.5);
+
+                    aTeamModel.setFifthHandiCap(-0.5);
+                    aTeamModel.setFifthHandiCap(0.5);
                 } else {
                     aTeamModel.setOdd("없음");
                     bTeamModel.setOdd("없음");
 
-                    aTeamModel.setHalfHandiCap(0.0);
-                    aTeamModel.setHalfHandiCap(0.0);
+                    aTeamModel.setFourthHandiCap(0.0);
+                    aTeamModel.setFourthHandiCap(0.0);
+
+                    aTeamModel.setFifthHandiCap(0.0);
+                    aTeamModel.setFifthHandiCap(0.0);
                 }
 
                 if(aTeamModel.getHandiCap() == 0){

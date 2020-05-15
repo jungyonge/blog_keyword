@@ -31,14 +31,23 @@ public class BaseballModel {
     Double pointLine;
     String pointLineResult;
 
-    Integer aTeamHalfPoint;
-    Integer bTeamHalfPoint;
+    Integer aTeamFourthPoint;
+    Integer bTeamFourthPoint;
 
-    Double halfHandiCap;
-    String halfHandiCapResult;
+    Integer aTeamFifthPoint;
+    Integer bTeamFifthPoint;
 
-    Double halfPointLine;
-    String halfPointLineResult;
+    Double fourthHandiCap;
+    String fourthHandiCapResult;
+
+    Double fourthPointLine;
+    String fourthPointLineResult;
+
+    Double fifthHandiCap;
+    String fifthHandiCapResult;
+
+    Double fifthPointLine;
+    String fifthPointLineResult;
 
     String firstStrikeOut;
     String firstHomerun;
@@ -55,7 +64,7 @@ public class BaseballModel {
     Integer ninthScore;
 
     public int getTotalScore(){
-        int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore + sixthScore+ seventhScore+eighthScore+ninthScore;
+        int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore + sixthScore + seventhScore + eighthScore + ninthScore;
         return total;
     }
 
