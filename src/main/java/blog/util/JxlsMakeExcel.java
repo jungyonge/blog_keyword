@@ -44,6 +44,8 @@ public class JxlsMakeExcel {
             excelDataList = setalarmDAO.selectBasketQuarterHandiOverSummary();
         }else if (type == "basketball_quarter_handi_combo"){
             excelDataList = setalarmDAO.selectBasketQuarterHandiComboSummary();
+        }else if ( type == "baseball"){
+            excelDataList = setalarmDAO.selectBaseballStat();
         }
 
 
@@ -163,7 +165,7 @@ public class JxlsMakeExcel {
         JxlsMakeExcel jxlsMakeExcel = new JxlsMakeExcel();
         List excelDataList = new ArrayList<>();
         try {
-            jxlsMakeExcel.statXlsDown("bas");
+            jxlsMakeExcel.statXlsDown("baseball");
 
         } catch (IOException e) {
             e.printStackTrace();

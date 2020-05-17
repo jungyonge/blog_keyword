@@ -962,6 +962,54 @@ public class SetalarmDAO {
         }
     }
 
+    public void insertBaseballMatch(BaseballModel baseballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBaseballMatch", baseballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void updateTomorrowBaseballMatch(BaseballModel baseballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.updateTomorrowBaseballMatch", baseballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public List selectBaseballStat() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBaseballStat");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+
+    public void updateBaseballStat(BaseballModel baseballModel){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.updateBaseballStat", baseballModel);
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
 
 
 

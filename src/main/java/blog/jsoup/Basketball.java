@@ -157,11 +157,7 @@ public class Basketball {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-
-
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
-
             cal.add(Calendar.DATE, 1);
             System.out.println("after: " + df.format(cal.getTime()));
 
