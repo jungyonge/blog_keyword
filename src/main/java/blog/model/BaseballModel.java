@@ -31,11 +31,20 @@ public class BaseballModel {
     Double pointLine;
     String pointLineResult;
 
+    Integer aTeamThirdPoint;
+    Integer bTeamThirdPoint;
+
     Integer aTeamFourthPoint;
     Integer bTeamFourthPoint;
 
     Integer aTeamFifthPoint;
     Integer bTeamFifthPoint;
+
+    Double thirdHandiCap;
+    String thirdHandiCapResult;
+
+    Double thirdPointLine;
+    String thirdPointLineResult;
 
     Double fourthHandiCap;
     String fourthHandiCapResult;

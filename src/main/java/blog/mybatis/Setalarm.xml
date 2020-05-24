@@ -3872,7 +3872,7 @@ VALUES (
     </select>
 
     <insert id="insertBaseballMatch" parameterType="blog.model.BaseballModel">
-        INSERT INTO sport.baseball_data(GAME_ID, LEAGUE, GROUND,STADIUM,MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM_REST_DAY,  A_TEAM, B_TEAM, B_TEAM_REST_DAY)
+        INSERT INTO sport.baseball_data(GAME_ID, LEAGUE, GROUND,STADIUM,MATCH_DATE, DAY_OF_WEEK, MATCH_TIME,  A_TEAM, B_TEAM)
         VALUES (
                    #{gameId},
                    #{league},
@@ -3881,10 +3881,8 @@ VALUES (
                    #{date},
                    #{dayOfWeek},
                    #{time},
-                   IFNULL((SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM  sport.baseball_data A WHERE A_TEAM = #{aTeam} AND LEAGUE = #{league} ORDER BY idx DESC LIMIT 1))) -1,0),
                    #{aTeam},
-                   #{bTeam},
-                   IFNULL((SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM  sport.baseball_data B WHERE B_TEAM = #{bTeam}  AND LEAGUE = #{league} ORDER BY idx DESC LIMIT 1))) -1,0)
+                   #{bTeam}
                )
     </insert>
 
@@ -3897,17 +3895,26 @@ VALUES (
             MATCH_DATE      =#{date},
             DAY_OF_WEEK     =#{dayOfWeek},
             MATCH_TIME      =#{time},
+            A_TEAM_REST_DAY = IFNULL((SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM (SELECT MATCH_DATE FROM  sport.baseball_data A WHERE A_TEAM = #{aTeam} AND LEAGUE = #{league} AND A_TEAM_PITCHER = #{aTeamPitcher} ORDER BY idx DESC LIMIT 1) A ))) -1,0),
             A_TEAM_PITCHER      =#{aTeamPitcher},
             A_TEAM      =#{aTeam},
-            A_TEAM_TOTAL_POINT      =#{aTeamTotalPoint},
-            B_TEAM_TOTAL_POINT      =#{bTeamTotalPoint},
+            A_TEAM_TOTAL_POINT      =  IF(#{aTeamTotalPoint} = 99,'취소',#{aTeamTotalPoint}),
+            B_TEAM_TOTAL_POINT      =  IF(#{bTeamTotalPoint} = 99,'취소',#{bTeamTotalPoint}),
             B_TEAM      =#{bTeam},
             B_TEAM_PITCHER      =#{bTeamPitcher},
+            B_TEAM_REST_DAY =    IFNULL((SELECT  DATEDIFF(#{date} ,(SELECT MATCH_DATE FROM (SELECT MATCH_DATE FROM  sport.baseball_data B WHERE B_TEAM = #{bTeam}  AND LEAGUE = #{league} AND B_TEAM_PITCHER = #{bTeamPitcher}  ORDER BY idx DESC LIMIT 1) A ))) -1,0),
             HANDI_CAP       =      #{handiCap},
             HANDI_CAP_RESULT        =#{handiCapResult},
             ODD     =#{odd},
             POINT_LINE      =#{pointLine},
             POINT_LINE_RESULT       =#{pointLineResult},
+            A_TEAM_THIRD_POINT     =#{aTeamThirdPoint},
+            B_TEAM_THIRD_POINT        =#{bTeamThirdPoint},
+            THIRD_HANDI_CAP        =#{thirdHandiCap},
+            THIRD_HANDI_CAP_RESULT     =#{thirdHandiCapResult},
+            THIRD_POINT_LINE       =#{thirdPointLine},
+            THIRD_POINT_LINE_RESULT        =#{thirdPointLineResult},
+
             A_TEAM_FOURTH_POINT     =#{aTeamFourthPoint},
             B_TEAM_FOURTH_POINT        =#{bTeamFourthPoint},
             FOURTH_HANDI_CAP        =#{fourthHandiCap},
@@ -3943,7 +3950,7 @@ VALUES (
     </update>
 
     <select id="selectBaseballStat"  resultType="HashMap">
-        SELECT LEAGUE, GROUND, STADIUM, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM_REST_DAY, A_TEAM_PITCHER, A_TEAM, A_TEAM_TOTAL_POINT, B_TEAM_TOTAL_POINT, B_TEAM, B_TEAM_PITCHER, B_TEAM_REST_DAY, HANDI_CAP, HANDI_CAP_RESULT, ODD, POINT_LINE, POINT_LINE_RESULT, A_TEAM_FOURTH_POINT, B_TEAM_FOURTH_POINT, FOURTH_HANDI_CAP, FOURTH_HANDI_CAP_RESULT, FOURTH_POINT_LINE, FOURTH_POINT_LINE_RESULT, A_TEAM_FIFTH_POINT, B_TEAM_FIFTH_POINT, FIFTH_HANDI_CAP, FIFTH_HANDI_CAP_RESULT, FIFTH_POINT_LINE, FIFTH_POINT_LINE_RESULT, FIRST_STRIKEOUT, FIRST_HOMERUN, FRIST_BASEONBALL, FRIST_POINT, SECEND_POINT, THRID_POINT, FOURTH_POINT, FIFTH_POINT, SIXTH_POINT, SEVENTH_POINT, EIGHTH_POINT, NINTH_POINT
+        SELECT  IDX, GAME_ID, LEAGUE, GROUND, STADIUM, MATCH_DATE, DAY_OF_WEEK, MATCH_TIME, A_TEAM_REST_DAY, A_TEAM_PITCHER, A_TEAM, A_TEAM_TOTAL_POINT, B_TEAM_TOTAL_POINT, B_TEAM, B_TEAM_PITCHER, B_TEAM_REST_DAY, HANDI_CAP, HANDI_CAP_RESULT, ODD, POINT_LINE, POINT_LINE_RESULT, A_TEAM_THIRD_POINT, B_TEAM_THIRD_POINT, THIRD_HANDI_CAP, THIRD_HANDI_CAP_RESULT, THIRD_POINT_LINE, THIRD_POINT_LINE_RESULT, A_TEAM_FOURTH_POINT, B_TEAM_FOURTH_POINT, FOURTH_HANDI_CAP, FOURTH_HANDI_CAP_RESULT, FOURTH_POINT_LINE, FOURTH_POINT_LINE_RESULT, A_TEAM_FIFTH_POINT, B_TEAM_FIFTH_POINT, FIFTH_HANDI_CAP, FIFTH_HANDI_CAP_RESULT, FIFTH_POINT_LINE, FIFTH_POINT_LINE_RESULT, FIRST_STRIKEOUT, FIRST_HOMERUN, FRIST_BASEONBALL, FRIST_POINT, SECEND_POINT, THRID_POINT, FOURTH_POINT, FIFTH_POINT, SIXTH_POINT, SEVENTH_POINT, EIGHTH_POINT, NINTH_POINT
         FROM sport.baseball_data
         ORDER BY MATCH_DATE,GAME_ID;
     </select>
