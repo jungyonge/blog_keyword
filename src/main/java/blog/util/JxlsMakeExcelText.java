@@ -91,7 +91,7 @@ public class JxlsMakeExcelText {
 
 
         sheetMap = new HashMap<String, Object>();
-        sheetNames.add("팀 홈/원정 요약데이터");
+        sheetNames.add("팀 홈원정 요약데이터");
 
         sheetMap.put("groundSummary",setalarmDAO.selectBaseballGroundSummary());
         sheetMap.put("pitcherSummary",setalarmDAO.selectBaseballPitcherSummary());

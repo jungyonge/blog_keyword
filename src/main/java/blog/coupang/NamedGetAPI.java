@@ -5,6 +5,7 @@ import blog.model.BaseballModel;
 import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import blog.util.JxlsMakeExcel;
+import blog.util.JxlsMakeExcelText;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -1256,6 +1257,7 @@ public final class NamedGetAPI {
     public static void main(String[] args) throws Exception {
         // Generate HMAC string
         SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+        JxlsMakeExcelText jxlsMakeExcelText = new JxlsMakeExcelText();
 
         // Send request
         NamedGetAPI namedGetAPI = new NamedGetAPI();
@@ -1265,54 +1267,26 @@ public final class NamedGetAPI {
         List excelDataList = new ArrayList<>();
         try {
             jxlsMakeExcel.statXlsDown("baseball");
-        }catch (Exception e){
+            jxlsMakeExcelText.baseballDown("baseball_summary");
+
+            }catch (Exception e){
             System.out.println(e);
         }
 
         List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
         String[] recipients = new String[1];
-//
+
         WebSendMail webSendMail = new WebSendMail();
-//
+
         for (int i = 0 ; i < memberList.size() ; i++){
             recipients[0] = memberList.get(i).get("EMAIL").toString();
             System.out.println(recipients[0]);
             webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
         }
-//                namedGetAPI.test();
-//
 
-//        StringEntity entity = new StringEntity("", "UTF-8");
-//        entity.setContentEncoding("UTF-8");
-//        entity.setContentType("application/json");
-//        long unixTime = System.currentTimeMillis() / 1000;
-//
-//
-//        org.apache.http.HttpHost host = org.apache.http.HttpHost.create(DOMAIN);
-//        org.apache.http.HttpRequest request = org.apache.http.client.methods.RequestBuilder
-//                .get(URL).setEntity(entity)
-//                .addHeader("accept", "*/*")
-//                .addHeader("oki-api-key", API_KEY)
-//                .addHeader("oki-api-name", API_NAME)
-//                .addHeader("origin", "https://sports.picksmatch.com")
-//                .addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
-//                .addParameter("broadcast", "true")
-//                .addParameter("broadcastLatest", "true")
-//                .addParameter("odds", "true")
-//                .addParameter("scores", "true")
-//                .addParameter("specials", "true")
-//                .addParameter("seasonTeamStat", "true")
-//                .addParameter("startDate", "20200517")
-//                .addParameter("endDate", "20200517")
-//                .addParameter("v", String.valueOf(unixTime))
-//                .build();
-//
-//
-//        org.apache.http.HttpResponse httpResponse = org.apache.http.impl.client.HttpClientBuilder.create().build().execute(host, request);
-//
-//        // verify
-//        System.out.println(EntityUtils.toString(httpResponse.getEntity()));
+//        recipients[0] = "qjsro1204@naver.com";
+//        System.out.println(recipients[0]);
+//        webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
 
-//        JSONArray matchArr =
     }
 }
