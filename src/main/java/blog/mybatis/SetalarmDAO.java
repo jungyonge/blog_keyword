@@ -1010,6 +1010,86 @@ public class SetalarmDAO {
         }
     }
 
+    public List selectBaseballGroundSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBaseballGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public List selectBaseballPitcherSummary() {
+        SqlSession session = sqlSessionFactory.openSession();
+        List list = null;
+
+        try {
+            list = session.selectList("Setalarm.selectBaseballPitcherSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+        return list;
+    }
+
+    public void truncateBaseballGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.truncateBaseballGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+    public void truncateBaseballPitcherSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.update("Setalarm.truncateBaseballPitcherSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void insertBaseballGroundSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBaseballGroundSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+    public void insertBaseballPitcherSummary(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        try {
+            session.insert("Setalarm.insertBaseballPitcherSummary");
+        } finally {
+            session.commit();
+            session.close();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 

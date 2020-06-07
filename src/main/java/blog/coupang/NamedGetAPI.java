@@ -239,7 +239,7 @@ public final class NamedGetAPI {
             Calendar startDate = Calendar.getInstance();
             startDate.set(2020,4,01);
 //            startDate.setTime(new Date());
-//            startDate.add(Calendar.DATE, -5);
+//            startDate.add(Calendar.DATE, -1);
 
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
 

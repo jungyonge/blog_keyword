@@ -73,6 +73,52 @@ public class JxlsMakeExcelText {
         buildExcelDocument(model);
     }
 
+    public void baseballDown(String type) throws Exception {
+        ModelMap model = new ModelMap();
+        String excelTemplatePath;
+
+        List<String> sheetNames = new ArrayList<String>();//시트 이름 리스트
+        List<HashMap<String, Object>> sheetMaps = new ArrayList<HashMap<String, Object>>();//시트리스트
+        HashMap<String, Object> sheetMap = new HashMap<String, Object>();//각시트단위
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        List<HashMap<String, Object>> dataList = new ArrayList<HashMap<String, Object>>();
+
+        setalarmDAO.truncateBaseballGroundSummary();
+        setalarmDAO.truncateBaseballPitcherSummary();
+        setalarmDAO.insertBaseballGroundSummary();
+        setalarmDAO.insertBaseballPitcherSummary();
+
+
+        sheetMap = new HashMap<String, Object>();
+        sheetNames.add("팀 홈/원정 요약데이터");
+
+        sheetMap.put("groundSummary",setalarmDAO.selectBaseballGroundSummary());
+        sheetMap.put("pitcherSummary",setalarmDAO.selectBaseballPitcherSummary());
+
+        sheetMap.put("count",setalarmDAO.selectBaseballGroundSummary().size());
+        sheetMaps.add(sheetMap);
+
+
+        excelTemplatePath ="C:/Users/qjsro/IdeaProjects/blog_keyword/src/main/resources/excelTemplate/";
+        // 세션값 얻기
+        List excelDataList = new ArrayList<>();
+
+
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+
+        model.put("EXCEL_TEMPLATE_PATH", excelTemplatePath);
+
+        model.put("excelTemplateName", type);
+        model.put("excelOutputName", type);
+        model.addAttribute("sheetMaps",sheetMaps);
+        model.addAttribute("sheetNames",sheetNames);
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        buildExcelDocument(model);
+    }
+
 
     private static final String FILE_EXT1 = ".xls";
     private static final String FILE_EXT2 = ".xlsx";
@@ -148,7 +194,7 @@ public class JxlsMakeExcelText {
         JxlsMakeExcelText jxlsMakeExcel = new JxlsMakeExcelText();
         List excelDataList = new ArrayList<>();
         try {
-            jxlsMakeExcel.statXlsDown("basketball_summary");
+            jxlsMakeExcel.baseballDown("baseball_summary");
 
         } catch (IOException e) {
             e.printStackTrace();
