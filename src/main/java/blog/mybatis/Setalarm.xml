@@ -3976,7 +3976,7 @@ VALUES (
         FOURTH_HANDI_LOSE_PER, FOURTH_OVER_PER, FOURTH_UNDER_PER, FIFTH_HANDI_WIN_PER, FIFTH_HANDI_LOSE_PER, FIFTH_OVER_PER, FIFTH_UNDER_PER, FIRST_STRIKE_PER, FIRST_BALL_PER, FIRST_HOMERUN_PER)
 
         SELECT  MATCHWIN.LEAGUE,MATCHWIN.A_TEAM,MATCHWIN.GROUND ,winPer,losePer,fullWinPer,fullLosePer,fullOverPer,fullUnderPer
-        ,thirdwinPer,thirdlosePer,thirdoverPer,thirdlosePer,fourthwinPer,fourthlosePer,fourthoverPer,fourthlosePer,fifthwinPer,fifthlosePer,fifthoverPer,fifthlosePer,strikeWinPer,baseWinPer,homeRunWinPer
+        ,thirdwinPer,thirdlosePer,thirdoverPer,thirdunderPer,fourthwinPer,fourthlosePer,fourthoverPer,fourthunderPer,fifthwinPer,fifthlosePer,fifthoverPer,fifthunderPer,strikeWinPer,baseWinPer,homeRunWinPer
         FROM(
         SELECT A.LEAGUE,A.A_TEAM,A.GROUND
         ,IFNULL(ROUND(winCnt/allHandiCnt * 100,1),0) as winPer
@@ -4535,7 +4535,7 @@ VALUES (
     <select id="selectBaseballGroundSummary"  resultType="HashMap">
         SELECT LEAGUE, TEAM, GROUND, WIN_PER, LOSE_PER, HANDI_WIN_PER, HANDI_LOSE_PER, OVER_PER, UNDER_PER, THIRD_HANDI_WIN_PER, THIRD_HANDI_LOSE_PER, THIRD_OVER_PER, THIRD_UNDER_PER, FOURTH_HANDI_WIN_PER, FOURTH_HANDI_LOSE_PER, FOURTH_OVER_PER, FOURTH_UNDER_PER, FIFTH_HANDI_WIN_PER, FIFTH_HANDI_LOSE_PER, FIFTH_OVER_PER, FIFTH_UNDER_PER, FIRST_STRIKE_PER, FIRST_BALL_PER, FIRST_HOMERUN_PER
         FROM sport.baseball_ground_summary
-        ORDER BY LEAGUE
+        ORDER BY LEAGUE,TEAM
         ;
     </select>
 
