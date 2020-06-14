@@ -370,6 +370,32 @@ public final class NamedGetAPI {
 
                     bTeamModel.setATeamPitcher(aTeamModel.getBTeamPitcher());
                     bTeamModel.setBTeamPitcher(aTeamModel.getATeamPitcher());
+                    int extendScore = 0;
+                    if(homeTeam.getJSONArray("scores").length() > 9){
+                        for (int id = 9 ; id < homeTeam.getJSONArray("scores").length() ; id ++){
+                            extendScore = extendScore + homeTeam.getJSONArray("scores").getJSONObject(id).getInt("score");
+                        }
+                        aTeamModel.setExtendScore(extendScore);
+                        aTeamModel.setExtendYn(true);
+                    }else {
+                        aTeamModel.setExtendScore(extendScore);
+                        aTeamModel.setExtendYn(false);
+
+                    }
+
+                    extendScore = 0;
+                    if(awayTeam.getJSONArray("scores").length() > 9){
+                        for (int id = 9 ; id < awayTeam.getJSONArray("scores").length() ; id ++){
+                            extendScore = extendScore + awayTeam.getJSONArray("scores").getJSONObject(id).getInt("score");
+                        }
+                        bTeamModel.setExtendScore(extendScore);
+                        bTeamModel.setExtendYn(true);
+
+                    }else {
+                        bTeamModel.setExtendScore(extendScore);
+                        bTeamModel.setExtendYn(false);
+
+                    }
 
                     aTeamModel.setFirstScore(homeTeam.getJSONArray("scores").getJSONObject(0).getInt("score"));
                     aTeamModel.setSecondScore(homeTeam.getJSONArray("scores").getJSONObject(1).getInt("score"));
@@ -779,6 +805,12 @@ public final class NamedGetAPI {
                         bTeamModel.setFirstBaseOnBall("적특");
                     }
 
+
+                    aTeamModel.setATeamTotalPoint(aTeamModel.getTotalScore() + aTeamModel.getExtendScore());
+                    aTeamModel.setBTeamTotalPoint(bTeamModel.getTotalScore() + bTeamModel.getExtendScore());
+
+                    bTeamModel.setATeamTotalPoint(bTeamModel.getTotalScore() + bTeamModel.getExtendScore());
+                    bTeamModel.setBTeamTotalPoint(aTeamModel.getTotalScore() + aTeamModel.getExtendScore() );
 
                     System.out.println(aTeamModel);
                     System.out.println(bTeamModel);
@@ -1308,12 +1340,15 @@ public final class NamedGetAPI {
             String[] recipients = new String[1];
 //
             WebSendMail webSendMail = new WebSendMail();
+            recipients[0] = "jungyong_e@naver.com";
+            System.out.println(recipients[0]);
+            webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
 //
-            for (int i = 0 ; i < memberList.size() ; i++){
-                recipients[0] = memberList.get(i).get("EMAIL").toString();
-                System.out.println(recipients[0]);
-                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
-            }
+//            for (int i = 0 ; i < memberList.size() ; i++){
+//                recipients[0] = memberList.get(i).get("EMAIL").toString();
+//                System.out.println(recipients[0]);
+//                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -71,6 +71,10 @@ public class BaseballModel {
     Integer seventhScore;
     Integer eighthScore;
     Integer ninthScore;
+    Integer extendScore;
+
+    Boolean extendYn;
+
 
     public int getTotalScore(){
         int total = firstScore +  secondScore + thirdScore +  fourthScore +   fifthScore + sixthScore + seventhScore + eighthScore + ninthScore;
