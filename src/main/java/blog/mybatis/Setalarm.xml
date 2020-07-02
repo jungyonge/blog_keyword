@@ -3959,7 +3959,8 @@ VALUES (
             GROUND   =     #{ground} AND
             MATCH_DATE   =  #{date} AND
             A_TEAM   =     #{aTeam} AND
-            B_TEAM   =     #{bTeam}
+            B_TEAM   =     #{bTeam} AND
+            UPDATE_YN = 1
 
         ]]>
 
@@ -4545,7 +4546,7 @@ VALUES (
     <select id="selectBaseballPitcherSummary"  resultType="HashMap">
         SELECT LEAGUE, TEAM, PITCHER, WIN_PER, LOSE_PER, HANDI_WIN_PER, HANDI_LOSE_PER, OVER_PER, UNDER_PER, THIRD_HANDI_WIN_PER, THIRD_HANDI_LOSE_PER, THIRD_OVER_PER, THIRD_UNDER_PER, FOURTH_HANDI_WIN_PER, FOURTH_HANDI_LOSE_PER, FOURTH_OVER_PER, FOURTH_UNDER_PER, FIFTH_HANDI_WIN_PER, FIFTH_HANDI_LOSE_PER, FIFTH_OVER_PER, FIFTH_UNDER_PER, FIRST_STRIKE_PER, FIRST_BALL_PER, FIRST_HOMERUN_PER
         FROM sport.baseball_pitcher_summary
-        ORDER BY TEAM;
+        ORDER BY LEAGUE,TEAM;
     </select>
 
 

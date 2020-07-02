@@ -139,8 +139,13 @@ public final class NamedGetAPI {
                         awayTeam = (JSONObject) matchObject.getJSONArray("gameTeams").get(1);
                     }
 
-                    aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
-                    aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
+                    if(aTeamModel.getLeague().contains("퓨처스") || aTeamModel.getLeague().contains("KBO")){
+                        aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
+                        aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
+                    } else {
+                        aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("name"));
+                        aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("name"));
+                    }
 
                     if (aTeamModel.getATeam().equals("")){
                         continue;
@@ -234,14 +239,14 @@ public final class NamedGetAPI {
 
         Calendar curDate = Calendar.getInstance();
         curDate.setTime(new Date());
-        curDate.add(Calendar.DATE, 1);
+        curDate.add(Calendar.DATE, 0);
 
         int date = 0;
         while (true) {
             Calendar startDate = Calendar.getInstance();
-            startDate.set(2020,4,01);
-//            startDate.setTime(new Date());
-//            startDate.add(Calendar.DATE, -1);
+//            startDate.set(2020,4,03);
+            startDate.setTime(new Date());
+            startDate.add(Calendar.DATE, -5);
 
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
@@ -268,7 +273,7 @@ public final class NamedGetAPI {
                     .addParameter("scores", "true")
                     .addParameter("specials", "true")
                     .addParameter("seasonTeamStat", "true")
-                    .addParameter("startDate", matchDate)
+                    .addParameter("startDate",matchDate )
                     .addParameter("endDate", matchDate)
                     .addParameter("v", String.valueOf(unixTime))
                     .build();
@@ -336,8 +341,14 @@ public final class NamedGetAPI {
                     }
 
 
-                    aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
-                    aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
+                    if(aTeamModel.getLeague().contains("퓨처스") || aTeamModel.getLeague().contains("KBO")){
+                        aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("nickname"));
+                        aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("nickname"));
+                    } else {
+                        aTeamModel.setATeam(homeTeam.getJSONObject("team").getString("name"));
+                        aTeamModel.setBTeam(awayTeam.getJSONObject("team").getString("name"));
+                    }
+
 
                     bTeamModel.setATeam(aTeamModel.getBTeam());
                     bTeamModel.setBTeam(aTeamModel.getATeam());
@@ -356,9 +367,9 @@ public final class NamedGetAPI {
                         continue;
                     }
 
+                    boolean checkNull = matchObject.getJSONObject("gameStatus").isNull("homeStarterPlayer");
 
-
-                    if (aTeamModel.getLeague().equals("KBO")) {
+                    if (!checkNull) {
                         aTeamModel.setATeamPitcher(matchObject.getJSONObject("gameStatus").getJSONObject("homeStarterPlayer").getString("displayName"));
                         aTeamModel.setBTeamPitcher(matchObject.getJSONObject("gameStatus").getJSONObject("awayStarterPlayer").getString("displayName"));
                     } else {
@@ -451,15 +462,39 @@ public final class NamedGetAPI {
                     JSONObject koreaOdd = matchObject.getJSONArray("odds").getJSONObject(1);
                     JSONObject overseaOdd = matchObject.getJSONArray("odds").getJSONObject(0);
                     double firstInninPointLine = 0.0;
-                    if (aTeamModel.getLeague().equals("KBO")) {
+                    if (!aTeamModel.getLeague().equals("퓨처스")) {
                         if(koreaOdd.getString("handi").equals("")){
-                            aTeamModel.setHandiCap(overseaOdd.getDouble("handi"));
-                            bTeamModel.setHandiCap(overseaOdd.getDouble("handi") * -1);
+                            if(overseaOdd.getString("handi").equals("")){
 
-                            aTeamModel.setPointLine(overseaOdd.getDouble("unover"));
-                            bTeamModel.setPointLine(overseaOdd.getDouble("unover"));
+                                aTeamModel.setHandiCap(0.0);
+                                bTeamModel.setHandiCap(0.0);
 
-                            firstInninPointLine = overseaOdd.getDouble("unover") / 9;
+                                aTeamModel.setPointLine(0.0);
+                                bTeamModel.setPointLine(0.0);
+
+                                firstInninPointLine = 0.0;
+                            }else {
+                                aTeamModel.setHandiCap(overseaOdd.getDouble("handi"));
+                                bTeamModel.setHandiCap(overseaOdd.getDouble("handi") * -1);
+
+                                if(!overseaOdd.getString("unover").equals("")){
+                                    aTeamModel.setPointLine(overseaOdd.getDouble("unover"));
+                                    bTeamModel.setPointLine(overseaOdd.getDouble("unover"));
+
+                                    firstInninPointLine = overseaOdd.getDouble("unover") / 9;
+                                }else if(!koreaOdd.getString("unover").equals("")) {
+                                    aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
+                                    bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
+                                    firstInninPointLine = koreaOdd.getDouble("unover") / 9;
+                                } else {
+                                    aTeamModel.setHandiCap(0.0);
+                                    bTeamModel.setHandiCap(0.0);
+
+                                    aTeamModel.setPointLine(0.0);
+                                    bTeamModel.setPointLine(0.0);
+                                }
+
+                            }
                         }else {
                             aTeamModel.setHandiCap(koreaOdd.getDouble("handi"));
                             bTeamModel.setHandiCap(koreaOdd.getDouble("handi") * -1);
@@ -1297,6 +1332,8 @@ public final class NamedGetAPI {
         JxlsMakeExcel jxlsMakeExcel = new JxlsMakeExcel();
         JxlsMakeExcelText jxlsMakeExcelText = new JxlsMakeExcelText();
         SetalarmDAO setalarmDAO = new SetalarmDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+        NamedGetAPI namedGetAPI = new NamedGetAPI();
+
 
         try {
 
@@ -1305,7 +1342,7 @@ public final class NamedGetAPI {
 //            basketball.getAllMatch();
 //            nba.getAllMatch();
 //            volleyball.getAllMatch();
-            //        namedGetAPI.allBaseballMatch();
+//            namedGetAPI.allBaseballMatch();
 
 
 //            hockey.updateHockeyStat();
@@ -1321,7 +1358,6 @@ public final class NamedGetAPI {
 //            hockey.getTomorrowMatch();
 //            hockey.getHockeySummary();
 
-            NamedGetAPI namedGetAPI = new NamedGetAPI();
             namedGetAPI.updateBaseball();
 //
 //            jxlsMakeExcel.statXlsDown("basketball");
