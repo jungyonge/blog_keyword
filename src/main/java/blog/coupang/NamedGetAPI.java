@@ -51,23 +51,25 @@ public final class NamedGetAPI {
                 break;
             }
 
-            org.apache.http.HttpHost host = org.apache.http.HttpHost.create(DOMAIN);
+            String url = "https://api.picksmatch.com/v1.0/sports/baseball/games?date=2020-07-01&status=ALL";
+//                          https://api.picksmatch.com/v1.0/sports/baseball/games?date=2020-07-03&status=ALL
+            org.apache.http.HttpHost host = org.apache.http.HttpHost.create("api.picksmatch.com");
             org.apache.http.HttpRequest request = org.apache.http.client.methods.RequestBuilder
-                    .get(URL).setEntity(entity)
+                    .get("/v1.0/sports/baseball/games?date=2020-07-01&status=ALL").setEntity(entity)
                     .addHeader("accept", "*/*")
-                    .addHeader("oki-api-key", API_KEY)
-                    .addHeader("oki-api-name", API_NAME)
+//                    .addHeader("oki-api-key", API_KEY)
+//                    .addHeader("oki-api-name", API_NAME)
                     .addHeader("origin", "https://sports.picksmatch.com")
                     .addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
-                    .addParameter("broadcast", "true")
-                    .addParameter("broadcastLatest", "true")
-                    .addParameter("odds", "true")
-                    .addParameter("scores", "true")
-                    .addParameter("specials", "true")
-                    .addParameter("seasonTeamStat", "true")
-                    .addParameter("startDate", matchDate)
-                    .addParameter("endDate", matchDate)
-                    .addParameter("v", String.valueOf(unixTime))
+//                    .addParameter("broadcast", "true")
+//                    .addParameter("broadcastLatest", "true")
+//                    .addParameter("odds", "true")
+//                    .addParameter("scores", "true")
+//                    .addParameter("specials", "true")
+//                    .addParameter("seasonTeamStat", "true")
+//                    .addParameter("startDate", matchDate)
+//                    .addParameter("endDate", matchDate)
+//                    .addParameter("v", String.valueOf(unixTime))
                     .build();
 
 
@@ -80,16 +82,16 @@ public final class NamedGetAPI {
                 String json = EntityUtils.toString(httpResponse.getEntity());
 
                 //JSON데이터를 넣어 JSON Object 로 만들어 준다.
-                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonObject = new JSONArray(json);
 
                 //books의 배열을 추출
-                JSONArray matchArr = jsonObject.getJSONArray("response");
+//                JSONArray matchArr = jsonObject.getJSONArray("response");
 
-                for (int i = 0; i < matchArr.length(); i++) {
+                for (int i = 0; i < jsonObject.length(); i++) {
                     BaseballModel aTeamModel = new BaseballModel();
                     BaseballModel bTeamModel = new BaseballModel();
 
-                    JSONObject matchObject = matchArr.getJSONObject(i);
+                    JSONObject matchObject = jsonObject.getJSONObject(i);
 
 //                    String gameStatus = matchObject.getJSONArray("broadcasts").getJSONObject(0).getString("playText");
 //                    if (gameStatus.contains("취소")) {
@@ -154,8 +156,8 @@ public final class NamedGetAPI {
                     bTeamModel.setATeam(aTeamModel.getBTeam());
                     bTeamModel.setBTeam(aTeamModel.getATeam());
 
-                    setalarmDAO.insertBaseballMatch(aTeamModel);
-                    setalarmDAO.insertBaseballMatch(bTeamModel);
+//                    setalarmDAO.insertBaseballMatch(aTeamModel);
+//                    setalarmDAO.insertBaseballMatch(bTeamModel);
 
                 }
             } catch (Exception e) {
@@ -463,45 +465,34 @@ public final class NamedGetAPI {
                     JSONObject overseaOdd = matchObject.getJSONArray("odds").getJSONObject(0);
                     double firstInninPointLine = 0.0;
                     if (!aTeamModel.getLeague().equals("퓨처스")) {
-                        if(koreaOdd.getString("handi").equals("")){
-                            if(overseaOdd.getString("handi").equals("")){
 
-                                aTeamModel.setHandiCap(0.0);
-                                bTeamModel.setHandiCap(0.0);
-
-                                aTeamModel.setPointLine(0.0);
-                                bTeamModel.setPointLine(0.0);
-
-                                firstInninPointLine = 0.0;
-                            }else {
-                                aTeamModel.setHandiCap(overseaOdd.getDouble("handi"));
-                                bTeamModel.setHandiCap(overseaOdd.getDouble("handi") * -1);
-
-                                if(!overseaOdd.getString("unover").equals("")){
-                                    aTeamModel.setPointLine(overseaOdd.getDouble("unover"));
-                                    bTeamModel.setPointLine(overseaOdd.getDouble("unover"));
-
-                                    firstInninPointLine = overseaOdd.getDouble("unover") / 9;
-                                }else if(!koreaOdd.getString("unover").equals("")) {
-                                    aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
-                                    bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
-                                    firstInninPointLine = koreaOdd.getDouble("unover") / 9;
-                                } else {
-                                    aTeamModel.setHandiCap(0.0);
-                                    bTeamModel.setHandiCap(0.0);
-
-                                    aTeamModel.setPointLine(0.0);
-                                    bTeamModel.setPointLine(0.0);
-                                }
-
-                            }
-                        }else {
+                        if(!overseaOdd.getString("handi").equals("")){
+                            aTeamModel.setHandiCap(overseaOdd.getDouble("handi"));
+                            bTeamModel.setHandiCap(overseaOdd.getDouble("handi") * -1);
+                        }else if(!koreaOdd.getString("handi").equals("")){
                             aTeamModel.setHandiCap(koreaOdd.getDouble("handi"));
                             bTeamModel.setHandiCap(koreaOdd.getDouble("handi") * -1);
+                        }else {
+                            aTeamModel.setHandiCap(0.0);
+                            bTeamModel.setHandiCap(0.0);
 
+                        }
+
+                        if(!overseaOdd.getString("unover").equals("")){
+                            aTeamModel.setPointLine(overseaOdd.getDouble("unover"));
+                            bTeamModel.setPointLine(overseaOdd.getDouble("unover"));
+                            firstInninPointLine = overseaOdd.getDouble("unover") / 9;
+
+                        }else if(!koreaOdd.getString("unover").equals("")){
                             aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
                             bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
-                            firstInninPointLine = koreaOdd.getDouble("unover") / 9;
+                            firstInninPointLine = overseaOdd.getDouble("unover") / 9;
+
+                        }else {
+                            aTeamModel.setPointLine(0.0);
+                            bTeamModel.setPointLine(0.0);
+
+                            firstInninPointLine = 0.0;
 
                         }
 
@@ -1342,7 +1333,7 @@ public final class NamedGetAPI {
 //            basketball.getAllMatch();
 //            nba.getAllMatch();
 //            volleyball.getAllMatch();
-//            namedGetAPI.allBaseballMatch();
+            namedGetAPI.allBaseballMatch();
 
 
 //            hockey.updateHockeyStat();
@@ -1358,7 +1349,7 @@ public final class NamedGetAPI {
 //            hockey.getTomorrowMatch();
 //            hockey.getHockeySummary();
 
-            namedGetAPI.updateBaseball();
+//            namedGetAPI.updateBaseball();
 //
 //            jxlsMakeExcel.statXlsDown("basketball");
 //            jxlsMakeExcel.statXlsDown("volleyball");
