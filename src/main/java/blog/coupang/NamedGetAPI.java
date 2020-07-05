@@ -251,6 +251,8 @@ public final class NamedGetAPI {
             startDate.add(Calendar.DATE, -5);
 
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+
 
             startDate.add(Calendar.DATE, date);
             if (df.format(startDate.getTime()).equals(df.format(curDate.getTime()))) {
@@ -259,6 +261,7 @@ public final class NamedGetAPI {
             }
 
             String matchDate = df.format(startDate.getTime());
+            String matchDate1 = df1.format(startDate.getTime());
 
 
             org.apache.http.HttpHost host = org.apache.http.HttpHost.create(DOMAIN);
@@ -466,29 +469,22 @@ public final class NamedGetAPI {
                     double firstInninPointLine = 0.0;
                     if (!aTeamModel.getLeague().equals("퓨처스")) {
 
-                        if(!overseaOdd.getString("handi").equals("")){
-                            aTeamModel.setHandiCap(overseaOdd.getDouble("handi"));
-                            bTeamModel.setHandiCap(overseaOdd.getDouble("handi") * -1);
-                        }else if(!koreaOdd.getString("handi").equals("")){
-                            aTeamModel.setHandiCap(koreaOdd.getDouble("handi"));
-                            bTeamModel.setHandiCap(koreaOdd.getDouble("handi") * -1);
-                        }else {
+                        Double handi = 0.0;
+                        Double unOver = 0.0;
+                        JSONObject tempObject = getNewNameAPI(matchDate1,aTeamModel.getGameId());
+                        if(tempObject != null){
+                            handi = tempObject.getJSONObject("odds").getJSONArray("internationalHandicapOdds").getJSONObject(0).getDouble("optionValue");
+                            unOver = tempObject.getJSONObject("odds").getJSONArray("internationalUnderOverOdds").getJSONObject(0).getDouble("optionValue");
+                            aTeamModel.setHandiCap(handi);
+                            bTeamModel.setHandiCap(handi * -1);
+
+                            aTeamModel.setPointLine(unOver);
+                            bTeamModel.setPointLine(unOver);
+                            firstInninPointLine = unOver / 9;
+                        } else {
                             aTeamModel.setHandiCap(0.0);
                             bTeamModel.setHandiCap(0.0);
 
-                        }
-
-                        if(!overseaOdd.getString("unover").equals("")){
-                            aTeamModel.setPointLine(overseaOdd.getDouble("unover"));
-                            bTeamModel.setPointLine(overseaOdd.getDouble("unover"));
-                            firstInninPointLine = overseaOdd.getDouble("unover") / 9;
-
-                        }else if(!koreaOdd.getString("unover").equals("")){
-                            aTeamModel.setPointLine(koreaOdd.getDouble("unover"));
-                            bTeamModel.setPointLine(koreaOdd.getDouble("unover"));
-                            firstInninPointLine = overseaOdd.getDouble("unover") / 9;
-
-                        }else {
                             aTeamModel.setPointLine(0.0);
                             bTeamModel.setPointLine(0.0);
 
@@ -1313,6 +1309,47 @@ public final class NamedGetAPI {
 
     }
 
+    public JSONObject getNewNameAPI(String matchDate, String gameId) throws IOException {
+        StringEntity entity = new StringEntity("", "UTF-8");
+        entity.setContentEncoding("UTF-8");
+        entity.setContentType("application/json");
+
+        String domain = "https://api.picksmatch.com";
+        String path = "/v1.0/sports/baseball/games?date=" + matchDate + "&status=ALL";
+
+        org.apache.http.HttpHost host = org.apache.http.HttpHost.create(domain);
+        org.apache.http.HttpRequest request = org.apache.http.client.methods.RequestBuilder
+                .get(path).setEntity(entity)
+                .addHeader("accept", "*/*")
+
+                .addHeader("origin", "https://sports.picksmatch.com")
+                .addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
+                .build();
+
+        org.apache.http.HttpResponse httpResponse = org.apache.http.impl.client.HttpClientBuilder.create().build().execute(host, request);
+
+
+        try {
+            JSONParser jsonParser = new JSONParser();
+
+            String json = EntityUtils.toString(httpResponse.getEntity());
+
+            //JSON데이터를 넣어 JSON Object 로 만들어 준다.
+            JSONArray jsonArray = new JSONArray(json);
+
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                JSONObject tempObject = jsonArray.getJSONObject(i);
+                int tempGameId = tempObject.getInt("id");
+                if(gameId.equals(String.valueOf(tempGameId))){
+                    return tempObject;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) throws Exception {
         // Generate HMAC string
         Volleyball volleyball = new Volleyball();
@@ -1333,7 +1370,7 @@ public final class NamedGetAPI {
 //            basketball.getAllMatch();
 //            nba.getAllMatch();
 //            volleyball.getAllMatch();
-            namedGetAPI.allBaseballMatch();
+//            namedGetAPI.allBaseballMatch();
 
 
 //            hockey.updateHockeyStat();
@@ -1349,7 +1386,7 @@ public final class NamedGetAPI {
 //            hockey.getTomorrowMatch();
 //            hockey.getHockeySummary();
 
-//            namedGetAPI.updateBaseball();
+            namedGetAPI.updateBaseball();
 //
 //            jxlsMakeExcel.statXlsDown("basketball");
 //            jxlsMakeExcel.statXlsDown("volleyball");
