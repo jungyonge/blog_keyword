@@ -7,7 +7,10 @@ import blog.mybatis.MyBatisConnectionFactory;
 import blog.mybatis.SetalarmDAO;
 import blog.util.JxlsMakeExcel;
 import blog.util.JxlsMakeExcelText;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -241,17 +244,19 @@ public final class NamedGetAPI {
 
         Calendar curDate = Calendar.getInstance();
         curDate.setTime(new Date());
-        curDate.add(Calendar.DATE, 0);
+        curDate.add(Calendar.DATE, 1);
 
         int date = 0;
         while (true) {
             Calendar startDate = Calendar.getInstance();
 //            startDate.set(2020,4,03);
             startDate.setTime(new Date());
-            startDate.add(Calendar.DATE, -5);
+            startDate.add(Calendar.DATE, -2);
 
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
             DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df2 = new SimpleDateFormat("yyyy-M-d");
+
 
 
             startDate.add(Calendar.DATE, date);
@@ -262,6 +267,8 @@ public final class NamedGetAPI {
 
             String matchDate = df.format(startDate.getTime());
             String matchDate1 = df1.format(startDate.getTime());
+            String matchDate2 = df2.format(startDate.getTime());
+
 
 
             org.apache.http.HttpHost host = org.apache.http.HttpHost.create(DOMAIN);
@@ -359,7 +366,7 @@ public final class NamedGetAPI {
                     bTeamModel.setBTeam(aTeamModel.getATeam());
 
                     String gameStatus = matchObject.getJSONArray("broadcasts").getJSONObject(0).getString("playText");
-                    if (gameStatus.contains("취소") || gameStatus.contains("콜") || gameStatus.contains("우천 중단")) {
+                    if (gameStatus.contains("취소") || gameStatus.contains("콜드") || gameStatus.contains("우천")) {
                         aTeamModel.setATeamTotalPoint(99);
                         aTeamModel.setBTeamTotalPoint(99);
 
@@ -471,16 +478,32 @@ public final class NamedGetAPI {
 
                         Double handi = 0.0;
                         Double unOver = 0.0;
-                        JSONObject tempObject = getNewNameAPI(matchDate1,aTeamModel.getGameId());
-                        if(tempObject != null){
-                            handi = tempObject.getJSONObject("odds").getJSONArray("internationalHandicapOdds").getJSONObject(0).getDouble("optionValue");
-                            unOver = tempObject.getJSONObject("odds").getJSONArray("internationalUnderOverOdds").getJSONObject(0).getDouble("optionValue");
-                            aTeamModel.setHandiCap(handi);
-                            bTeamModel.setHandiCap(handi * -1);
+//                        JSONObject tempObject = getNewNameAPI(matchDate1,aTeamModel.getGameId());
+                        JSONObject tempObject = getOldNameAPI(matchDate2,aTeamModel.getGameId());
 
-                            aTeamModel.setPointLine(unOver);
-                            bTeamModel.setPointLine(unOver);
-                            firstInninPointLine = unOver / 9;
+                        if(tempObject != null){
+                            if(!tempObject.getJSONObject("away").isNull("handiRate")){
+                                handi = tempObject.getJSONObject("away").getDouble("handiRate");
+                                aTeamModel.setHandiCap(handi);
+                                bTeamModel.setHandiCap(handi * -1);
+                            } else {
+                                aTeamModel.setHandiCap(0.0);
+                                bTeamModel.setHandiCap(0.0);
+                            }
+                            if(!tempObject.getJSONObject("home").isNull("unoverRate")){
+                                unOver =  tempObject.getJSONObject("home").getDouble("unoverRate");
+
+                                aTeamModel.setPointLine(unOver);
+                                bTeamModel.setPointLine(unOver);
+
+                                firstInninPointLine = unOver / 9;
+                            }else {
+                                aTeamModel.setPointLine(0.0);
+                                bTeamModel.setPointLine(0.0);
+
+                                firstInninPointLine = 0.0;
+                            }
+
                         } else {
                             aTeamModel.setHandiCap(0.0);
                             bTeamModel.setHandiCap(0.0);
@@ -491,6 +514,40 @@ public final class NamedGetAPI {
                             firstInninPointLine = 0.0;
 
                         }
+//
+//                        if(tempObject != null){
+//                            if(tempObject.getJSONObject("odds").getJSONArray("internationalHandicapOdds").length() != 0){
+//                                handi = tempObject.getJSONObject("odds").getJSONArray("internationalHandicapOdds").getJSONObject(0).getDouble("optionValue");
+//                                aTeamModel.setHandiCap(handi);
+//                                bTeamModel.setHandiCap(handi * -1);
+//                            } else {
+//                                aTeamModel.setHandiCap(0.0);
+//                                bTeamModel.setHandiCap(0.0);
+//                            }
+//                            if(tempObject.getJSONObject("odds").getJSONArray("internationalUnderOverOdds").length() != 0 ){
+//                                unOver = tempObject.getJSONObject("odds").getJSONArray("internationalUnderOverOdds").getJSONObject(0).getDouble("optionValue");
+//
+//                                aTeamModel.setPointLine(unOver);
+//                                bTeamModel.setPointLine(unOver);
+//
+//                                firstInninPointLine = unOver / 9;
+//                            }else {
+//                                aTeamModel.setPointLine(0.0);
+//                                bTeamModel.setPointLine(0.0);
+//
+//                                firstInninPointLine = 0.0;
+//                            }
+//
+//                        } else {
+//                            aTeamModel.setHandiCap(0.0);
+//                            bTeamModel.setHandiCap(0.0);
+//
+//                            aTeamModel.setPointLine(0.0);
+//                            bTeamModel.setPointLine(0.0);
+//
+//                            firstInninPointLine = 0.0;
+//
+//                        }
 
 
                         double thirdPointLine = firstInninPointLine * 4;
@@ -1350,6 +1407,58 @@ public final class NamedGetAPI {
         return null;
     }
 
+    public JSONObject getOldNameAPI(String matchDate, String gameId) throws IOException {
+        StringEntity entity = new StringEntity("", "UTF-8");
+        entity.setContentEncoding("UTF-8");
+        entity.setContentType("application/json");
+
+        String domain = "https://sports.picksmatch.com";
+        String path = "/gateway/livegames/live_schedule_gateway.php";
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("date",matchDate));
+        params.add(new BasicNameValuePair("football_mode","7m"));
+        params.add(new BasicNameValuePair("url",path));
+
+        org.apache.http.HttpHost host = org.apache.http.HttpHost.create(domain);
+
+        org.apache.http.HttpRequest request = org.apache.http.client.methods.RequestBuilder
+                .post(path).setEntity(entity).setEntity(new UrlEncodedFormEntity(params,"UTF-8"))
+                .addHeader("accept", "*/*")
+                .addHeader("origin", "https://sports.picksmatch.com")
+                .addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
+//                .addParameter("date",matchDate)
+//                .addParameter("football_mode","7m")
+//                .addParameter("url",path)
+                .build();
+
+        org.apache.http.HttpResponse httpResponse = org.apache.http.impl.client.HttpClientBuilder.create().build().execute(host, request);
+
+
+        try {
+            JSONParser jsonParser = new JSONParser();
+
+            String json = EntityUtils.toString(httpResponse.getEntity());
+
+            //JSON데이터를 넣어 JSON Object 로 만들어 준다.
+            JSONObject jsonObject = new JSONObject(json);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                JSONObject tempObject = jsonArray.getJSONObject(i);
+                int tempGameId = tempObject.getInt("gidx");
+//                System.out.println(tempGameId);
+                if(gameId.equals(String.valueOf(tempGameId))){
+                    return tempObject;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public static void main(String[] args) throws Exception {
         // Generate HMAC string
         Volleyball volleyball = new Volleyball();
@@ -1386,6 +1495,7 @@ public final class NamedGetAPI {
 //            hockey.getTomorrowMatch();
 //            hockey.getHockeySummary();
 
+//            namedGetAPI.getOldNameAPI("2020-7-7","10559556");
             namedGetAPI.updateBaseball();
 //
 //            jxlsMakeExcel.statXlsDown("basketball");
@@ -1397,22 +1507,22 @@ public final class NamedGetAPI {
 
             jxlsMakeExcel.statXlsDown("baseball");
             jxlsMakeExcelText.baseballDown("baseball_summary");
-
-
-
+//
+//
+//
             List<HashMap<String, Object>> memberList = setalarmDAO.selectMemberList();
             String[] recipients = new String[1];
-//
+
             WebSendMail webSendMail = new WebSendMail();
-            recipients[0] = "jungyong_e@naver.com";
-            System.out.println(recipients[0]);
-            webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+//            recipients[0] = "jungyong_e@naver.com";
+//            System.out.println(recipients[0]);
+//            webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
 //
-//            for (int i = 0 ; i < memberList.size() ; i++){
-//                recipients[0] = memberList.get(i).get("EMAIL").toString();
-//                System.out.println(recipients[0]);
-//                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
-//            }
+            for (int i = 0 ; i < memberList.size() ; i++){
+                recipients[0] = memberList.get(i).get("EMAIL").toString();
+                System.out.println(recipients[0]);
+                webSendMail.sendSSLMessage(recipients, "test", "test", "jungyongee@gmail.com");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
